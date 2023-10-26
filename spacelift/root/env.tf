@@ -7,7 +7,7 @@ resource "spacelift_stack" "env" {
   description          = "Space for managing ${each.value}-level Spacelift infrastructure."
   enable_local_preview = true
   name                 = "${var.organization}-stack-root-${each.value}"
-  project_root         = "${var.directory}/spacelift/env"
+  project_root         = "spacelift/env"
   repository           = var.repository
   space_id             = "root"
   terraform_version    = var.terraform_version
