@@ -1,8 +1,3 @@
-variable "directory" {
-  type = string
-  default = "infrastructure"
-}
-
 variable "organization" {
   type = string
   default = "kowaltz"
@@ -10,7 +5,7 @@ variable "organization" {
 
 variable "repository" {
   type = string
-  default = "monorepo"
+  default = "infrastructure"
 }
 
 variable "set_of_clouds" {
