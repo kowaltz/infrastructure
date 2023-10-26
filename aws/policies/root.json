@@ -1,0 +1,20 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Effect": "Allow",
+          "Principal": {
+              "Federated": "arn:aws:iam::{{ACCOUNT_ID}}:oidc-provider/{{ORGANIZATION}}-github.app.spacelift.io"
+          },
+          "Action": "sts:AssumeRoleWithWebIdentity",
+          "Condition": {
+              "StringEquals": {
+                  "{{ORGANIZATION}}-github.app.spacelift.io:aud": "{{ORGANIZATION}}-github.app.spacelift.io"
+              },
+              "StringLike": {
+                  "{{ORGANIZATION}}-github.app.spacelift.io:sub": "*:stack:{{ORGANIZATION}}-stack-root-aws:*"
+              }
+          }
+      }
+  ]
+}
