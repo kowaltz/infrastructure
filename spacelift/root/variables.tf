@@ -15,12 +15,12 @@ variable "repository" {
 
 variable "set_of_clouds" {
   type = set(string)
-  default = toset(["aws", "azure"])
+  default = ["aws", "azure"]
 }
 
 variable "set_of_environments" {
   type = set(string)
-  default = toset(["dev", "prod"])
+  default = ["dev", "prod"]
 }
 
 variable "terraform_version" {
