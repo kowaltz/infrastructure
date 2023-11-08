@@ -10,17 +10,17 @@ provider "aws" {
 }
 
 locals {
-  root_role_arn = "arn:aws:iam::${var.aws_account_id}:role/${var.organization}-iam-role-root-spacelift"
+  root_role_name = "${var.organization}-iam-role-root-spacelift_${var.aws_oidc_enabled ? "oidc" : "default"}"
   set_of_environments = toset(["dev", "prod"])
 }
 
 data "aws_iam_role" "root_role" {
-  name = "${var.organization}-iam-role-root-spacelift"
+  name = local.root_role_name
 }
 
 resource "aws_iam_policy_attachment" "organizations_manage" {
   name       = "organizations_manage"
-  roles      = [data.aws_iam_role.root_role.name]
+  roles      = [local.root_role_name]
   policy_arn = aws_iam_policy.manage_organization.arn
 }
 
