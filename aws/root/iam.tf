@@ -1,6 +1,6 @@
 resource "aws_iam_policy" "manage_organization" {
   name        = "${var.organization}-iam-policy-root-organizations_manage"
-  path        = "/root"
+  path        = "/root/"
   description = "Policy for managing an organization, OUs and their accounts at the root level. It also allows the role to manage policies at the organizational level."
 
   # Terraform's "jsonencode" function converts a
