@@ -43,7 +43,7 @@ resource "aws_iam_policy" "manage_organization" {
           "organizations:UpdatePolicy"
         ],
         "Resource" : [
-          "*"
+          data.aws_iam_role.root_role.arn
         ]
       }
     ]
