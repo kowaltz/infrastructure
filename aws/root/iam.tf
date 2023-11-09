@@ -33,6 +33,7 @@ resource "aws_iam_policy" "manage_organization" {
           "organizations:CreatePolicy",
           "organizations:DeleteOrganizationalUnit",
           "organizations:DeletePolicy",
+          "organizations:DescribeOrganization",
           "organizations:DetachPolicy",
           "organizations:DisablePolicyType",
           "organizations:EnablePolicyType",
