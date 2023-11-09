@@ -18,7 +18,9 @@ data "aws_iam_role" "root_role" {
   name = local.root_role_name
 }
 
-data "aws_organizations_organization" "root" {}
+data "aws_organizations_organization" "root" {
+  depends_on = [ aws_iam_policy_attachment.organizations_manage ]
+}
 
 resource "aws_organizations_organizational_unit" "org_root" {
   name      = "${var.organization}-organizations-ou-root"
