@@ -19,8 +19,8 @@ resource "aws_iam_policy" "ou_create_org" {
         ]
       },
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "organizations:CreateOrganizationalUnit",
           "organizations:DeleteOrganizationalUnit"
         ],
@@ -81,9 +81,9 @@ resource "aws_iam_policy" "manage_organization" {
           "arn:aws:organizations::${var.aws_account_id}:account/o-${var.aws_organization_id}/*",
           "arn:aws:organizations::${var.aws_account_id}:policy/o-${var.aws_organization_id}/*/p-*"
         ],
-        "Condition": {
-          "StringEquals": {
-            "aws:ResourceOrgPaths": [
+        "Condition" : {
+          "StringEquals" : {
+            "aws:ResourceOrgPaths" : [
               "o-${var.aws_organization_id}/r-${var.aws_organization_root_id}/ou-${aws_organizations_organizational_unit.org_root.id}/*"
             ]
           }
