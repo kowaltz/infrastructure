@@ -1,3 +1,9 @@
+resource "aws_iam_policy_attachment" "organizations_manage" {
+  name       = "organizations_manage"
+  roles      = [local.root_role_name]
+  policy_arn = aws_iam_policy.manage_organization.arn
+}
+
 resource "aws_iam_policy" "manage_organization" {
   name        = "${var.organization}-iam-policy-root-organizations_manage"
   path        = "/root/"
@@ -33,7 +39,6 @@ resource "aws_iam_policy" "manage_organization" {
           "organizations:CreatePolicy",
           "organizations:DeleteOrganizationalUnit",
           "organizations:DeletePolicy",
-          "organizations:DescribeOrganization",
           "organizations:DetachPolicy",
           "organizations:DisablePolicyType",
           "organizations:EnablePolicyType",
