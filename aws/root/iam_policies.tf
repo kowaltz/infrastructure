@@ -1,8 +1,38 @@
-resource "aws_iam_policy_attachment" "organizations_manage" {
-  name       = "organizations_manage"
-  roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.manage_organization.arn
+resource "aws_iam_policy" "ou_create_org" {
+  name        = "${var.organization}-iam-policy-root-ou_create_org"
+  path        = "/root/"
+  description = "Policy for creating the org's OU at the root level."
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "organizations:DescribeAccount",
+          "organizations:DescribeOrganization"
+        ],
+        "Resource" : [
+          "arn:aws:organizations::${var.aws_account_id}:account/o-${var.aws_organization_id}/${var.aws_account_id}"
+        ]
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "organizations:CreateOrganizationalUnit",
+          "organizations:DeleteOrganizationalUnit"
+        ],
+        "Resource" : [
+          "arn:aws:organizations::${var.aws_account_id}:root/o-${var.aws_organization_id}/r-${var.aws_organization_root_id}"
+        ]
+      }
+    ]
+  })
 }
+
+
 
 resource "aws_iam_policy" "manage_organization" {
   name        = "${var.organization}-iam-policy-root-organizations_manage"
@@ -25,9 +55,7 @@ resource "aws_iam_policy" "manage_organization" {
           "organizations:ListParents",
           "organizations:ListPolicies",
           "organizations:ListPoliciesForTarget",
-          "organizations:ListRoots",
           "organizations:ListTargetsForPolicy",
-          "organizations:DescribeAccount",
           "organizations:DescribeCreateAccountStatus",
           "organizations:DescribeEffectivePolicy",
           "organizations:DescribeOrganizationalUnit",
@@ -35,11 +63,10 @@ resource "aws_iam_policy" "manage_organization" {
           "organizations:AttachPolicy",
           "organizations:CloseAccount",
           "organizations:CreateAccount",
-          "organizations:CreateOrganizationalUnit",
           "organizations:CreatePolicy",
+          "organizations:CreateOrganizationalUnit",
           "organizations:DeleteOrganizationalUnit",
           "organizations:DeletePolicy",
-          "organizations:DescribeOrganization",
           "organizations:DetachPolicy",
           "organizations:DisablePolicyType",
           "organizations:EnablePolicyType",
@@ -50,8 +77,17 @@ resource "aws_iam_policy" "manage_organization" {
           "organizations:UpdatePolicy"
         ],
         "Resource" : [
-          data.aws_iam_role.root_role.arn
-        ]
+          "arn:aws:organizations::${var.aws_account_id}:ou/o-${var.aws_organization_id}/ou-*",
+          "arn:aws:organizations::${var.aws_account_id}:account/o-${var.aws_organization_id}/*",
+          "arn:aws:organizations::${var.aws_account_id}:policy/o-${var.aws_organization_id}/*/p-*"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:ResourceOrgPaths": [
+              "o-${var.aws_organization_id}/r-${var.aws_organization_root_id}/ou-${aws_organizations_organizational_unit.org_root.id}/*"
+            ]
+          }
+        }
       }
     ]
   })
