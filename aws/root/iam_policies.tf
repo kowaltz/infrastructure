@@ -17,6 +17,7 @@ resource "aws_iam_policy" "read" {
       {
         "Effect" : "Allow",
         "Action" : [
+          "organizations:DescribeAccount",
           "organizations:DescribeOrganization",
           "organizations:ListRoots",
           "organizations:"
