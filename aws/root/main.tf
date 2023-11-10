@@ -23,5 +23,5 @@ locals {
 
 resource "aws_organizations_organizational_unit" "org_root" {
   name      = "${var.organization}-organizations-ou-root"
-  parent_id = "r-${local.org_root_id}"
+  parent_id = local.org_root_id
 }

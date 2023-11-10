@@ -61,7 +61,7 @@ resource "aws_iam_policy" "ou_create_org" {
           "organizations:DeleteOrganizationalUnit"
         ],
         "Resource" : [
-          "arn:aws:organizations::${var.aws_account_id}:root/o-${local.org_id}/r-${local.org_root_id}",
+          "arn:aws:organizations::${var.aws_account_id}:root/${local.org_id}/${local.org_root_id}",
           "*"
         ]
       }
@@ -118,14 +118,14 @@ resource "aws_iam_policy" "manage_organization" {
           "organizations:UpdatePolicy"
         ],
         "Resource" : [
-          "arn:aws:organizations::${var.aws_account_id}:ou/o-${local.org_id}/ou-*",
-          "arn:aws:organizations::${var.aws_account_id}:account/o-${local.org_id}/*",
-          "arn:aws:organizations::${var.aws_account_id}:policy/o-${local.org_id}/*/p-*"
+          "arn:aws:organizations::${var.aws_account_id}:ou/${local.org_id}/ou-*",
+          "arn:aws:organizations::${var.aws_account_id}:account/${local.org_id}/*",
+          "arn:aws:organizations::${var.aws_account_id}:policy/${local.org_id}/*/p-*"
         ],
         "Condition" : {
           "StringEquals" : {
             "aws:ResourceOrgPaths" : [
-              "o-${local.org_id}/r-${local.org_root_id}/ou-${local.org_id}/*"
+              "${local.org_id}/${local.org_root_id}/${local.org_id}/*"
             ]
           }
         }
