@@ -1,3 +1,40 @@
+resource "aws_iam_policy_attachment" "read" {
+  name       = "read"
+  roles      = [local.root_role_name]
+  policy_arn = aws_iam_policy.ou_create_org.arn
+}
+
+resource "aws_iam_policy" "read" {
+  name        = "${var.organization}-iam-policy-root-read"
+  path        = "/root/"
+  description = "Organization read permissions."
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "organizations:DescribeOrganization",
+          "organizations:ListRoots",
+          "organizations:"
+        ],
+        "Resource" : [
+          "*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy_attachment" "ou_create_org" {
+  name       = "ou_create_org"
+  roles      = [local.root_role_name]
+  policy_arn = aws_iam_policy.ou_create_org.arn
+}
+
 resource "aws_iam_policy" "ou_create_org" {
   name        = "${var.organization}-iam-policy-root-ou_create_org"
   path        = "/root/"
@@ -11,21 +48,11 @@ resource "aws_iam_policy" "ou_create_org" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "organizations:DescribeOrganization",
-          "organizations:ListRoots"
-        ],
-        "Resource" : [
-          "*"
-        ]
-      },
-      {
-        "Effect" : "Allow",
-        "Action" : [
           "organizations:CreateOrganizationalUnit",
           "organizations:DeleteOrganizationalUnit"
         ],
         "Resource" : [
-          "arn:aws:organizations::${var.aws_account_id}:root/o-${var.aws_organization_id}/r-${var.aws_organization_root_id}",
+          "arn:aws:organizations::${var.aws_account_id}:root/o-${local.org_id}/r-${local.org_root_id}",
           "*"
         ]
       }
@@ -33,7 +60,11 @@ resource "aws_iam_policy" "ou_create_org" {
   })
 }
 
-
+resource "aws_iam_policy_attachment" "organizations_manage" {
+  name       = "organizations_manage"
+  roles      = [local.root_role_name]
+  policy_arn = aws_iam_policy.manage_organization.arn
+}
 
 resource "aws_iam_policy" "manage_organization" {
   name        = "${var.organization}-iam-policy-root-organizations_manage"
@@ -78,14 +109,14 @@ resource "aws_iam_policy" "manage_organization" {
           "organizations:UpdatePolicy"
         ],
         "Resource" : [
-          "arn:aws:organizations::${var.aws_account_id}:ou/o-${var.aws_organization_id}/ou-*",
-          "arn:aws:organizations::${var.aws_account_id}:account/o-${var.aws_organization_id}/*",
-          "arn:aws:organizations::${var.aws_account_id}:policy/o-${var.aws_organization_id}/*/p-*"
+          "arn:aws:organizations::${var.aws_account_id}:ou/o-${local.org_id}/ou-*",
+          "arn:aws:organizations::${var.aws_account_id}:account/o-${local.org_id}/*",
+          "arn:aws:organizations::${var.aws_account_id}:policy/o-${local.org_id}/*/p-*"
         ],
         "Condition" : {
           "StringEquals" : {
             "aws:ResourceOrgPaths" : [
-              "o-${var.aws_organization_id}/r-${var.aws_organization_root_id}/ou-${aws_organizations_organizational_unit.org_root.id}/*"
+              "o-${local.org_id}/r-${local.org_root_id}/ou-${local.org_id}/*"
             ]
           }
         }
