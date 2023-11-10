@@ -11,11 +11,10 @@ resource "aws_iam_policy" "ou_create_org" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "organizations:DescribeAccount",
-          "organizations:DescribeOrganization"
+          "organizations:DescribeOrganization",
+          "organizations:ListRoots"
         ],
         "Resource" : [
-          "arn:aws:organizations::${var.aws_account_id}:account/o-${var.aws_organization_id}/${var.aws_account_id}",
           "*"
         ]
       },
