@@ -28,7 +28,30 @@ resource "aws_iam_policy" "read" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "organizations:*"
+          "organizations:ListAccounts",
+          "organizations:ListAccountsForParent",
+          "organizations:ListAWSServiceAccessForOrganization",
+          "organizations:ListChildren",
+          "organizations:ListCreateAccountStatus",
+          "organizations:ListDelegatedAdministrators",
+          "organizations:ListDelegatedServicesForAccount",
+          "organizations:ListHandshakesForAccount",
+          "organizations:ListHandshakesForOrganization",
+          "organizations:ListOrganizationalUnitsForParent",
+          "organizations:ListParents",
+          "organizations:ListPolicies",
+          "organizations:ListPoliciesForTarget",
+          "organizations:ListRoots",
+          "organizations:ListTagsForResource",
+          "organizations:ListTargetsForPolicy",
+          "organizations:DescribeAccount",
+          "organizations:DescribeCreateAccountStatus",
+          "organizations:DescribeEffectivePolicy",
+          "organizations:DescribeHandshake",
+          "organizations:DescribeOrganization",
+          "organizations:DescribeOrganizationalUnit",
+          "organizations:DescribePolicy",
+          "organizations:DescribeResourcePolicy"
         ],
         "Resource" : [
           "*"
