@@ -6,15 +6,3 @@ locals {
 data "aws_iam_role" "root_role" {
   name = local.root_role_name
 }
-
-resource "aws_iam_policy_attachment" "ou_create_org" {
-  name       = "ou_create_org"
-  roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.ou_create_org.arn
-}
-
-resource "aws_iam_policy_attachment" "organizations_manage" {
-  name       = "organizations_manage"
-  roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.manage_organization.arn
-}
