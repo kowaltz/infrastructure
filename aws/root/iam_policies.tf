@@ -1,64 +1,7 @@
 resource "aws_iam_policy_attachment" "read" {
-  name       = "read"
+  name       = "AWSOrganizationsReadOnlyAccess"
   roles      = [local.root_role_name]
   policy_arn = aws_iam_policy.read.arn
-}
-/*
-          "organizations:DescribeAccount",
-          "organizations:DescribeOrganization",
-          "organizations:DescribeOrganizationalUnit",
-          "organizations:ListAccounts",
-          "organizations:ListAccountsForParent",
-          "organizations:ListChildren",
-          "organizations:ListOrganizationalUnitsForParent",
-          "organizations:ListParents",
-          "organizations:ListPoliciesForTarget",
-          "organizations:ListRoots"
-*/
-resource "aws_iam_policy" "read" {
-  name        = "${var.organization}-iam-policy-root-read"
-  path        = "/root/"
-  description = "Organization read permissions."
-
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "organizations:ListAccounts",
-          "organizations:ListAccountsForParent",
-          "organizations:ListAWSServiceAccessForOrganization",
-          "organizations:ListChildren",
-          "organizations:ListCreateAccountStatus",
-          "organizations:ListDelegatedAdministrators",
-          "organizations:ListDelegatedServicesForAccount",
-          "organizations:ListHandshakesForAccount",
-          "organizations:ListHandshakesForOrganization",
-          "organizations:ListOrganizationalUnitsForParent",
-          "organizations:ListParents",
-          "organizations:ListPolicies",
-          "organizations:ListPoliciesForTarget",
-          "organizations:ListRoots",
-          "organizations:ListTagsForResource",
-          "organizations:ListTargetsForPolicy",
-          "organizations:DescribeAccount",
-          "organizations:DescribeCreateAccountStatus",
-          "organizations:DescribeEffectivePolicy",
-          "organizations:DescribeHandshake",
-          "organizations:DescribeOrganization",
-          "organizations:DescribeOrganizationalUnit",
-          "organizations:DescribePolicy",
-          "organizations:DescribeResourcePolicy"
-        ],
-        "Resource" : [
-          "*"
-        ]
-      }
-    ]
-  })
 }
 
 resource "aws_iam_policy_attachment" "ou_create_org" {

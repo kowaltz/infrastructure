@@ -1,6 +1,6 @@
-/*resource "aws_organizations_organizational_unit" "shared_infrastructure" {
+resource "aws_organizations_organizational_unit" "shared_infrastructure" {
   name      = "ou-shared_infrastructure"
-  parent_id = data.aws_organizations_organization.root.id
+  parent_id = aws_organizations_organizational_unit.org_root.id
 }
 
 resource "aws_organizations_organizational_unit" "shared_infrastructure-env" {
@@ -9,6 +9,7 @@ resource "aws_organizations_organizational_unit" "shared_infrastructure-env" {
   parent_id = aws_organizations_organizational_unit.shared_infrastructure.id
 }
 
+/*
 resource "aws_organizations_account" "network-env" {
   for_each          = local.set_of_environments
   name              = "account-network-${each.value}"
