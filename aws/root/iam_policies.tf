@@ -1,7 +1,7 @@
 resource "aws_iam_policy_attachment" "read" {
   name       = "AWSOrganizationsReadOnlyAccess"
   roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.read.arn
+  policy_arn = "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess"
 }
 
 resource "aws_iam_policy_attachment" "ou_create_org" {
