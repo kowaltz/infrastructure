@@ -4,14 +4,14 @@ resource "aws_iam_policy_attachment" "read" {
   policy_arn = "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess"
 }
 
-resource "aws_iam_policy_attachment" "ou_create_org" {
-  name       = "ou_create_org"
+resource "aws_iam_policy_attachment" "ou_org_root_create" {
+  name       = "ou_org_root_create"
   roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.ou_create_org.arn
+  policy_arn = aws_iam_policy.ou_org_root_create.arn
 }
 
-resource "aws_iam_policy" "ou_create_org" {
-  name        = "${var.organization}-iam-policy-root-ou_create_org"
+resource "aws_iam_policy" "ou_org_root_create" {
+  name        = "${var.organization}-iam-policy-root-ou_org_root_create"
   path        = "/root/"
   description = "Policy for creating the org's OU at the root level."
 
@@ -23,12 +23,10 @@ resource "aws_iam_policy" "ou_create_org" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "organizations:CreateOrganizationalUnit",
-          "organizations:DeleteOrganizationalUnit"
+          "organizations:CreateOrganizationalUnit"
         ],
         "Resource" : [
-          "arn:aws:organizations::${var.aws_account_id}:root/${local.org_id}/${local.org_root_id}",
-          "*"
+          "arn:aws:organizations::${var.aws_account_id}:root/${local.org_id}/${local.org_root_id}"
         ]
       }
     ]
@@ -38,13 +36,13 @@ resource "aws_iam_policy" "ou_create_org" {
 resource "aws_iam_policy_attachment" "organizations_manage" {
   name       = "organizations_manage"
   roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.manage_organization.arn
+  policy_arn = aws_iam_policy.organizations_manage.arn
 }
 
-resource "aws_iam_policy" "manage_organization" {
+resource "aws_iam_policy" "organizations_manage" {
   name        = "${var.organization}-iam-policy-root-organizations_manage"
   path        = "/root/"
-  description = "Policy for managing an organization, OUs and their accounts at the root level. It also allows the role to manage policies at the organizational level."
+  description = "Policy for managing an organization, OUs and their accounts at the organization's root level. It also allows the role to manage policies at the organizational level."
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -54,34 +52,16 @@ resource "aws_iam_policy" "manage_organization" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "organizations:ListAccounts",
-          "organizations:ListChildren",
-          "organizations:ListCreateAccountStatus",
-          "organizations:ListAccountsForParent",
-          "organizations:ListOrganizationalUnitsForParent",
-          "organizations:ListParents",
-          "organizations:ListPolicies",
-          "organizations:ListPoliciesForTarget",
-          "organizations:ListTargetsForPolicy",
-          "organizations:DescribeCreateAccountStatus",
-          "organizations:DescribeEffectivePolicy",
-          "organizations:DescribeOrganizationalUnit",
-          "organizations:DescribePolicy",
           "organizations:AttachPolicy",
           "organizations:CloseAccount",
-          "organizations:CreateAccount",
-          "organizations:CreatePolicy",
-          "organizations:CreateOrganizationalUnit",
-          "organizations:DeleteOrganizationalUnit",
-          "organizations:DeletePolicy",
+          "organizations:Create*",
+          "organizations:Delete*",
           "organizations:DetachPolicy",
           "organizations:DisablePolicyType",
           "organizations:EnablePolicyType",
-          "organizations:InviteAccountToOrganization",
           "organizations:MoveAccount",
           "organizations:RemoveAccountFromOrganization",
-          "organizations:UpdateOrganizationalUnit",
-          "organizations:UpdatePolicy"
+          "organizations:Update*"
         ],
         "Resource" : [
           "arn:aws:organizations::${var.aws_account_id}:ou/${local.org_id}/ou-*",
@@ -91,7 +71,7 @@ resource "aws_iam_policy" "manage_organization" {
         "Condition" : {
           "StringEquals" : {
             "aws:ResourceOrgPaths" : [
-              "${local.org_id}/${local.org_root_id}/${local.org_id}/*"
+              "${local.org_id}/${local.org_root_id}/${local.org_id}/${aws_organizations_organizational_unit.org_root.id}/*"
             ]
           }
         }

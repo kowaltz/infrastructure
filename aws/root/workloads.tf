@@ -1,11 +1,11 @@
 resource "aws_organizations_organizational_unit" "workloads" {
-  name      = "ou-workloads"
+  name      = "${var.organization}-ou-root-workloads"
   parent_id = aws_organizations_organizational_unit.org_root.id
 }
 
 resource "aws_organizations_organizational_unit" "workloads-env" {
   for_each  = local.set_of_environments
-  name      = "ou-workloads-${each.value}"
+  name      = "${var.organization}-ou-root_workloads-${each.value}"
   parent_id = aws_organizations_organizational_unit.workloads.id
 }
 
