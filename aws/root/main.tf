@@ -17,7 +17,7 @@ data "aws_organizations_organization" "root" {
 }
 
 locals {
-  org_id = data.aws_organizations_organization.root.id
+  org_id      = data.aws_organizations_organization.root.id
   org_root_id = data.aws_organizations_organization.root.roots[0].id
 }
 
