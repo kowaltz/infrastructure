@@ -19,8 +19,10 @@ resource "aws_iam_policy" "read" {
         "Action" : [
           "organizations:DescribeAccount",
           "organizations:DescribeOrganization",
-          "organizations:ListRoots",
-          "organizations:"
+          "organizations:ListAccounts",
+          "organizations:ListChildren",
+          "organizations:ListPoliciesForTarget",
+          "organizations:ListRoots"
         ],
         "Resource" : [
           "*"
