@@ -9,7 +9,12 @@ provider "aws" {
   */
 }
 
-data "aws_organizations_organization" "test" {}
+data "aws_organizations_organization" "test" {
+  depends_on = [
+    aws_iam_policy.ou_create_org,
+    aws_iam_policy_attachment.ou_create_org
+  ]
+}
 
 resource "aws_organizations_organizational_unit" "org_root" {
   name      = "${var.organization}-organizations-ou-root"
