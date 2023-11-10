@@ -11,8 +11,8 @@ provider "aws" {
 
 data "aws_organizations_organization" "root" {
   depends_on = [
-    aws_iam_policy.ou_create_org,
-    aws_iam_policy_attachment.ou_create_org
+    aws_iam_policy.read,
+    aws_iam_policy_attachment.read
   ]
 }
 
