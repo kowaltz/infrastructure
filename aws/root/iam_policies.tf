@@ -1,7 +1,7 @@
 resource "aws_iam_policy_attachment" "read" {
   name       = "read"
   roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.ou_create_org.arn
+  policy_arn = aws_iam_policy.read.arn
 }
 
 resource "aws_iam_policy" "read" {
