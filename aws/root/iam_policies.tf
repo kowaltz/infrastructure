@@ -4,14 +4,14 @@ resource "aws_iam_policy_attachment" "read" {
   policy_arn = "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess"
 }
 
-resource "aws_iam_policy_attachment" "ou_org_root_create" {
-  name       = "ou_org_root_create"
+resource "aws_iam_policy_attachment" "ou_create" {
+  name       = "ou_create"
   roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.ou_org_root_create.arn
+  policy_arn = aws_iam_policy.ou_create.arn
 }
 
-resource "aws_iam_policy" "ou_org_root_create" {
-  name        = "${var.organization}-iam-policy-root-ou_org_root_create"
+resource "aws_iam_policy" "ou_create" {
+  name        = "${var.organization}-iam-policy-root-ou_create"
   path        = "/root/"
   description = "Policy for creating the org's OU at the root level."
 
@@ -26,7 +26,7 @@ resource "aws_iam_policy" "ou_org_root_create" {
           "organizations:CreateOrganizationalUnit"
         ],
         "Resource" : [
-          "arn:aws:organizations::${var.aws_account_id}:root/${local.org_id}/${local.org_root_id}"
+          "arn:aws:organizations::${var.aws_account_id}:ou/${local.org_id}/ou-*"
         ]
       }
     ]
