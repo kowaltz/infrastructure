@@ -3,7 +3,18 @@ resource "aws_iam_policy_attachment" "read" {
   roles      = [local.root_role_name]
   policy_arn = aws_iam_policy.read.arn
 }
-
+/*
+          "organizations:DescribeAccount",
+          "organizations:DescribeOrganization",
+          "organizations:DescribeOrganizationalUnit",
+          "organizations:ListAccounts",
+          "organizations:ListAccountsForParent",
+          "organizations:ListChildren",
+          "organizations:ListOrganizationalUnitsForParent",
+          "organizations:ListParents",
+          "organizations:ListPoliciesForTarget",
+          "organizations:ListRoots"
+*/
 resource "aws_iam_policy" "read" {
   name        = "${var.organization}-iam-policy-root-read"
   path        = "/root/"
@@ -17,16 +28,7 @@ resource "aws_iam_policy" "read" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "organizations:DescribeAccount",
-          "organizations:DescribeOrganization",
-          "organizations:DescribeOrganizationalUnit",
-          "organizations:ListAccounts",
-          "organizations:ListAccountsForParent",
-          "organizations:ListChildren",
-          "organizations:ListOrganizationalUnitsForParent",
-          "organizations:ListParents",
-          "organizations:ListPoliciesForTarget",
-          "organizations:ListRoots"
+          "*"
         ],
         "Resource" : [
           "*"
