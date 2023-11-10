@@ -15,7 +15,8 @@ resource "aws_iam_policy" "ou_create_org" {
           "organizations:DescribeOrganization"
         ],
         "Resource" : [
-          "arn:aws:organizations::${var.aws_account_id}:account/o-${var.aws_organization_id}/${var.aws_account_id}"
+          "arn:aws:organizations::${var.aws_account_id}:account/o-${var.aws_organization_id}/${var.aws_account_id}",
+          "*"
         ]
       },
       {
@@ -25,7 +26,8 @@ resource "aws_iam_policy" "ou_create_org" {
           "organizations:DeleteOrganizationalUnit"
         ],
         "Resource" : [
-          "arn:aws:organizations::${var.aws_account_id}:root/o-${var.aws_organization_id}/r-${var.aws_organization_root_id}"
+          "arn:aws:organizations::${var.aws_account_id}:root/o-${var.aws_organization_id}/r-${var.aws_organization_root_id}",
+          "*"
         ]
       }
     ]
