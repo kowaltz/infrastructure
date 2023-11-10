@@ -28,7 +28,7 @@ resource "aws_iam_policy" "read" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "*"
+          "organizations:*"
         ],
         "Resource" : [
           "*"
