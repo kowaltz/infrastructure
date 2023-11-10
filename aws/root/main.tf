@@ -9,6 +9,8 @@ provider "aws" {
   */
 }
 
+data "aws_organizations_organization" "test" {}
+
 resource "aws_organizations_organizational_unit" "org_root" {
   name      = "${var.organization}-organizations-ou-root"
   parent_id = "r-${var.aws_organization_root_id}"
