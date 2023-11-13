@@ -1,7 +1,11 @@
 # Locals
-locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
-
-locals { image_name = "ubuntu-hvm-${local.timestamp}-x86_64" }
+locals { 
+  timestamp = regex_replace(timestamp(), "[- TZ:]", "")
+  
+  architecture = "amd64"
+  os = "ubuntu-focal-20.04"
+  image_name = "${local.os}-hvm-${local.timestamp}-${local.architecture}"
+}
 
 
 # Common Variables

@@ -18,6 +18,5 @@ source "azure-arm" "debian" {
     Base_Image_Name = "11-backports-gen2"
     OS_Version      = "Debian 11"
     Release         = var.release_tag
-    Team            = "Kowaltz Engineering"
   }
 }
