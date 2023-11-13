@@ -33,14 +33,6 @@ variable "ssh_username" {
   type        = string
 }
 
-# Azure Variables
-variable "azure_subscription_id" {
-  default     = ""
-  description = "Azure Subscription ID. Not necessarily sensitive."
-  type        = string
-}
-
-
 # AWS Variables
 variable "ami_regions" {
   default     = []

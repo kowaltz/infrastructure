@@ -3,12 +3,10 @@ build {
   description = <<EOF
 This build creates Debian images for the following builders:
 * amazon-ebs
-* azure-arm DEPRECATED
 EOF
 
   sources = [
-    "source.amazon-ebs.ubuntu",
-    #"source.azure-arm.debian"
+    "source.amazon-ebs.ubuntu"
   ]
 
   /*
