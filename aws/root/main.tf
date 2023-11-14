@@ -23,8 +23,8 @@ locals {
 resource "aws_organizations_organizational_unit" "org_root" {
   name      = "${var.organization}-ou-root"
   parent_id = local.org_root_id
-  depends_on = [ 
+  depends_on = [
     aws_iam_policy.organization_manage,
     aws_iam_policy_attachment.organization_manage
-   ]
+  ]
 }

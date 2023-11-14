@@ -6,8 +6,8 @@ variable "aws_oidc_enabled" {
   type = bool
 }
 
-variable "list_of_github_repos" {
-  type = list(string)
+variable "set_of_github_repos" {
+  type = set(string)
 }
 
 variable "organization" {
