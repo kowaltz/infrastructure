@@ -1,13 +1,12 @@
 build {
-  name        = "debian"
+  name        = local.image_name
   description = <<EOF
 This build creates Debian images for the following builders:
 * amazon-ebs
-* azure-arm
 EOF
+
   sources = [
-    "source.amazon-ebs.debian",
-    "source.azure-arm.debian"
+    "source.amazon-ebs.ubuntu"
   ]
 
   /*
@@ -19,7 +18,6 @@ EOF
   The block below offers better visibility.
   */
 
-/*
   provisioner "shell" {
     inline = [
       "echo Installing updates...",
@@ -27,8 +25,8 @@ EOF
       "sudo apt-get upgrade -y"
     ]
   }
-*/
 
+  /*
   # Install Nomad
   provisioner "shell" {
     inline = [
@@ -42,6 +40,7 @@ EOF
       "sudo apt-get update && sudo apt-get install nomad"
     ]
   }
+  */
 
   # Clean-up: Remove temp files, delete SSH keys, remove "admin" user.
   provisioner "shell" {

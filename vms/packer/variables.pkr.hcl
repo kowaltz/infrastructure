@@ -1,7 +1,11 @@
 # Locals
-locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
-
-locals { image_name = "ubuntu-hvm-${local.timestamp}-x86_64" }
+locals { 
+  timestamp = regex_replace(timestamp(), "[- TZ:]", "")
+  
+  architecture = "amd64"
+  os = "ubuntu-focal-20.04"
+  image_name = "${local.os}-hvm-${local.timestamp}-${local.architecture}"
+}
 
 
 # Common Variables
@@ -28,14 +32,6 @@ variable "ssh_username" {
   description = "User to SSH as."
   type        = string
 }
-
-# Azure Variables
-variable "azure_subscription_id" {
-  default     = ""
-  description = "Azure Subscription ID. Not necessarily sensitive."
-  type        = string
-}
-
 
 # AWS Variables
 variable "ami_regions" {

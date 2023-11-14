@@ -1,15 +1,15 @@
-data "amazon-ami" "debian_11" {
+data "amazon-ami" "ubuntu" {
   filters = {
-    name                = "debian-11-amd64-*"
+    name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
     root-device-type    = "ebs"
     virtualization-type = "hvm"
   }
   most_recent = true
-  owners = [var.aws_account_id]
+  owners      = [var.aws_account_id]
 }
 
 
-source "amazon-ebs" "debian" {
+source "amazon-ebs" "ubuntu" {
   ami_name                    = "${local.image_name}"
   ami_regions                 = var.ami_regions
   associate_public_ip_address = var.public_ip_bool
@@ -17,7 +17,7 @@ source "amazon-ebs" "debian" {
   instance_type               = "t2.micro"
   kms_key_id                  = var.build_region_kms
 
-  source_ami         = data.amazon-ami.debian_11.id
+  source_ami         = data.amazon-ami.ubuntu.id
   region             = var.build_region
   region_kms_key_ids = var.region_kms_keys
   skip_create_ami    = var.skip_create_image
@@ -28,23 +28,9 @@ source "amazon-ebs" "debian" {
   temporary_key_pair_type = "ed25519"
 
   # Tags for searching for the image
-  subnet_filter {
-    filters = {
-      "tag:Name" = "AMI Vault"
-    }
-  }
-  vpc_filter {
-    filters = {
-      "tag:Name" = "AMI Vault"
-    }
-  }
-
   tags = {
-    Application        = "Debian"
-    Base_Image_Name      = data.amazon-ami.debian_11.name
-    Created-by = "Packer"
-    OS_Version         = "Debian 11"
-    Release            = var.release_tag
-    Team               = "Kowaltz Engineering"
+    Base_Image_Name = data.amazon-ami.ubuntu.name
+    OS_Version      = local.os
+    Release         = var.release_tag
   }
 }

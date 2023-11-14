@@ -1,0 +1,37 @@
+name: Reusable Packer workflow
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        default: ./vms/packer
+        type: string
+
+permissions:
+  contents: read
+  
+jobs:
+  build:
+    runs-on: hashicorp/packer
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set working directory
+      run: cd ${{ inputs.working-directory }}
+
+    - name: Packer Init
+      run: packer init .
+
+    - name: Packer Validate
+      run: packer validate .
+
+    - name: Packer Build - Branches
+      # Pushes to branches set the github.ref context to refs/heads/<branch_name>
+      # Thus this conditional ensures that the step runs only if the workflow was triggered by a push to a branch.
+      if: startsWith(github.ref, 'refs/heads/')
+      run: packer build .
+
+    - name: Packer Build - Tags
+      # Build images for new semantically-versioned tags.
+      if: startsWith(github.ref, 'refs/tags/v')
+      run: packer build .
