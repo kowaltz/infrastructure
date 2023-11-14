@@ -4,6 +4,7 @@ on:
   workflow_call:
     inputs:
       working-directory:
+        default: ./vms/packer
         required: true
         type: string
 
