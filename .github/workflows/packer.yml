@@ -10,14 +10,15 @@ on:
 
 permissions:
   contents: read
-defaults:
-  run:
-    working-directory: ${{ inputs.working-directory }}
+  
 jobs:
   build:
     runs-on: hashicorp/packer
     steps:
     - uses: actions/checkout@v3
+
+    - name: Set working directory
+      run: cd ${{ inputs.working-directory }}
 
     - name: Packer Init
       run: packer init .
