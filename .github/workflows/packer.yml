@@ -5,7 +5,6 @@ on:
     inputs:
       working-directory:
         default: ./vms/packer
-        required: true
         type: string
 
 permissions:
