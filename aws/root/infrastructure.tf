@@ -16,15 +16,13 @@ resource "aws_organizations_account" "network-env" {
   email             = "account-network-${each.value}@kowaltz.com"
   close_on_deletion = true
   parent_id         = aws_organizations_organizational_unit.shared_infrastructure-env[each.value].id
-  provider = aws.account-provider-aws_root
-}
-
-resource "aws_organizations_account" "vms-env" {
-  for_each          = local.set_of_environments
-  name              = "account-vms-${each.value}"
-  email             = "account-vms-${each.value}@kowaltz.com"
-  close_on_deletion = true
-  parent_id         = aws_organizations_organizational_unit.shared_infrastructure-env[each.value].id
-  provider = aws.account-provider-aws_root
 }
 */
+
+resource "aws_organizations_account" "env-vms" {
+  for_each          = local.set_of_environments
+  name              = "${var.organization}-account-root_infrastructure_${each.value}-vms"
+  email             = "account-root_infrastructure_${each.value}-vms@${var.organization}.com"
+  close_on_deletion = true
+  parent_id         = aws_organizations_organizational_unit.infrastructure-env[each.value].id
+}
