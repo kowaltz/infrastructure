@@ -19,3 +19,12 @@ resource "aws_organizations_account" "vault-env" {
   provider = aws.account-provider-aws_root
 }
 */
+
+module "oidc_provider-github-workloads" {
+  for_each = var.set_of_environments
+  source = "../modules/oidc_provider-github"
+
+  aws_account_id = var.aws_account_id
+  env = each.value
+  github_repo = "monorepo"
+}

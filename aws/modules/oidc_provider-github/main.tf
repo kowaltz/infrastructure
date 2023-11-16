@@ -3,9 +3,8 @@ data "aws_iam_openid_connect_provider" "github_actions" {
 }
 
 resource "aws_iam_role" "github_actions" {
-  for_each    = var.set_of_github_repos
-  name        = "${var.organization}-role-root-github_oidc_${each.value}_${var.env}"
-  description = "Role for ${each.value}'s GitHub Actions to authenticate via OIDC for each environment."
+  name        = "${var.organization}-role-root-github_oidc_${var.github_repo}_${var.env}"
+  description = "Role for ${var.github_repo}'s GitHub Actions to authenticate via OIDC for each environment."
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -20,7 +19,7 @@ resource "aws_iam_role" "github_actions" {
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {
           "StringLike" : {
-            "token.actions.githubusercontent.com:sub" : "repo:${var.organization}/${each.value}:ref:refs/heads/${var.env}"
+            "token.actions.githubusercontent.com:sub" : "repo:${var.organization}/${var.github_repo}:ref:refs/heads/${var.env}"
           },
           "ForAllValues:StringEquals" : {
             "token.actions.githubusercontent.com:iss" : "https://token.actions.githubusercontent.com",

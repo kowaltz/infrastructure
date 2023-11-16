@@ -26,3 +26,12 @@ resource "aws_organizations_account" "env-vms" {
   close_on_deletion = true
   parent_id         = aws_organizations_organizational_unit.infrastructure-env[each.value].id
 }
+
+module "oidc_provider-github-infrastructure" {
+  for_each = var.set_of_environments
+  source = "../modules/oidc_provider-github"
+
+  aws_account_id = aws_organizations_account.env-vms.id
+  env = each.value
+  github_repo = "infrastructure"
+}

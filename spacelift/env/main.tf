@@ -1,9 +1,7 @@
 provider "spacelift" {}
 
 resource "spacelift_space" "env" {
-  for_each = var.set_of_environments
-
-  name = "${var.organization}-space-env"
+  name = "${var.organization}-space-${var.env}"
   parent_space_id = "root"
-  description = "Space for managing env-level Spacelift infrastructure."
+  description = "Space for managing ${var.env}-level Spacelift infrastructure."
 }

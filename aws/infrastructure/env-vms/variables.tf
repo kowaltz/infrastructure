@@ -5,8 +5,3 @@ variable "aws_account_id" {
 variable "env" {
   type = string
 }
-
-variable "organization" {
-  type = string
-  default = "kowaltz"
-}

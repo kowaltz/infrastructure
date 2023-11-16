@@ -3,7 +3,7 @@ locals {
 }
 
 resource "spacelift_aws_integration" "aws_root" {
-  name = "${var.organization}-cloud_integration-root-aws_root"
+  name = "${var.organization}-cloud_integration-root-aws"
 
   # We need to set the ARN manually rather than referencing the role to avoid a circular dependency
   role_arn                       = local.aws_role_name

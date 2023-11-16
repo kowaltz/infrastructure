@@ -6,8 +6,8 @@ variable "env" {
   type = string
 }
 
-variable "set_of_github_repos" {
-  type = set(string)
+variable "github_repo" {
+  type = string
 }
 
 variable "organization" {
