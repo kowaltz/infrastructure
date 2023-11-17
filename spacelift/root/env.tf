@@ -1,9 +1,9 @@
 resource "spacelift_space" "env" {
   for_each = var.set_of_environments
 
-  name = "${var.organization}-space-${each.value}"
+  name            = "${var.organization}-space-${each.value}"
   parent_space_id = "root"
-  description = "Space for managing ${each.value}-level Spacelift infrastructure."
+  description     = "Space for managing ${each.value}-level Spacelift infrastructure."
 }
 
 resource "spacelift_stack" "env" {
