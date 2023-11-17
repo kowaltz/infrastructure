@@ -14,7 +14,7 @@ variable "repository" {
 
 variable "set_of_clouds" {
   type = set(string)
-  default = ["aws", "azure"]
+  default = ["aws"]
 }
 
 variable "set_of_environments" {
