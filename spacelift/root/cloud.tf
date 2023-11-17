@@ -13,7 +13,7 @@ resource "spacelift_stack" "cloud" {
   terraform_version    = var.terraform_version
 }
 
-resource "spacelift_stack_dependency" "cloud" {
+resource "spacelift_stack_dependency" "cloud-on-root" {
   for_each = var.set_of_clouds
 
   stack_id            = spacelift_stack.cloud[each.value].id
