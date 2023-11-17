@@ -7,16 +7,16 @@ variable "env" {
 }
 
 variable "organization" {
-  type = string
+  type    = string
   default = "kowaltz"
 }
 
 variable "repository" {
-  type = string
+  type    = string
   default = "infrastructure"
 }
 
 variable "terraform_version" {
-  type = string
+  type    = string
   default = "1.5.7"
 }
