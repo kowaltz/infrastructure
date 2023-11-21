@@ -8,7 +8,7 @@ variable "aws_oidc_enabled" {
 
 variable "set_of_environments" {
   type    = set(string)
-  default = toset(["dev", "prod"])  
+  default = ["dev", "prod"]
 }
 
 variable "organization" {
