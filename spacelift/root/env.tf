@@ -17,7 +17,7 @@ resource "spacelift_stack" "env" {
   name                 = "${var.organization}-stack-${each.value}-spacelift"
   project_root         = "spacelift/env"
   repository           = var.repository
-  space_id             = each.value
+  space_id             = spacelift_space.env[each.value].id
   terraform_version    = var.terraform_version
 }
 
