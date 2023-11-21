@@ -31,7 +31,7 @@ module "oidc_provider-github-infrastructure" {
   for_each = var.set_of_environments
   source = "../modules/oidc_provider-github"
 
-  aws_account_id = aws_organizations_account.env-vms.id
+  aws_account_id = aws_organizations_account.env-vms[each.value].id
   env = each.value
   github_repo = "infrastructure"
 }
