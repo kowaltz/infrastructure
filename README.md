@@ -1,3 +1,3 @@
-# IaC for Multi-Cloud Projects
+# IaC with Spacelift, AWS, and Terraform / OpenTofu
 
-This repository is an opinionated implementation of multi-cloud (currently, AWS and Azure) IaC.
+This repository is an opinionated implementation of IaC with Spacelift, AWS, and Terraform / OpenTofu.
