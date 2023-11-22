@@ -27,7 +27,6 @@ resource "aws_organizations_account" "env-vms" {
   parent_id         = aws_organizations_organizational_unit.infrastructure-env[each.value].id
 }
 
-/*
 module "oidc_provider-github-infrastructure" {
   depends_on = [ aws_iam_openid_connect_provider.github_actions ]
   for_each = var.set_of_environments
@@ -37,4 +36,3 @@ module "oidc_provider-github-infrastructure" {
   env = each.value
   github_repo = "infrastructure"
 }
-*/
