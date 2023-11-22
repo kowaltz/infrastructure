@@ -17,7 +17,22 @@ resource "aws_iam_policy" "github_actions_oidc_providers_manage" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "iam:*OpenIDConnect*"
+          "iam:ListOpenIDConnectProviderTags",
+          "iam:ListOpenIDConnectProviders",
+          "iam:GetOpenIDConnectProvider"
+        ],
+        "Resource" : [
+          "*"
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "iam:AddClientIDToOpenIDConnectProvider",
+          "iam:CreateOpenIDConnectProvider",
+          "iam:DeleteOpenIDConnectProvider",
+          "iam:RemoveClientIDFromOpenIDConnectProvider",
+          "iam:UpdateOpenIDConnectProviderThumbprint"
         ],
         "Resource" : [
           "arn:aws:iam::${var.aws_account_id}:oidc-provider/*token.actions.githubusercontent.com"
