@@ -1,11 +1,11 @@
-resource "aws_iam_policy_attachment" "github_actions_oidc_providers_manage" {
-  name       = "github_actions_oidc_providers_manage"
+resource "aws_iam_policy_attachment" "oidc_providers_github_actions_manage" {
+  name       = "oidc_providers_github_actions_manage"
   roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.github_actions_oidc_providers_manage.arn
+  policy_arn = aws_iam_policy.oidc_providers_github_actions_manage.arn
 }
 
-resource "aws_iam_policy" "github_actions_oidc_providers_manage" {
-  name        = "${var.organization}-iam-policy-root-github_actions_oidc_providers_manage"
+resource "aws_iam_policy" "oidc_providers_github_actions_manage" {
+  name        = "${var.organization}-iam-policy-root-oidc_providers_github_actions_manage"
   path        = "/root/${var.organization}/"
   description = "Policy for managing OIDC providers for GitHub actions."
 
@@ -35,7 +35,7 @@ resource "aws_iam_policy" "github_actions_oidc_providers_manage" {
           "iam:UpdateOpenIDConnectProviderThumbprint"
         ],
         "Resource" : [
-          "arn:aws:iam::${var.aws_account_id}:oidc-provider/*token.actions.githubusercontent.com"
+          "arn:aws:iam::${var.aws_account_id}:oidc-provider/token.actions.githubusercontent.com"
         ]
       }
     ]
