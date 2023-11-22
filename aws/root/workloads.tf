@@ -21,6 +21,7 @@ resource "aws_organizations_account" "vault-env" {
 */
 
 module "oidc_provider-github-workloads" {
+  depends_on = [ aws_iam_openid_connect_provider.github_actions ]
   for_each = var.set_of_environments
   source = "../modules/oidc_provider-github"
 
