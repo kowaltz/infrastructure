@@ -17,6 +17,15 @@ resource "aws_iam_policy" "github_actions_oidc_providers_manage" {
       {
         "Effect" : "Allow",
         "Action" : [
+          "iam:ListOpenIDConnectProviders"
+        ],
+        "Resource" : [
+          "*"
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
           "iam:*OpenIDConnect*"
         ],
         "Resource" : [
