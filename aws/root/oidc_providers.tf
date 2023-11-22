@@ -45,8 +45,8 @@ resource "aws_iam_policy" "oidc_providers_github_actions_manage" {
 
 resource "aws_iam_openid_connect_provider" "github_actions" {
   depends_on = [
-    aws_iam_policy.github_actions_oidc_providers_manage,
-    aws_iam_policy_attachment.github_actions_oidc_providers_manage
+    aws_iam_policy.oidc_providers_github_actions_manage,
+    aws_iam_policy_attachment.oidc_providers_github_actions_manage
   ]
 
   url = "https://token.actions.githubusercontent.com"
