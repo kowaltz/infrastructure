@@ -19,6 +19,7 @@ resource "aws_organizations_account" "network-env" {
 }
 */
 
+/*
 resource "aws_organizations_account" "env-vms" {
   for_each          = local.set_of_environments
   name              = "${var.organization}-account-root_infrastructure_${each.value}-vms"
@@ -36,3 +37,4 @@ module "oidc_provider-github-infrastructure" {
   env = each.value
   github_repo = "infrastructure"
 }
+*/
