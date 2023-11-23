@@ -4,7 +4,7 @@ resource "aws_organizations_organizational_unit" "infrastructure" {
 }
 
 resource "aws_organizations_organizational_unit" "infrastructure-env" {
-  for_each  = local.set_of_environments
+  for_each  = var.set_of_environments
   name      = "${var.organization}-ou-root_infrastructure-${each.value}"
   parent_id = aws_organizations_organizational_unit.infrastructure.id
 }
@@ -19,9 +19,8 @@ resource "aws_organizations_account" "network-env" {
 }
 */
 
-/*
 resource "aws_organizations_account" "env-vms" {
-  for_each          = local.set_of_environments
+  for_each          = var.set_of_environments
   name              = "${var.organization}-account-root_infrastructure_${each.value}-vms"
   email             = "account-root_infrastructure_${each.value}-vms@${var.organization}.com"
   close_on_deletion = true
@@ -37,4 +36,3 @@ module "oidc_provider-github-infrastructure" {
   env = each.value
   github_repo = "infrastructure"
 }
-*/
