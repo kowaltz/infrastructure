@@ -28,9 +28,9 @@ resource "spacelift_stack_dependency" "env-on-root" {
   depends_on_stack_id = data.spacelift_stack.root-spacelift.id
 }
 
-resource "spacelift_stack_dependency" "env-on-aws" {
+resource "spacelift_stack_dependency" "env-on-aws_root_organization" {
   for_each = var.set_of_environments
 
   stack_id            = spacelift_stack.env[each.value].id
-  depends_on_stack_id = spacelift_stack.cloud["aws"].id
+  depends_on_stack_id = spacelift_stack.cloud_root_organization["aws"].id
 }

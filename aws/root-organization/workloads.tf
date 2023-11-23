@@ -4,19 +4,18 @@ resource "aws_organizations_organizational_unit" "workloads" {
 }
 
 resource "aws_organizations_organizational_unit" "workloads-env" {
-  for_each  = local.set_of_environments
+  for_each  = var.set_of_environments
   name      = "${var.organization}-ou-root_workloads-${each.value}"
   parent_id = aws_organizations_organizational_unit.workloads.id
 }
 
 /*
-resource "aws_organizations_account" "vault-env" {
-  for_each          = local.set_of_environments
-  name              = "account-vault-${each.value}"
-  email             = "account-vault-${each.value}@kowaltz.com"
+resource "aws_organizations_account" "env-vms" {
+  for_each          = var.set_of_environments
+  name              = "${var.organization}-account-root_infrastructure_${each.value}-vms"
+  email             = "account-root_infrastructure_${each.value}-vms@${var.organization}.com"
   close_on_deletion = true
-  parent_id         = aws_organizations_organizational_unit.workloads-env[each.value].id
-  provider = aws.account-provider-aws_root
+  parent_id         = aws_organizations_organizational_unit.infrastructure-env[each.value].id
 }
 
 module "oidc_provider-github-workloads" {

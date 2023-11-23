@@ -1,6 +1,6 @@
 resource "aws_iam_policy_attachment" "manage_oidc_providers_github_actions" {
   name       = "manage_oidc_providers_github_actions"
-  roles      = [local.root_role_name]
+  roles      = [var.root_role_name]
   policy_arn = aws_iam_policy.manage_oidc_providers_github_actions.arn
 }
 
