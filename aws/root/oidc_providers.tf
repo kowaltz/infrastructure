@@ -1,11 +1,11 @@
-resource "aws_iam_policy_attachment" "oidc_providers_github_actions_manage" {
-  name       = "oidc_providers_github_actions_manage"
+resource "aws_iam_policy_attachment" "manage_oidc_providers_github_actions" {
+  name       = "manage_oidc_providers_github_actions"
   roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.oidc_providers_github_actions_manage.arn
+  policy_arn = aws_iam_policy.manage_oidc_providers_github_actions.arn
 }
 
-resource "aws_iam_policy" "oidc_providers_github_actions_manage" {
-  name        = "${var.organization}-iam-policy-root-oidc_providers_github_actions_manage"
+resource "aws_iam_policy" "manage_oidc_providers_github_actions" {
+  name        = "${var.organization}-iam-policy-root-manage_oidc_providers_github_actions"
   path        = "/root/${var.organization}/"
   description = "Policy for managing OIDC providers for GitHub actions."
 
@@ -45,8 +45,8 @@ resource "aws_iam_policy" "oidc_providers_github_actions_manage" {
 
 resource "aws_iam_openid_connect_provider" "github_actions" {
   depends_on = [
-    aws_iam_policy.oidc_providers_github_actions_manage,
-    aws_iam_policy_attachment.oidc_providers_github_actions_manage
+    aws_iam_policy.manage_oidc_providers_github_actions,
+    aws_iam_policy_attachment.manage_oidc_providers_github_actions
   ]
 
   url = "https://token.actions.githubusercontent.com"

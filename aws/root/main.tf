@@ -11,7 +11,7 @@ provider "aws" {
 
 data "aws_organizations_organization" "root" {
   depends_on = [
-    aws_iam_policy_attachment.read
+    aws_iam_policy_attachment.read_organizations
   ]
 }
 
@@ -24,7 +24,7 @@ resource "aws_organizations_organizational_unit" "org_root" {
   name      = "${var.organization}-ou-root"
   parent_id = local.org_root_id
   depends_on = [
-    aws_iam_policy.organization_manage,
-    aws_iam_policy_attachment.organization_manage
+    aws_iam_policy.manage_organization,
+    aws_iam_policy_attachment.manage_organization
   ]
 }

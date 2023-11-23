@@ -1,17 +1,17 @@
-resource "aws_iam_policy_attachment" "read" {
+resource "aws_iam_policy_attachment" "read_organizations" {
   name       = "AWSOrganizationsReadOnlyAccess"
   roles      = [local.root_role_name]
   policy_arn = "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess"
 }
 
-resource "aws_iam_policy_attachment" "organization_manage" {
-  name       = "organization_manage"
+resource "aws_iam_policy_attachment" "manage_organization" {
+  name       = "manage_organization"
   roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.organization_manage.arn
+  policy_arn = aws_iam_policy.manage_organization.arn
 }
 
-resource "aws_iam_policy" "organization_manage" {
-  name        = "${var.organization}-iam-policy-root-organization_manage"
+resource "aws_iam_policy" "manage_organization" {
+  name        = "${var.organization}-iam-policy-root-manage_organization"
   path        = "/root/${var.organization}/"
   description = "Policy for managing an organization, OUs and their accounts at the organization's root level. It also allows the role to manage policies at the organizational level."
 
