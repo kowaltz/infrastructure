@@ -37,9 +37,15 @@ resource "spacelift_stack_dependency" "cloud_root_role-on-root" {
   depends_on_stack_id = data.spacelift_stack.root-spacelift.id
 }
 
-resource "spacelift_stack_dependency" "cloud_root_role-on-cloud_root_organization" {
+resource "spacelift_stack_dependency" "cloud_root_organization-on-cloud_root_role" {
   for_each = var.set_of_clouds
 
   stack_id            = spacelift_stack.cloud_root_organization[each.value].id
   depends_on_stack_id = spacelift_stack.cloud_root_role[each.value].id
+}
+
+resource "spacelift_stack_dependency_reference" "cloud_root_organization-on-cloud_root_role" {
+  stack_dependency_id = spacelift_stack_dependency.cloud_root_organization-on-cloud_root_role.id
+  output_name         = "root_role_name"
+  input_name          = "TF_VAR_root_role_name"
 }

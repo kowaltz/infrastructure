@@ -6,11 +6,6 @@ variable "aws_oidc_enabled" {
   type = bool
 }
 
-variable "set_of_environments" {
-  type    = set(string)
-  default = ["dev", "prod"]
-}
-
 variable "organization" {
   type    = string
   default = "kowaltz"
