@@ -22,20 +22,20 @@ resource "aws_organizations_account" "network-env" {
 locals {
   version = "0.0.1"
   unique_identifier = sha1(local.version)
-  env_vms_name = [
-    for env in var.set_of_environments :
-      substr(
-        "${var.organization}-account-root_infrastructure_${env}-vms.${local.unique_identifier}",
-        0,
-        50
-      )
-    ]
+
+  env_vms_name = { for env in var.set_of_environments :
+    env => substr(
+      "${var.organization}-account-root_infrastructure_${env}-vms.${local.unique_identifier}",
+      0,
+      50
+    )
+  }
 }
 
 resource "aws_organizations_account" "env-vms" {
   for_each          = var.set_of_environments
-  name              = local.env_vms_name
-  email             = "${local.env_vms_name}@${var.organization}.com"
+  name              = local.env_vms_name[each.value]
+  email             = "${local.env_vms_name[each.value]}@${var.organization}.com"
   close_on_deletion = true
   parent_id         = aws_organizations_organizational_unit.infrastructure-env[each.value].id
 }
