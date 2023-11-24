@@ -31,7 +31,7 @@ resource "random_pet" "resource_version" {
 
 resource "aws_organizations_account" "env-vms" {
   for_each          = var.set_of_environments
-  name              = "${var.organization}-account-root_infrastructure_${each.value}-vms"
+  name              = "${var.organization}-account-root_infrastructure_${each.value}-vms.${random_pet.resource_version.id}"
   email             = "account-root_infrastructure_${each.value}-vms.${random_pet.resource_version.id}@${var.organization}.com"
   close_on_deletion = true
   parent_id         = aws_organizations_organizational_unit.infrastructure-env[each.value].id
