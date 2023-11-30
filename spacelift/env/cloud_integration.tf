@@ -7,12 +7,12 @@ resource "spacelift_aws_integration" "aws_env" {
 
   role_arn                       = local.aws_role_name
   generate_credentials_in_worker = false
-  space_id                       = var.env
+  space_id                       = data.spacelift_stack.env-spacelift.space_id
 }
 
 resource "spacelift_aws_integration_attachment" "aws_env-to-aws_infrastructure_vms" {
   integration_id = spacelift_aws_integration.aws_env.id
-  stack_id       = spacelift_stack.env-aws_infrastructure_vms
+  stack_id       = spacelift_stack.env-aws_infrastructure_vms.id
   read           = true
   write          = true
 }

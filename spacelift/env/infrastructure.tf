@@ -2,12 +2,12 @@ resource "spacelift_stack" "env-aws_infrastructure_vms" {
   administrative       = false
   autodeploy           = true
   branch               = var.env
-  description          = "Space for managing ${var.env}-level Spacelift infrastructure."
+  description          = "Space for managing VMs in ${var.env}."
   enable_local_preview = true
   name                 = "${var.organization}-stack-${var.env}-aws_infrastructure_vms"
   project_root         = "aws/infrastructure/env-vms"
   repository           = var.repository
-  space_id             = var.env
+  space_id             = data.spacelift_stack.env-spacelift.space_id
   terraform_version    = var.terraform_version
 }
 
