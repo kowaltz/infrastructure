@@ -1,3 +1,9 @@
+locals {
+  context_root_cloud_name = { for cloud in var.set_of_clouds :
+    cloud => "${var.organization}-context-root-${cloud}"
+  }
+}
+
 resource "spacelift_stack" "cloud_root_role" {
   for_each = var.set_of_clouds
 
@@ -6,7 +12,7 @@ resource "spacelift_stack" "cloud_root_role" {
   branch               = "prod"
   description          = "Space for managing the root role on ${each.value}."
   enable_local_preview = true
-  labels               = ["${var.organization}-context-root-${each.value}"]
+  labels               = [local.context_root_cloud_name[each.value]]
   name                 = "${var.organization}-stack-root-${each.value}_root_role"
   project_root         = "${each.value}/root-role"
   repository           = var.repository
@@ -22,7 +28,7 @@ resource "spacelift_stack" "cloud_root_organization" {
   branch               = "prod"
   description          = "Space for managing root-level ${each.value} infrastructure."
   enable_local_preview = true
-  labels               = ["${var.organization}-context-root-${each.value}"]
+  labels               = [local.context_root_cloud_name[each.value]]
   name                 = "${var.organization}-stack-root-${each.value}_root_organization"
   project_root         = "${each.value}/root-organization"
   repository           = var.repository
