@@ -24,3 +24,12 @@ resource "spacelift_aws_integration_attachment" "aws_root_organization" {
   read           = true
   write          = true
 }
+
+resource "spacelift_aws_integration_attachment" "env" {
+  for_each = var.set_of_environments
+
+  integration_id = spacelift_aws_integration.aws_root.id
+  stack_id       = spacelift_stack.env[each.value].id
+  read           = true
+  write          = true
+}
