@@ -14,6 +14,9 @@ data "aws_organizations_organization" "root" {}
 locals {
   org_id      = data.aws_organizations_organization.root.id
   org_root_id = data.aws_organizations_organization.root.roots[0].id
+
+  version = "0.0.1"
+  unique_identifier = sha1(local.version)
 }
 
 resource "aws_organizations_organizational_unit" "org_root" {
