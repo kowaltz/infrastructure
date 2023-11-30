@@ -15,11 +15,14 @@ resource "spacelift_stack" "env" {
   description          = "Space for managing ${each.value}-level Spacelift infrastructure."
   enable_local_preview = true
   name                 = "${var.organization}-stack-${each.value}-spacelift"
-  labels               = [spacelift_context.env[each.value].name]
-  project_root         = "spacelift/env"
-  repository           = var.repository
-  space_id             = spacelift_space.env[each.value].id
-  terraform_version    = var.terraform_version
+  labels = [
+    local.context_root_cloud_name["aws"],
+    spacelift_context.env[each.value].name
+  ]
+  project_root      = "spacelift/env"
+  repository        = var.repository
+  space_id          = spacelift_space.env[each.value].id
+  terraform_version = var.terraform_version
 }
 
 resource "spacelift_stack_dependency" "env-on-root" {
@@ -38,8 +41,7 @@ resource "spacelift_stack_dependency" "env-on-aws_root_organization" {
 
 locals {
   context_env_name = { for env in var.set_of_environments :
-    env =>
-    "${var.organization}-context-${env}"
+    env => "${var.organization}-context-${env}"
   }
 }
 
