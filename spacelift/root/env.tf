@@ -15,6 +15,7 @@ resource "spacelift_stack" "env" {
   description          = "Space for managing ${each.value}-level Spacelift infrastructure."
   enable_local_preview = true
   name                 = "${var.organization}-stack-${each.value}-spacelift"
+  labels               = [spacelift_context.env[each.value].name]
   project_root         = "spacelift/env"
   repository           = var.repository
   space_id             = spacelift_space.env[each.value].id
