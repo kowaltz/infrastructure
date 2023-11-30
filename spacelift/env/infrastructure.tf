@@ -2,7 +2,7 @@ resource "spacelift_stack" "env-aws_infrastructure_vms" {
   administrative       = false
   autodeploy           = true
   branch               = var.env
-  description          = "Space for managing ${var.env}-level Spacelift infrastructure."
+  description          = "Space for managing VMs in ${var.env}."
   enable_local_preview = true
   name                 = "${var.organization}-stack-${var.env}-aws_infrastructure_vms"
   project_root         = "aws/infrastructure/env-vms"
