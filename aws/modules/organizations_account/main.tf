@@ -1,11 +1,11 @@
-locals {  
+locals {
   account_name = substr("${var.organization}-account-${var.path}-${var.name}.${var.unique_identifier}",
     0,
     50
   )
   account_email = "${local.account_name}@${var.organization}.com"
 }
-  
+
 resource "aws_organizations_account" "module" {
   name              = local.account_name
   email             = local.account_email
@@ -24,16 +24,20 @@ resource "aws_iam_role" "infrastructure_env_vms-spacelift_default" {
     "Statement" : [
       {
         "Effect" : "Allow",
-        "Principal": {
-          "AWS": "arn:aws:iam::${aws_organizations_account.module.id}:root"
+        "Principal" : {
+          "AWS" : "arn:aws:iam::${aws_organizations_account.module.id}:root"
         },
-        "Action": "sts:AssumeRole",
-        "Condition": {
-          "StringLike": {
-            "sts:ExternalId": var.list_of_stack_permissions
+        "Action" : "sts:AssumeRole",
+        "Condition" : {
+          "StringLike" : {
+            "sts:ExternalId" : var.list_of_stack_permissions
           }
         }
       }
     ]
   })
+}
+
+output "id" {
+  value = aws_organizations_account.module.id
 }
