@@ -7,7 +7,7 @@ resource "spacelift_stack" "env-aws_infrastructure_vms" {
   name                 = "${var.organization}-stack-${var.env}-aws_infrastructure_vms"
   project_root         = "aws/infrastructure/env-vms"
   repository           = var.repository
-  space_id             = var.env
+  space_id             = data.spacelift_stack.env-spacelift.space_id
   terraform_version    = var.terraform_version
 }
 
