@@ -26,7 +26,7 @@ resource "aws_iam_role" "infrastructure_env_vms-spacelift_default" {
         "Effect" : "Allow",
         "Principal" : {
           "AWS" : [
-            "324880187172"
+            "324880187172"  # Spacelift's own AWS ID
           ]
         },
         "Action" : "sts:AssumeRole",
