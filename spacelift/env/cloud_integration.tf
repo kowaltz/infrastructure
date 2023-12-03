@@ -1,5 +1,5 @@
 locals {
-  aws_role_name = "arn:aws:iam::${var.aws_account_id}:role/${var.organization}-iam-role-${var.env}-spacelift_default"
+  aws_role_name = "arn:aws:iam::${var.aws_account_id}:role/${var.organization}-role-${var.env}-spacelift_default"
 }
 
 resource "spacelift_aws_integration" "aws_env" {
