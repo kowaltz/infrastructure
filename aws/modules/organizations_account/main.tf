@@ -41,3 +41,7 @@ resource "aws_iam_role" "infrastructure_env_vms-spacelift_default" {
 output "id" {
   value = aws_organizations_account.module.id
 }
+
+output "name" {
+  value = aws_organizations_account.module.name
+}

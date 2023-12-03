@@ -29,7 +29,7 @@ resource "spacelift_stack_dependency" "env-on-root" {
   depends_on_stack_id = data.spacelift_stack.root-spacelift.id
 }
 
-resource "spacelift_stack_dependency_reference" "env-on-root" {
+resource "spacelift_stack_dependency_reference" "aws_account_id" {
   for_each = var.set_of_environments
 
   stack_dependency_id = spacelift_stack_dependency.env-on-root[each.value].id
@@ -72,3 +72,13 @@ resource "spacelift_environment_variable" "env" {
   value      = each.value
   write_only = false
 }
+
+/*
+resource "spacelift_stack_dependency_reference" "infrastructure_env_vms_id" {
+  for_each = var.set_of_environments
+
+  stack_dependency_id = spacelift_stack_dependency.env-on-aws_root_organization[each.value].id
+  output_name         = "infrastructure_env_vms_id"
+  input_name          = "TF_VAR_infrastructure_env_vms_id"
+}
+*/
