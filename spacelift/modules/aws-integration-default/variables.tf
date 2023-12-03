@@ -14,6 +14,10 @@ variable "space_id" {
   type = string
 }
 
+variable "space_short_id" {
+  type = string
+}
+
 variable "stack_short_name" {
   type = string
 }

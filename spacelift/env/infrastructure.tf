@@ -29,5 +29,6 @@ module "aws-integration-default-infrastructure_env_vms" {
   stack_id         = spacelift_stack.env-aws_infrastructure_vms.id
   stack_short_name = local.stack_short_name
   space_id         = data.spacelift_stack.env-spacelift.space_id
+  space_short_id   = var.env
   write            = true
 }
