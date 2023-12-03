@@ -10,6 +10,7 @@ module "aws_organizations_account" {
   parent_id         = aws_organizations_organizational_unit.infrastructure-env[each.value].id
   path              = "root_infrastructure_${each.value}"
   organization      = var.organization
+  root_account_id   = var.aws_account_id
   unique_identifier = local.unique_identifier
 }
 
