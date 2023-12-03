@@ -18,6 +18,10 @@ variable "organization" {
   type = string
 }
 
+variable "root_account_id" {
+  type = string
+}
+
 variable "unique_identifier" {
   type = string
 }
