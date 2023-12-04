@@ -1,3 +1,13 @@
+packer {
+  required_plugins {
+    amazon = {
+      source  = "github.com/hashicorp/amazon"
+      version = "~> 1"
+    }
+  }
+}
+
+
 data "amazon-ami" "ubuntu" {
   filters = {
     name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
