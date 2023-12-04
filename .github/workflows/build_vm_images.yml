@@ -10,9 +10,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup:
+  test-connection:
     uses: ./.github/workflows/test_connection_aws.yml
 
   build:
+    needs: test-connection
     uses: ./.github/workflows/packer.yml
-    #kowaltz/infrastructure/.github/workflows/packer.yml@dev
