@@ -4,7 +4,6 @@ name: Connect to an AWS role from a GitHub repository
 # Controls when the action will run.
 on:
   workflow_call:
-  workflow_dispatch:
 
 env:
   AWS_REGION: "eu-south-2"
@@ -21,8 +20,10 @@ jobs:
         uses: actions/checkout@v3
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v2
+        env: 
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
         with:
-          role-to-assume: "arn:aws:iam::185606173454:role/${{ github.repository_owner }}-role-root-github_oidc_infrastructure_${{ github.ref_name }}"
+          role-to-assume: "arn:aws:iam::$AWS_ACCOUNT_ID:role/${{ github.repository_owner }}-role-root-github_oidc_infrastructure_${{ github.ref_name }}"
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
       # Hello from AWS: WhoAmI
