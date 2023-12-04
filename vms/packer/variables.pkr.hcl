@@ -47,7 +47,7 @@ variable "aws_account_id" {
 }
 
 variable "build_region" {
-  default     = "us-east-1"
+  default     = "eu-south-2"
   description = "The region in which to retrieve the base AMI from and build the new AMI."
   type        = string
 }
