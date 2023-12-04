@@ -19,10 +19,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set working directory
-      run: cd ${{ inputs.working-directory }} |
-        echo "$PWD"
-
     - name: Setup Packer
       uses: hashicorp/setup-packer@main
       id: setup
@@ -31,12 +27,13 @@ jobs:
 
     - name: Packer Init
       id: init
-      run: echo "$PWD" |
+      run: cd ${{ inputs.working-directory }} |
         packer init .
 
     - name: Packer Validate
       id: validate
-      run: packer validate .
+      run: cd ${{ inputs.working-directory }} |
+        packer validate .
 
     - name: Packer Build - Branches
       # Pushes to branches set the github.ref context to refs/heads/<branch_name>
