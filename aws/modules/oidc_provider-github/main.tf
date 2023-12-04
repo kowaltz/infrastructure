@@ -21,8 +21,7 @@ resource "aws_iam_role" "github_actions" {
           "StringLike" : {
             "token.actions.githubusercontent.com:sub" : "repo:${var.organization}/${var.github_repo}:ref:refs/heads/${var.env}"
           },
-          "ForAllValues:StringEquals" : {
-            "token.actions.githubusercontent.com:iss" : "https://token.actions.githubusercontent.com",
+          "StringEquals" : {
             "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com"
           }
         }
