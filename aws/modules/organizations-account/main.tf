@@ -1,7 +1,7 @@
 locals {
   account_name = substr("${var.organization}-account-${var.path}-${var.name}.${var.unique_identifier}",
     0,
-    50
+    50  # AWS account names are limited to 50 characters.
   )
   account_email = "${local.account_name}@${var.organization}.com"
 }
@@ -26,7 +26,7 @@ resource "aws_iam_role" "infrastructure_env_vms-spacelift_default" {
         "Effect" : "Allow",
         "Principal" : {
           "AWS" : [
-            "324880187172"
+            "324880187172"  # Spacelift's own AWS ID
           ]
         },
         "Action" : "sts:AssumeRole",
