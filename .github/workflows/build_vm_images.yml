@@ -56,7 +56,7 @@ jobs:
         packer build \
           -var "release_tag=$RELEASE_TAG" \
           -var "skip_create_image=true" \
-          -var "ami_regions=['$AWS_REGION']" \
+          -var 'ami_regions=["$AWS_REGION"]' \
           -var "aws_account_id=$AWS_ACCOUNT_ID" \
           ${{ env.TARGET_DIRECTORY }}
 
