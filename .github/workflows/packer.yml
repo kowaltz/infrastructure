@@ -7,22 +7,33 @@ on:
         default: ./vms/packer
         type: string
 
+env:
+  PACKER_VERSION: "1.8.6"
+
 permissions:
   contents: read
   
 jobs:
   build:
-    runs-on: hashicorp/packer
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
 
     - name: Set working directory
       run: cd ${{ inputs.working-directory }}
 
+    - name: Setup Packer
+      uses: hashicorp/setup-packer@main
+      id: setup
+      with:
+        version: ${{ env.PACKER_VERSION }}
+
     - name: Packer Init
+      id: init
       run: packer init .
 
     - name: Packer Validate
+      id: validate
       run: packer validate .
 
     - name: Packer Build - Branches
