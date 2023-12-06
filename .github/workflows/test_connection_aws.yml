@@ -6,7 +6,8 @@ on:
   workflow_call:
 
 env:
-  AWS_REGION : "eu-south-2"
+  AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+  AWS_REGION: ${{ vars.AWS_REGION }}
 
 # Permission can be added at job level or workflow level    
 permissions:
@@ -19,9 +20,9 @@ jobs:
       - name: Git clone the repository
         uses: actions/checkout@v3
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1.7.0
+        uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/kowaltz-role-root-github_oidc_monorepo"
+          role-to-assume: "arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/${{ github.repository_owner }}-role-root-github_oidc_infrastructure_${{ github.ref_name }}"
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
       # Hello from AWS: WhoAmI

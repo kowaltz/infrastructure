@@ -9,10 +9,59 @@ on:
     ]
   workflow_dispatch:
 
-jobs:
-  setup:
-    uses: ./.github/workflows/test_connection_aws.yml
+env:
+  AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+  AWS_ACCOUNT_INFRASTRUCTURE_ENV_VMS_ID: ${{ vars.AWS_ACCOUNT_INFRASTRUCTURE_ENV_VMS_ID }}
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  PACKER_VERSION: "1.8.6"
+  RELEASE_TAG: ${{ github.ref_name }}
+  TARGET_DIRECTORY: "./vms/packer"
 
+permissions:
+  contents: read   # This is required for actions/checkout
+  id-token: write   # This is required for requesting the JWT
+
+jobs:
   build:
-    uses: ./.github/workflows/packer.yml
-    #kowaltz/infrastructure/.github/workflows/packer.yml@dev
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v3
+      id: aws-login
+      with:
+        role-to-assume: "arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/${{ github.repository_owner }}-role-root-github_oidc_infrastructure_${{ github.ref_name }}"
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Setup Packer
+      uses: hashicorp/setup-packer@main
+      id: setup
+      with:
+        version: ${{ env.PACKER_VERSION }}
+
+    - name: Packer Init
+      id: init
+      run: packer init ${{ env.TARGET_DIRECTORY }}
+
+    - name: Packer Validate
+      id: validate
+      run: packer validate ${{ env.TARGET_DIRECTORY }}
+
+    - name: Packer Build - Branches
+      # Pushes to branches set the github.ref context to refs/heads/<branch_name>
+      # Thus this conditional ensures that the step runs only if the workflow was triggered by a push to a branch.
+      if: startsWith(github.ref, 'refs/heads/')
+      run: |
+        packer build \
+          -var "release_tag=$RELEASE_TAG" \
+          -var "skip_create_image=true" \
+          -var 'ami_regions=["$AWS_REGION"]' \
+          -var "aws_account_id=$AWS_ACCOUNT_ID" \
+          ${{ env.TARGET_DIRECTORY }}
+
+    - name: Packer Build - Tags
+      # Build images for new semantically-versioned tags.
+      if: startsWith(github.ref, 'refs/tags/v')
+      run: packer build ${{ env.TARGET_DIRECTORY }}
