@@ -36,7 +36,7 @@ resource "aws_iam_policy_attachment" "manage_ec2_images" {
 
   name       = "manage_ec2_images"
   roles      = [module.oidc_provider-github-infrastructure[each.value].role_name]
-  policy_arn = aws_iam_policy.manage_ec2_images.arn
+  policy_arn = aws_iam_policy.manage_ec2_images[each.value].arn
 }
 
 resource "aws_iam_policy" "manage_ec2_images" {
