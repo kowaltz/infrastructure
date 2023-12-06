@@ -43,7 +43,7 @@ resource "aws_iam_policy" "manage_ec2_images" {
   for_each = var.set_of_environments
 
   name        = "${var.organization}-iam-policy-root_infrastructure_${each.value}_vms-manage_ec2_images"
-  path        = "/root/${var.organization}/infrastructure/${each.value}/vms"
+  path        = "/root/${var.organization}/infrastructure/${each.value}/vms/"
   description = "Policy for managing the EC2 VM's images, and building AMIs in the infrastructure ${each.value} account."
 
   # Terraform's "jsonencode" function converts a
