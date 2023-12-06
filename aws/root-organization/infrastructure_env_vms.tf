@@ -89,7 +89,7 @@ resource "aws_iam_policy" "manage_ec2_images" {
           "ec2:TerminateInstances"
         ],
         "Resource" : [
-          "arn:aws:ec2:*:${module.aws_organizations_account.id}:*"
+          "arn:aws:ec2:*:${module.aws_organizations_account[each.value].id}:*"
         ]
       }
     ]
