@@ -73,12 +73,10 @@ resource "spacelift_environment_variable" "env" {
   write_only = false
 }
 
-/*
 resource "spacelift_stack_dependency_reference" "infrastructure_env_vms_id" {
   for_each = var.set_of_environments
 
   stack_dependency_id = spacelift_stack_dependency.env-on-aws_root_organization[each.value].id
-  output_name         = "infrastructure_env_vms_id"
-  input_name          = "TF_VAR_infrastructure_env_vms_id"
+  output_name         = "aws_account_id_infrastructure_env_vms"
+  input_name          = "TF_VAR_aws_account_id_infrastructure_env_vms"
 }
-*/

@@ -2,6 +2,14 @@ variable "aws_account_id" {
   type = string
 }
 
+variable "aws_account_id_infrastructure_env_vms" {
+  type = string
+}
+
+variable "aws_region" {
+  type = string
+}
+
 variable "env" {
   type = string
 }
