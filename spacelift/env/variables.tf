@@ -14,6 +14,10 @@ variable "env" {
   type = string
 }
 
+variable "github_token" {
+  type = string
+}
+
 variable "organization" {
   type    = string
   default = "kowaltz"

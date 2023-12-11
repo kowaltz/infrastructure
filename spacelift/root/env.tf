@@ -1,9 +1,10 @@
 resource "spacelift_space" "env" {
   for_each = var.set_of_environments
 
-  name            = "${var.organization}-space-${each.value}"
-  parent_space_id = "root"
-  description     = "Space for managing ${each.value}-level Spacelift infrastructure."
+  name             = "${var.organization}-space-${each.value}"
+  parent_space_id  = "root"
+  description      = "Space for managing ${each.value}-level Spacelift infrastructure."
+  inherit_entities = true
 }
 
 resource "spacelift_stack" "env" {
@@ -20,26 +21,6 @@ resource "spacelift_stack" "env" {
   repository           = var.repository
   space_id             = spacelift_space.env[each.value].id
   terraform_version    = var.terraform_version
-}
-
-resource "spacelift_stack_dependency" "env-on-root" {
-  for_each = var.set_of_environments
-
-  stack_id            = spacelift_stack.env[each.value].id
-  depends_on_stack_id = data.spacelift_stack.root-spacelift.id
-}
-
-resource "spacelift_stack_dependency_reference" "aws_account_id" {
-  for_each = var.set_of_environments
-
-  stack_dependency_id = spacelift_stack_dependency.env-on-root[each.value].id
-  output_name         = "aws_account_id"
-  input_name          = "TF_VAR_aws_account_id"
-}
-
-output "aws_account_id" {
-  value     = var.aws_account_id
-  sensitive = true
 }
 
 resource "spacelift_stack_dependency" "env-on-aws_root_organization" {
