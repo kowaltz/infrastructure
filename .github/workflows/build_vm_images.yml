@@ -1,18 +1,19 @@
 name: Build VM images
 on:
-  push:
-    branches: [ dev, prod ]
-    paths: [
-      ".github/workflows/build_vm_images.yml",
-      ".github/workflows/test_connection_aws.yml",
-      "vms/*"
-    ]
   workflow_dispatch:
+    inputs:
+      AWS_ACCOUNT_ID_ROOT:
+        required: true
+      AWS_REGION:
+        required: true
+      AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS:
+        description: "AWS Account ID for the Infrastructure VMs account per env."
+        required: true
 
 env:
-  AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
-  AWS_ACCOUNT_INFRASTRUCTURE_ENV_VMS_ID: ${{ vars.AWS_ACCOUNT_INFRASTRUCTURE_ENV_VMS_ID }}
-  AWS_REGION: ${{ vars.AWS_REGION }}
+  AWS_ACCOUNT_ID_ROOT: ${{ inputs.AWS_ACCOUNT_ID_ROOT }}
+  AWS_REGION: ${{ inputs.AWS_REGION }}
+  AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS: ${{ inputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
   PACKER_VERSION: "1.8.6"
   RELEASE_TAG: ${{ github.ref_name }}
   TARGET_DIRECTORY: "./vms/packer"
@@ -31,7 +32,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v3
       id: aws-login
       with:
-        role-to-assume: "arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/${{ github.repository_owner }}-role-root-github_oidc_infrastructure_${{ github.ref_name }}"
+        role-to-assume: "arn:aws:iam::${{ env.AWS_ACCOUNT_ID_ROOT }}:role/${{ github.repository_owner }}-role-root-github_oidc_infrastructure_${{ github.ref_name }}"
         role-session-name: GitHub_to_AWS_via_FederatedOIDC
         aws-region: ${{ env.AWS_REGION }}
 
@@ -57,8 +58,8 @@ jobs:
         packer build \
           -var "release_tag=$RELEASE_TAG" \
           -var "skip_create_image=true" \
-          -var 'ami_regions=["$AWS_REGION"]' \
-          -var "aws_account_id=$AWS_ACCOUNT_ID" \
+          -var 'ami_regions=["${{ env.AWS_REGION }}"]' \
+          -var "aws_account_id=${{ env.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}" \
           ${{ env.TARGET_DIRECTORY }}
 
     - name: Packer Build - Tags
