@@ -28,6 +28,18 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Install spacectl
+      uses: spacelift-io/setup-spacectl@main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+    - name: Deploy infrastructure
+      env:
+        SPACELIFT_API_KEY_ENDPOINT: https://mycorp.app.spacelift.io
+        SPACELIFT_API_KEY_ID: ${{ secrets.SPACELIFT_API_KEY_ID }}
+        SPACELIFT_API_KEY_SECRET: ${{ secrets.SPACELIFT_API_KEY_SECRET }}
+      run: ls
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v3
       id: aws-login
