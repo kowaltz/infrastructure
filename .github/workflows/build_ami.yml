@@ -11,7 +11,7 @@ permissions:
   contents: read    # This is required for actions/checkout
 jobs:
   getSpacectlCredentials:
-    uses: ${{ github.repository_owner }}/infrastructure/.github/workflows/♻get_spacectl_credentials.yml@${{ github.ref }}
+    uses: ./.github/workflows/♻get_spacectl_credentials.yml
   
   buildAndPushToAWS:
-    uses: ${{ github.repository_owner }}/infrastructure/.github/workflows/♻build_and_push_to_aws.yml@${{ github.ref }}
+    uses: ./.github/workflows/♻build_and_push_to_aws.yml
