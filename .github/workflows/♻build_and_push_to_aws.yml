@@ -4,11 +4,14 @@ on:
     inputs:
       AWS_ACCOUNT_ID_ROOT:
         required: true
+        type: string
       AWS_REGION:
         required: true
+        type: string
       AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS:
         description: "AWS Account ID for the Infrastructure VMs account per env."
         required: true
+        type: string
 
 env:
   AWS_ACCOUNT_ID_ROOT: ${{ inputs.AWS_ACCOUNT_ID_ROOT }}
