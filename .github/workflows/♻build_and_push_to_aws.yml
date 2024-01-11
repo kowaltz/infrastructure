@@ -24,10 +24,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: test repo owner
-      run:
-        echo "arn:aws:iam::${{ env.AWS_ACCOUNT_ID_ROOT }}:role/${{ github.repository_owner }}-role-root-github_oidc_infrastructure_${{ github.ref_name }}"
-
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v3
       id: aws-login
