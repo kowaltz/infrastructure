@@ -17,4 +17,6 @@ jobs:
     needs: getSpacectlCredentials
     uses: ./.github/workflows/♻build_and_push_to_aws.yml
     with:
+      AWS_ACCOUNT_ID_ROOT: "1234"
+      AWS_REGION: eu-south-2
       AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS: ${{ needs.getSpacectlCredentials.outputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
