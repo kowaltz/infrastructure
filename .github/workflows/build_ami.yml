@@ -10,11 +10,11 @@ permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
 jobs:
-  getSpacectlCredentials:
-    uses: ./.github/workflows/♻get_spacectl_credentials.yml
+  getInfrastructureDetails:
+    uses: ./.github/workflows/♻get_infrastructure_details.yml
   
   buildAndPushToAWS:
-    needs: getSpacectlCredentials
+    needs: getInfrastructureDetails
     uses: ./.github/workflows/♻build_and_push_to_aws.yml
     with:
-      AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS: ${{ needs.getSpacectlCredentials.outputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
+      AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS: ${{ needs.getInfrastructureDetails.outputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}

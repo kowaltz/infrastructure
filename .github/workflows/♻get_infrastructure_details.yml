@@ -31,4 +31,4 @@ jobs:
           SPACELIFT_API_KEY_ID: ${{ secrets.SPACELIFT_API_KEY_ID }}
           SPACELIFT_API_KEY_SECRET: ${{ secrets.SPACELIFT_API_KEY_SECRET }}
         run: |
-          echo "AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS=mjes" >> $GITHUB_OUTPUT
+          spacectl stack dependencies on --id=kowaltz-stack-dev-spacelift -o=json
