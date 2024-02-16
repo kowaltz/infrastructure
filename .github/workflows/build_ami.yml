@@ -13,11 +13,13 @@ permissions:
 jobs:
   getInfrastructureDetails:
     uses: ./.github/workflows/♻get_infrastructure_details.yml
-  
+    secrets:
+      SPACELIFT_API_KEY_ENDPOINT: ${{ secrets.SPACELIFT_API_KEY_ENDPOINT }}
+      SPACELIFT_API_KEY_ID: ${{ secrets.SPACELIFT_API_KEY_ID }}
+      SPACELIFT_API_KEY_SECRET: ${{ secrets.SPACELIFT_API_KEY_SECRET }}
+
   buildAndPushToAWS:
     needs: getInfrastructureDetails
     uses: ./.github/workflows/♻build_and_push_to_aws.yml
     with:
       AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS: ${{ needs.getInfrastructureDetails.outputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
-    secrets:
-      inherit
