@@ -5,6 +5,11 @@ name: Connect to Spacelift, build AMI, and push it to AWS
 on:
   workflow_dispatch:
 
+env:
+  SPACELIFT_API_KEY_ENDPOINT: ${{ secrets.SPACELIFT_API_KEY_ENDPOINT }}
+  SPACELIFT_API_KEY_ID: ${{ secrets.SPACELIFT_API_KEY_ID }}
+  SPACELIFT_API_KEY_SECRET: ${{ secrets.SPACELIFT_API_KEY_SECRET }}
+
 # Permission can be added at job level or workflow level    
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -18,3 +23,4 @@ jobs:
     uses: ./.github/workflows/♻build_and_push_to_aws.yml
     with:
       AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS: ${{ needs.getInfrastructureDetails.outputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
+    secrets: inherit
