@@ -27,7 +27,6 @@ jobs:
       SPACELIFT_API_KEY_ENDPOINT: ${{ secrets.SPACELIFT_API_KEY_ENDPOINT }}
       SPACELIFT_API_KEY_ID: ${{ secrets.SPACELIFT_API_KEY_ID }}
       SPACELIFT_API_KEY_SECRET: ${{ secrets.SPACELIFT_API_KEY_SECRET }}
-      JIM: "is a serious employee"
     outputs:
       AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS: ${{ steps.test.outputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
     steps:
@@ -41,5 +40,4 @@ jobs:
         name: Test connection
         run: |
           echo $SPACELIFT_API_KEY_ENDPOINT
-          echo $JIM
           spacectl stack dependencies on --id=kowaltz-stack-dev-spacelift -o=json
