@@ -22,6 +22,7 @@ permissions:
 jobs:
   get-aws-info:
     runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
     env:
       SPACELIFT_API_KEY_ENDPOINT: ${{ secrets.SPACELIFT_API_KEY_ENDPOINT }}
       SPACELIFT_API_KEY_ID: ${{ secrets.SPACELIFT_API_KEY_ID }}
