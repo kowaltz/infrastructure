@@ -22,6 +22,10 @@ permissions:
 jobs:
   get-aws-info:
     runs-on: ubuntu-latest
+    env:
+      SPACELIFT_API_KEY_ENDPOINT: ${{ secrets.SPACELIFT_API_KEY_ENDPOINT }}
+      SPACELIFT_API_KEY_ID: ${{ secrets.SPACELIFT_API_KEY_ID }}
+      SPACELIFT_API_KEY_SECRET: ${{ secrets.SPACELIFT_API_KEY_SECRET }}
     outputs:
       AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS: ${{ steps.test.outputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
     steps:
@@ -33,10 +37,6 @@ jobs:
     
       - id: test
         name: Test connection
-        env:
-          SPACELIFT_API_KEY_ENDPOINT: ${{ secrets.SPACELIFT_API_KEY_ENDPOINT }}
-          SPACELIFT_API_KEY_ID: ${{ secrets.SPACELIFT_API_KEY_ID }}
-          SPACELIFT_API_KEY_SECRET: ${{ secrets.SPACELIFT_API_KEY_SECRET }}
         run: |
           echo $SPACELIFT_API_KEY_ENDPOINT
           spacectl stack dependencies on --id=kowaltz-stack-dev-spacelift -o=json
