@@ -17,6 +17,7 @@ resource "spacelift_stack" "env-aws_infrastructure_vms" {
 }
 
 data "http" "trigger_build_vm_images" {
+  count = 0
   url = "https://api.github.com/repos/${var.organization}/${var.repository}/actions/workflows/build_vm_images.yml/dispatches"
   method = "POST"
   request_headers = {
