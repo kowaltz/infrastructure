@@ -15,7 +15,7 @@ data "amazon-ami" "ubuntu" {
     virtualization-type = "hvm"
   }
   most_recent = true
-  owners      = [var.aws_account_id]
+  owners      = ["099720109477"]
 }
 
 
