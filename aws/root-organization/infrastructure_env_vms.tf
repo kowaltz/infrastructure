@@ -15,7 +15,7 @@ module "aws_organizations_account" {
 
 output "infrastructure_env_vms_id" {
   value = { for env in var.set_of_environments :
-    env => module.aws_organizations_account.id
+    env => module.aws_organizations_account[env].id
   }
   sensitive = true
 }
