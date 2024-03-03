@@ -5,6 +5,8 @@ locals {
   architecture = "amd64"
   os = "ubuntu-focal-20.04"
   image_name = "${local.os}-hvm-${local.timestamp}-${local.architecture}"
+
+  instance_type = "t3.micro"
 }
 
 
