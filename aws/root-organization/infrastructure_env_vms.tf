@@ -70,6 +70,7 @@ resource "aws_iam_policy" "manage_ec2_images" {
           "ec2:DescribeSubnets",
           "ec2:DescribeTags",
           "ec2:DescribeVolumes",
+          "ec2:DescribeVpcs",
           "ec2:DetachVolume",
           "ec2:GetPasswordData",
           "ec2:ModifyImageAttribute",
