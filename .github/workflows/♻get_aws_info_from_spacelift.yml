@@ -52,28 +52,19 @@ jobs:
           STACK_ID="${{ github.repository_owner }}-stack-root-aws_root_organization"
 
           echo "AWS_ACCOUNT_ID_ROOT=$(spacectl stack outputs \
-            --id=$STACK_ID \
-            -o=json \
-            | jq -r '.[] \
-            | select(.id=="aws_region") \
-            | .value \
-            | fromjson \
-            | .${{ github.ref_name }}')" >> "$GITHUB_OUTPUT"
+            --id=$STACK_ID -o=json \
+            | jq -r '
+              .[] | select(.id=="aws_account_id_root") |
+              .value')" >> "$GITHUB_OUTPUT"
 
           echo "AWS_REGION=$(spacectl stack outputs \
-            --id=$STACK_ID \
-            -o=json \
-            | jq -r '.[] \
-            | select(.id=="aws_account_id_root") \
-            | .value \
-            | fromjson \
-            | .${{ github.ref_name }}')" >> "$GITHUB_OUTPUT"
+            --id=$STACK_ID -o=json \
+            | jq -r '
+              .[] | select(.id=="aws_region") |
+              .value')" >> "$GITHUB_OUTPUT"
 
           echo "AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS=$(spacectl stack outputs \
-            --id=$STACK_ID \
-            -o=json \
-            | jq -r '.[] \
-            | select(.id=="aws_account_id_infrastructure_env_vms") \
-            | .value \
-            | fromjson \
-            | .${{ github.ref_name }}')" >> "$GITHUB_OUTPUT"
+            --id=$STACK_ID -o=json \
+            | jq -r '
+              .[] | select(.id=="aws_account_id_infrastructure_env_vms") |
+              .value | fromjson | .${{ github.ref_name }}')" >> "$GITHUB_OUTPUT"
