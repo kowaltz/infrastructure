@@ -13,12 +13,6 @@ module "aws_organizations_account" {
   unique_identifier = local.unique_identifier
 }
 
-output "aws_account_id_infrastructure_env_vms" {
-  value = { for env in var.set_of_environments :
-    env => module.aws_organizations_account[env].id
-  }
-}
-
 module "oidc_provider-github-infrastructure" {
   depends_on = [aws_iam_openid_connect_provider.github_actions]
   for_each   = var.set_of_environments
