@@ -52,6 +52,7 @@ jobs:
       # Thus this conditional ensures that the step runs only if the workflow was triggered by a push to a branch.
       if: startsWith(github.ref, 'refs/heads/')
       run: |
+        echo ${{ env.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
         packer build \
           -var "release_tag=$RELEASE_TAG" \
           -var "skip_create_image=true" \
