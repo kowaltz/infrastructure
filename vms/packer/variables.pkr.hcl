@@ -6,10 +6,7 @@ locals {
   os = "ubuntu-focal-20.04"
   image_name = "${local.os}-hvm-${local.timestamp}-${local.architecture}"
 
-  instance_types_per_region = {
-    "*" = "t2.micro"
-    "eu-south-2" = "t3.micro"
-  }
+  instance_type = "t3.micro"
 }
 
 

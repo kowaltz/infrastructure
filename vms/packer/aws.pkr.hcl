@@ -24,7 +24,7 @@ source "amazon-ebs" "ubuntu" {
   ami_regions                 = var.ami_regions
   associate_public_ip_address = var.public_ip_bool
   encrypt_boot                = true
-  instance_type               = local.instance_types_per_region[var.build_region]
+  instance_type               = local.instance_type
   kms_key_id                  = var.build_region_kms
 
   source_ami         = data.amazon-ami.ubuntu.id
