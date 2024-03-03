@@ -1,6 +1,6 @@
 # Configure the AWS Provider
 provider "aws" {
-  region = "eu-south-2"
+  region = var.aws_region
   /* WITH OIDC
   assume_role_with_web_identity {
     role_arn                = local.root_role_arn
@@ -10,7 +10,7 @@ provider "aws" {
 }
 
 locals {
-  root_role_name      = "${var.organization}-iam-role-root-spacelift_${var.aws_oidc_enabled ? "oidc" : "default"}"
+  root_role_name = "${var.organization}-iam-role-root-spacelift_${var.aws_oidc_enabled ? "oidc" : "default"}"
 }
 
 output "root_role_name" {
