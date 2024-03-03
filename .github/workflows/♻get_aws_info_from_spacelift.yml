@@ -1,0 +1,79 @@
+name: Get AWS info from Spacelift
+
+# Controls when the action will run.
+on:
+  workflow_call:
+    secrets:
+      SPACELIFT_API_KEY_ENDPOINT:
+        required: true
+      SPACELIFT_API_KEY_ID:
+        required: true
+      SPACELIFT_API_KEY_SECRET:
+        required: true
+    outputs:
+      AWS_ACCOUNT_ID_ROOT:
+        value: ${{ jobs.get-aws-info-from-spacelift.outputs.AWS_ACCOUNT_ID_ROOT }}
+      AWS_REGION:
+          value: ${{ jobs.get-aws-info-from-spacelift.outputs.AWS_REGION}}
+      AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS:
+        value: ${{ jobs.get-aws-info-from-spacelift.outputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
+
+# Permission can be added at job level or workflow level    
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+jobs:
+  get-aws-info-from-spacelift:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+    env:
+      SPACELIFT_API_KEY_ENDPOINT: ${{ secrets.SPACELIFT_API_KEY_ENDPOINT }}
+      SPACELIFT_API_KEY_ID: ${{ secrets.SPACELIFT_API_KEY_ID }}
+      SPACELIFT_API_KEY_SECRET: ${{ secrets.SPACELIFT_API_KEY_SECRET }}
+    outputs:
+      AWS_ACCOUNT_ID_ROOT:
+        ${{ steps.get_aws_info_from_spacelift.outputs.AWS_ACCOUNT_ID_ROOT }}
+      AWS_REGION:
+        ${{ steps.get_aws_info_from_spacelift.outputs.AWS_REGION }}
+      AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS:
+        ${{ steps.get_aws_info_from_spacelift.outputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
+    steps:
+      - id: install_spacelift
+        name: Install spacectl
+        uses: spacelift-io/setup-spacectl@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ 
+      - id: get_aws_info_from_spacelift
+        name: Get account ID for root account,
+          the region,
+          and the account ID for the infrastructure_env_vms account for the current environment.
+        run: |
+          STACK_ID="${{ github.repository_owner }}-stack-root-aws_root_organization"
+
+          echo "AWS_ACCOUNT_ID_ROOT=$(spacectl stack outputs \
+            --id=$STACK_ID \
+            -o=json \
+            | jq -r '.[] \
+            | select(.id=="aws_region") \
+            | .value \
+            | fromjson \
+            | .${{ github.ref_name }}')" >> "$GITHUB_OUTPUT"
+
+          echo "AWS_REGION=$(spacectl stack outputs \
+            --id=$STACK_ID \
+            -o=json \
+            | jq -r '.[] \
+            | select(.id=="aws_account_id_root") \
+            | .value \
+            | fromjson \
+            | .${{ github.ref_name }}')" >> "$GITHUB_OUTPUT"
+
+          echo "AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS=$(spacectl stack outputs \
+            --id=$STACK_ID \
+            -o=json \
+            | jq -r '.[] \
+            | select(.id=="aws_account_id_infrastructure_env_vms") \
+            | .value \
+            | fromjson \
+            | .${{ github.ref_name }}')" >> "$GITHUB_OUTPUT"
