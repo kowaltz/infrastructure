@@ -17,6 +17,7 @@ output "infrastructure_env_vms_id" {
   value = { for env in var.set_of_environments :
     env => module.aws_organizations_account.id
   }
+  sensitive = true
 }
 
 module "oidc_provider-github-infrastructure" {
