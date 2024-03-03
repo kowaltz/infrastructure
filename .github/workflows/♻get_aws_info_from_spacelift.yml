@@ -1,4 +1,4 @@
-name: Get AWS info from Spacelift
+name: ♻Get AWS info from Spacelift
 
 # Controls when the action will run.
 on:
