@@ -43,4 +43,4 @@ jobs:
           echo "AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS=$(spacectl stack outputs \
             --id=${{ github.repository_owner }}-stack-root-aws_root_organization \
             -o=json \
-            | jq -r '.[].value | fromjson | .${{ github.ref_name }}')" >> $GITHUB_ENV
+            | jq -r '.[].value | fromjson | .${{ github.ref_name }}')" >> "$GITHUB_OUTPUT"
