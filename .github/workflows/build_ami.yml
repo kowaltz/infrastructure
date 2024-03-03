@@ -6,15 +6,20 @@ on:
   workflow_dispatch:
 
 jobs:
-  getInfrastructureDetails:
-    uses: ./.github/workflows/♻get_infrastructure_details.yml
+  getAWSInfoFromSpacelift:
+    uses: ./.github/workflows/♻get_aws_info_from_spacelift.yml
     secrets:
       SPACELIFT_API_KEY_ENDPOINT: ${{ secrets.SPACELIFT_API_KEY_ENDPOINT }}
       SPACELIFT_API_KEY_ID: ${{ secrets.SPACELIFT_API_KEY_ID }}
       SPACELIFT_API_KEY_SECRET: ${{ secrets.SPACELIFT_API_KEY_SECRET }}
 
   buildAndPushToAWS:
-    needs: getInfrastructureDetails
+    needs: getAWSInfoFromSpacelift
     uses: ./.github/workflows/♻build_and_push_to_aws.yml
     with:
-      AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS: ${{ needs.getInfrastructureDetails.outputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
+      AWS_ACCOUNT_ID_ROOT: 
+        ${{ needs.getAWSInfoFromSpacelift.outputs.AWS_ACCOUNT_ID_ROOT }}
+      AWS_REGION:
+        ${{ needs.getAWSInfoFromSpacelift.outputs.AWS_REGION }}
+      AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS:
+        ${{ needs.getAWSInfoFromSpacelift.outputs.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}
