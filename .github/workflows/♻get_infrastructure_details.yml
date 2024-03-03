@@ -39,4 +39,7 @@ jobs:
       - id: get_infrastructure_env_vms_id
         name: Get account ID for infrastructure_env_vms account
         run: |
-          spacectl stack outputs --id=kowaltz-stack-root-spacelift -o=json | jq -r '.[] | select(.id=="aws_account_id") | .value'
+          spacectl stack outputs \
+            --id=${{ github.repository_owner }}-stack-root-aws_root_organization \
+            -o=json \
+            | jq -r '.[].value | fromjson | .${{ github.ref_name }}'
