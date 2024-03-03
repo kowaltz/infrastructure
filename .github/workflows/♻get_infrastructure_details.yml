@@ -36,8 +36,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
-      - id: test
-        name: Test connection
+      - id: get_infrastructure_env_vms_id
+        name: Get account ID for infrastructure_env_vms account
         run: |
-          echo $SPACELIFT_API_KEY_ENDPOINT
-          spacectl stack dependencies on --id=kowaltz-stack-dev-spacelift -o=json
+          spacectl stack outputs --id=kowaltz-stack-root-spacelift -o=json | jq -r '.[] | select(.id=="aws_account_id") | .value'
