@@ -3,7 +3,8 @@ locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
   
   architecture = "amd64"
-  os = "ubuntu-focal-20.04"
+  os_family = "ubuntu"
+  os_name = "${local.os_family}-jammy-22.04"
   image_name = "${local.os}-hvm-${local.timestamp}-${local.architecture}"
 
   instance_type = "t2.micro"
