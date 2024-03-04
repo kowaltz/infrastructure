@@ -7,7 +7,7 @@ locals {
   os_name = "${local.os_family}-jammy-22.04"
   image_name = "${local.os_name}-hvm-${local.timestamp}-${local.architecture}"
 
-  instance_type = "t2.micro"
+  instance_type = "t3.micro"
 }
 
 # Common Variables
@@ -49,7 +49,7 @@ variable "aws_account_id" {
 }
 
 variable "build_region" {
-  default     = "eu-central-1"
+  default     = "eu-south-2"
   description = "The region in which to retrieve the base AMI from and build the new AMI."
   type        = string
 }
