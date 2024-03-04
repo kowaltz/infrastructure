@@ -6,7 +6,7 @@ locals {
   os = "ubuntu-focal-20.04"
   image_name = "${local.os}-hvm-${local.timestamp}-${local.architecture}"
 
-  instance_type = "t3.micro"
+  instance_type = "t2.micro"
 }
 
 
@@ -49,7 +49,7 @@ variable "aws_account_id" {
 }
 
 variable "build_region" {
-  default     = "eu-south-2"
+  default     = "us-east-1"
   description = "The region in which to retrieve the base AMI from and build the new AMI."
   type        = string
 }
