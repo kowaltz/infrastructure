@@ -10,7 +10,7 @@ packer {
 
 data "amazon-ami" "ubuntu" {
   filters = {
-    name                = "${local.os_family}/images/hvm-ssd/${local.os_name}-${local.architecture}-server-*"
+    name                = "ubuntu/images/hvm-ssd/ubuntu-*-22.04-server-*"
     root-device-type    = "ebs"
     virtualization-type = "hvm"
   }
@@ -20,7 +20,7 @@ data "amazon-ami" "ubuntu" {
 
 
 source "amazon-ebs" "ubuntu" {
-  ami_name                    = "${local.image_name}"
+  ami_name                    = local.image_name
   ami_regions                 = var.ami_regions
   associate_public_ip_address = var.public_ip_bool
   encrypt_boot                = true
@@ -40,7 +40,7 @@ source "amazon-ebs" "ubuntu" {
   # Tags for searching for the image
   tags = {
     Base_Image_Name = data.amazon-ami.ubuntu.name
-    OS_Version      = local.os
+    OS_Version      = local.os_name
     Release         = var.release_tag
   }
 }
