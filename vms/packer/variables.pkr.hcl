@@ -5,11 +5,10 @@ locals {
   architecture = "amd64"
   os_family = "ubuntu"
   os_name = "${local.os_family}-jammy-22.04"
-  image_name = "${local.os}-hvm-${local.timestamp}-${local.architecture}"
+  image_name = "${local.os_name}-hvm-${local.timestamp}-${local.architecture}"
 
   instance_type = "t2.micro"
 }
-
 
 # Common Variables
 variable "public_ip_bool" {
