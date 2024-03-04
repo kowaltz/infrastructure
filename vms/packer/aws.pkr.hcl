@@ -10,7 +10,7 @@ packer {
 
 data "amazon-ami" "ubuntu" {
   filters = {
-    name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+    name                = "${local.os_family}/images/hvm-ssd/${local.os_name}-${local.architecture}-server-*"
     root-device-type    = "ebs"
     virtualization-type = "hvm"
   }
