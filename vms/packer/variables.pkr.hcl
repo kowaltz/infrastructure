@@ -24,15 +24,9 @@ variable "release_tag" {
 }
 
 variable "skip_create_image" {
-  default     = false
-  description = "Indicate if Packer should not create the AMI."
+  default     = true
+  description = "Indicate if Packer should not create the AMI. Default is true to prevent unwanted resource creation."
   type        = bool
-}
-
-variable "ssh_username" {
-  default     = "admin"
-  description = "User to SSH as."
-  type        = string
 }
 
 # AWS Variables

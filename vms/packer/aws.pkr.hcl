@@ -31,7 +31,7 @@ source "amazon-ebs" "ubuntu" {
   region             = var.build_region
   region_kms_key_ids = var.region_kms_keys
   skip_create_ami    = var.skip_create_image
-  ssh_username       = var.ssh_username
+  ssh_username       = "ubuntu"
 
   # Many Linux distributions are now disallowing the use of RSA keys,
   # so it makes sense to use an ED25519 key instead.
