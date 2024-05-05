@@ -16,27 +16,6 @@ resource "spacelift_stack" "env-aws_infrastructure_vms" {
   terraform_version    = var.terraform_version
 }
 
-data "http" "trigger_build_vm_images" {
-  count = 0
-  url = "https://api.github.com/repos/${var.organization}/${var.repository}/actions/workflows/build_vm_images.yml/dispatches"
-  method = "POST"
-  request_headers = {
-    Accept = "application/vnd.github+json"
-    Authorization: "Bearer ${var.github_token}"
-    X-GitHub-Api-Version: "2022-11-28"
-  }
-  request_body = <<-EOT
-  {"ref":"topic-branch",
-    "inputs":{
-      "AWS_ACCOUNT_ID_ROOT":"${var.aws_account_id}",
-      "AWS_REGION":"${var.aws_region}",
-      "AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS":"${var.aws_account_id_infrastructure_env_vms}",
-      "RUN_ID":"${local.run_id}",
-    }
-  }
-  EOT
-}
-
 resource "spacelift_stack_dependency" "aws_infrastructure_vms-on-env" {
   stack_id            = spacelift_stack.env-aws_infrastructure_vms.id
   depends_on_stack_id = data.spacelift_stack.env-spacelift.id
@@ -55,7 +34,7 @@ output "run_id" {
 module "aws-integration-default-infrastructure_env_vms" {
   source = "../modules/aws-integration-default"
 
-  account_id       = var.aws_account_id
+  account_id       = var.aws_account_id_infrastructure_env_vms
   organization     = var.organization
   role_path        = "root_infrastructure_${var.env}_vms"
   stack_id         = spacelift_stack.env-aws_infrastructure_vms.id

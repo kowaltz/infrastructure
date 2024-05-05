@@ -1,3 +1,8 @@
+# This Terraform module is used to create an AWS Organizations account and associated resources.
+# It generates an account name and email based on the provided variables, and creates an AWS Organizations account
+# using the generated name and email. It also creates an IAM role for authenticating Spacelift with the account.
+# The module outputs the ID and name of the created AWS Organizations account.
+
 locals {
   account_name = substr("${var.organization}-account-${var.path}-${var.name}.${var.unique_identifier}",
     0,
@@ -11,9 +16,21 @@ resource "aws_organizations_account" "module" {
   email             = local.account_email
   close_on_deletion = true
   parent_id         = var.parent_id
+  role_name         = var.name
 }
 
-resource "aws_iam_role" "infrastructure_env_vms-spacelift_default" {
+provider "aws" {
+  assume_role {
+    role_arn = "arn:aws:iam::${module.aws_organizations_account["dev"]}:role/vms"
+  }
+
+  alias  = "organizations-account"
+  region = var.aws_region
+}
+
+resource "aws_iam_role" "spacelift_default" {
+  provider    = aws.provider_alias
+  
   name        = "${var.organization}-role-${var.path}_${var.name}-spacelift_default"
   description = "Role for authenticating Spacelift with default methods, not OIDC, to ${var.path}'s ${var.name} account."
 
