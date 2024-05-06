@@ -1,91 +1,75 @@
+locals {
+  infrastructure_env_vms_path = {
+    for env in var.set_of_environments: env => "root_infrastructure_${env}"
+  }
+
+  infrastructure_env_vms_assume_role_policy = {
+    for env in var.set_of_environments: env => jsonencode({
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Principal" : {
+            "AWS" : [
+              "324880187172"  # Spacelift's own AWS ID
+            ]
+          },
+          "Action" : "sts:AssumeRole",
+          "Condition" : {
+            "StringLike" : {
+              "sts:ExternalId" : [
+                "${var.organization}-github@*@${var.organization}-stack-${env}-aws_infrastructure_vms@*",
+                "${var.organization}-github@*@${var.organization}-stack-${env}-spacelift@*",
+              ]
+            }
+          }
+        }
+      ]
+    })
+  }
+}
+
 module "aws_organizations_account" {
   for_each = var.set_of_environments
   source   = "../modules/organizations-account"
 
-  list_of_stack_permissions = [
-    "${var.organization}-github@*@${var.organization}-stack-${each.value}-aws_infrastructure_vms@*",
-    "${var.organization}-github@*@${var.organization}-stack-${each.value}-spacelift@*",
-  ]
   name              = "vms"
   parent_id         = aws_organizations_organizational_unit.infrastructure-env[each.value].id
-  path              = "root_infrastructure_${each.value}"
+  path              = local.infrastructure_env_vms_path[each.value]
   organization      = var.organization
   unique_identifier = local.unique_identifier
 }
 
-module "oidc_provider-github-infrastructure" {
-  depends_on = [aws_iam_openid_connect_provider.github_actions]
-  for_each   = var.set_of_environments
-  source     = "../modules/oidc_provider-github"
+provider "aws" {
+  assume_role {
+    role_arn = "arn:aws:iam::${module.aws_organizations_account["dev"]}:role/vms"
+  }
 
-  aws_account_id = var.aws_account_id
-  env            = each.value
-  github_repo    = "infrastructure"
+  alias  = "infrastructure_dev_vms"
+  region = var.aws_region
 }
 
-resource "aws_iam_policy_attachment" "manage_ec2_images" {
-  for_each = var.set_of_environments
-
-  name       = "manage_ec2_images"
-  roles      = [module.oidc_provider-github-infrastructure[each.value].role_name]
-  policy_arn = aws_iam_policy.manage_ec2_images[each.value].arn
+resource "aws_iam_role" "infrastructure_dev_vms-spacelift_default" {
+  provider    = aws.infrastructure_dev_vms
+  
+  name        = "${var.organization}-role-${local.infrastructure_env_vms_path["dev"]}_vms-spacelift_default"
+  description = "Role for authenticating Spacelift with default methods, not OIDC, to ${local.infrastructure_env_vms_path["dev"]}'s vms account."
+  assume_role_policy = local.infrastructure_env_vms_assume_role_policy["dev"]
 }
 
-resource "aws_iam_policy" "manage_ec2_images" {
-  for_each = var.set_of_environments
+provider "aws" {
+  assume_role {
+    role_arn = "arn:aws:iam::${module.aws_organizations_account["prod"]}:role/vms"
+  }
 
-  name        = "${var.organization}-iam-policy-root_infrastructure_${each.value}_vms-manage_ec2_images"
-  path        = "/root/${var.organization}/infrastructure/${each.value}/vms/"
-  description = "Policy for managing the EC2 VM's images, and building AMIs in the infrastructure ${each.value} account."
+  alias  = "infrastructure_prod_vms"
+  region = var.aws_region
+}
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "ec2:AttachVolume",
-          "ec2:AuthorizeSecurityGroupIngress",
-          "ec2:CopyImage",
-          "ec2:CreateImage",
-          "ec2:CreateKeyPair",
-          "ec2:CreateSecurityGroup",
-          "ec2:CreateSnapshot",
-          "ec2:CreateTags",
-          "ec2:CreateVolume",
-          "ec2:DeleteKeyPair",
-          "ec2:DeleteSecurityGroup",
-          "ec2:DeleteSnapshot",
-          "ec2:DeleteVolume",
-          "ec2:DeregisterImage",
-          "ec2:DescribeImageAttribute",
-          "ec2:DescribeImages",
-          "ec2:DescribeInstances",
-          "ec2:DescribeInstanceStatus",
-          "ec2:DescribeInstanceTypeOfferings",
-          "ec2:DescribeRegions",
-          "ec2:DescribeSecurityGroups",
-          "ec2:DescribeSnapshots",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeTags",
-          "ec2:DescribeVolumes",
-          "ec2:DescribeVpcs",
-          "ec2:DetachVolume",
-          "ec2:GetPasswordData",
-          "ec2:ModifyImageAttribute",
-          "ec2:ModifyInstanceAttribute",
-          "ec2:ModifySnapshotAttribute",
-          "ec2:RegisterImage",
-          "ec2:RunInstances",
-          "ec2:StopInstances",
-          "ec2:TerminateInstances"
-        ],
-        "Resource" : [
-          "arn:aws:ec2:*:${module.aws_organizations_account[each.value].id}:*"
-        ]
-      }
-    ]
-  })
+resource "aws_iam_role" "infrastructure_prod_vms-spacelift_default" {
+  provider    = aws.infrastructure_prod_vms
+  
+  name        = "${var.organization}-role-${local.infrastructure_env_vms_path["prod"]}_vms-spacelift_default"
+  description = "Role for authenticating Spacelift with default methods, not OIDC, to ${local.infrastructure_env_vms_path["prod"]}'s vms account."
+  assume_role_policy = local.infrastructure_env_vms_assume_role_policy["prod"]
 }

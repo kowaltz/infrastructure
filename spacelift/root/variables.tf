@@ -24,5 +24,5 @@ variable "set_of_environments" {
 
 variable "terraform_version" {
   type    = string
-  default = "1.5.7"
+  default = "1.7.0"
 }
