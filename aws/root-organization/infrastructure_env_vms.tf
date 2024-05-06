@@ -30,7 +30,7 @@ locals {
 }
 
 module "aws_organizations_account" {
-  for_each = var.set_of_environments
+  for_each = toset(["prod"]) #var.set_of_environments
   source   = "../modules/organizations-account"
 
   name              = "vms"
@@ -40,6 +40,7 @@ module "aws_organizations_account" {
   unique_identifier = local.unique_identifier
 }
 
+/*
 provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${module.aws_organizations_account["dev"].id}:role/${var.organization}-vms"
@@ -56,6 +57,7 @@ resource "aws_iam_role" "infrastructure_dev_vms-spacelift_default" {
   description = "Role for authenticating Spacelift with default methods, not OIDC, to ${local.infrastructure_env_vms_path["dev"]}'s vms account."
   assume_role_policy = local.infrastructure_env_vms_assume_role_policy["dev"]
 }
+*/
 
 provider "aws" {
   assume_role {
