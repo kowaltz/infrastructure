@@ -42,7 +42,7 @@ module "aws_organizations_account" {
 
 provider "aws" {
   assume_role {
-    role_arn = "arn:aws:iam::${module.aws_organizations_account["dev"]}:role/vms"
+    role_arn = "arn:aws:iam::${module.aws_organizations_account["dev"].id}:role/vms"
   }
 
   alias  = "infrastructure_dev_vms"
@@ -59,7 +59,7 @@ resource "aws_iam_role" "infrastructure_dev_vms-spacelift_default" {
 
 provider "aws" {
   assume_role {
-    role_arn = "arn:aws:iam::${module.aws_organizations_account["prod"]}:role/vms"
+    role_arn = "arn:aws:iam::${module.aws_organizations_account["prod"].id}:role/vms"
   }
 
   alias  = "infrastructure_prod_vms"
