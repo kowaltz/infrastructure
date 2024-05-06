@@ -1,19 +1,20 @@
 locals {
   stack_short_name = "aws_infrastructure_vms"
-  run_id = "stack-${var.env}-spacelift-${formatdate("YYYYMMDD-hhmmss", timestamp())}"
+  run_id           = "stack-${var.env}-spacelift-${formatdate("YYYYMMDD-hhmmss", timestamp())}"
 }
 
 resource "spacelift_stack" "env-aws_infrastructure_vms" {
-  administrative       = false
-  autodeploy           = true
-  branch               = var.env
-  description          = "Space for managing VMs in ${var.env}."
-  enable_local_preview = true
-  name                 = "${var.organization}-stack-${var.env}-${local.stack_short_name}"
-  project_root         = "aws/infrastructure/env-vms"
-  repository           = var.repository
-  space_id             = data.spacelift_stack.env-spacelift.space_id
-  terraform_version    = var.terraform_version
+  administrative          = false
+  autodeploy              = true
+  branch                  = var.env
+  description             = "Space for managing VMs in ${var.env}."
+  enable_local_preview    = true
+  name                    = "${var.organization}-stack-${var.env}-${local.stack_short_name}"
+  project_root            = "aws/infrastructure/env-vms"
+  repository              = var.repository
+  space_id                = data.spacelift_stack.env-spacelift.space_id
+  terraform_version       = var.terraform_version
+  terraform_workflow_tool = "OPEN_TOFU"
 }
 
 resource "spacelift_stack_dependency" "aws_infrastructure_vms-on-env" {
