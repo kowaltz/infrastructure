@@ -8,3 +8,9 @@ resource "aws_organizations_organizational_unit" "infrastructure-env" {
   name      = "${var.organization}-ou-root_infrastructure-${each.value}"
   parent_id = aws_organizations_organizational_unit.infrastructure.id
 }
+
+locals {
+  infrastructure_env_path = {
+    for env in var.set_of_environments: env => "root_infrastructure_${env}"
+  }
+}
