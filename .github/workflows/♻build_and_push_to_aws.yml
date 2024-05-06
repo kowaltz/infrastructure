@@ -1,17 +1,18 @@
-name: Build VM images
+name: ♻Build AMI and push
 on:
   workflow_call:
-    AWS_ACCOUNT_ID_ROOT:
-      description: "AWS Account ID for the root account."
-      type: string
-      required: true
-    AWS_REGION:
-      type: string
-      required: true
-    AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS:
-      description: "AWS Account ID for the Infrastructure VMs account per env."
-      type: string
-      required: true
+    inputs:
+      AWS_ACCOUNT_ID_ROOT:
+        description: "AWS Account ID for the root account."
+        type: string
+        required: true
+      AWS_REGION:
+        type: string
+        required: true
+      AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS:
+        description: "AWS Account ID for the Infrastructure VMs account per env."
+        type: string
+        required: true
 
 env:
   AWS_ACCOUNT_ID_ROOT: ${{ inputs.AWS_ACCOUNT_ID_ROOT }}
@@ -60,7 +61,7 @@ jobs:
       run: |
         packer build \
           -var "release_tag=$RELEASE_TAG" \
-          -var "skip_create_image=true" \
+          -var "skip_create_image=false" \
           -var 'ami_regions=["${{ env.AWS_REGION }}"]' \
           -var "aws_account_id=${{ env.AWS_ACCOUNT_ID_INFRASTRUCTURE_ENV_VMS }}" \
           ${{ env.TARGET_DIRECTORY }}

@@ -3,10 +3,12 @@ locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
   
   architecture = "amd64"
-  os = "ubuntu-focal-20.04"
-  image_name = "${local.os}-hvm-${local.timestamp}-${local.architecture}"
-}
+  os_family = "ubuntu"
+  os_name = "${local.os_family}-jammy-22.04"
+  image_name = "${local.os_name}-hvm-${local.timestamp}-${local.architecture}"
 
+  instance_type = "t3.micro"
+}
 
 # Common Variables
 variable "public_ip_bool" {
@@ -22,15 +24,9 @@ variable "release_tag" {
 }
 
 variable "skip_create_image" {
-  default     = false
-  description = "Indicate if Packer should not create the AMI."
+  default     = true
+  description = "Indicate if Packer should not create the AMI. Default is true to prevent unwanted resource creation."
   type        = bool
-}
-
-variable "ssh_username" {
-  default     = "admin"
-  description = "User to SSH as."
-  type        = string
 }
 
 # AWS Variables
