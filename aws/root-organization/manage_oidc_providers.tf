@@ -1,3 +1,7 @@
+# This Terraform file manages the OIDC (OpenID Connect) providers for GitHub actions in the root organization.
+# It creates an IAM policy and attaches it to the root role, allowing specific actions on OIDC providers.
+# The IAM policy grants permissions to manage OIDC providers.
+
 resource "aws_iam_policy_attachment" "manage_oidc_providers_github_actions" {
   name       = "manage_oidc_providers_github_actions"
   roles      = [var.root_role_name]

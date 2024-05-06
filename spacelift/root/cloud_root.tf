@@ -7,33 +7,35 @@ locals {
 resource "spacelift_stack" "cloud_root_role" {
   for_each = var.set_of_clouds
 
-  administrative       = false
-  autodeploy           = false
-  branch               = "prod"
-  description          = "Space for managing the root role on ${each.value}."
-  enable_local_preview = true
-  labels               = [local.context_root_cloud_name[each.value]]
-  name                 = "${var.organization}-stack-root-${each.value}_root_role"
-  project_root         = "${each.value}/root-role"
-  repository           = var.repository
-  space_id             = "root"
-  terraform_version    = var.terraform_version
+  administrative          = false
+  autodeploy              = false
+  branch                  = "prod"
+  description             = "Space for managing the root role on ${each.value}."
+  enable_local_preview    = true
+  labels                  = [local.context_root_cloud_name[each.value]]
+  name                    = "${var.organization}-stack-root-${each.value}_root_role"
+  project_root            = "${each.value}/root-role"
+  repository              = var.repository
+  space_id                = "root"
+  terraform_version       = var.terraform_version
+  terraform_workflow_tool = "OPEN_TOFU"
 }
 
 resource "spacelift_stack" "cloud_root_organization" {
   for_each = var.set_of_clouds
 
-  administrative       = false
-  autodeploy           = false
-  branch               = "prod"
-  description          = "Space for managing root-level ${each.value} infrastructure."
-  enable_local_preview = true
-  labels               = [local.context_root_cloud_name[each.value]]
-  name                 = "${var.organization}-stack-root-${each.value}_root_organization"
-  project_root         = "${each.value}/root-organization"
-  repository           = var.repository
-  space_id             = "root"
-  terraform_version    = var.terraform_version
+  administrative          = false
+  autodeploy              = false
+  branch                  = "prod"
+  description             = "Space for managing root-level ${each.value} infrastructure."
+  enable_local_preview    = true
+  labels                  = [local.context_root_cloud_name[each.value]]
+  name                    = "${var.organization}-stack-root-${each.value}_root_organization"
+  project_root            = "${each.value}/root-organization"
+  repository              = var.repository
+  space_id                = "root"
+  terraform_version       = var.terraform_version
+  terraform_workflow_tool = "OPEN_TOFU"
 }
 
 resource "spacelift_stack_dependency" "cloud_root_role-on-root" {

@@ -1,7 +1,3 @@
-variable "list_of_stack_permissions" {
-  type = list(string)
-}
-
 variable "name" {
   type = string
 }
