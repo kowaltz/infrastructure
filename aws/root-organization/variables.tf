@@ -10,11 +10,6 @@ variable "aws_oidc_enabled" {
   type = bool
 }
 
-variable "set_of_environments" {
-  type    = set(string)
-  default = ["dev", "prod"]
-}
-
 variable "organization" {
   type    = string
   default = "kowaltz"
@@ -22,4 +17,14 @@ variable "organization" {
 
 variable "root_role_name" {
   type = string
+}
+
+variable "set_of_environments" {
+  type    = set(string)
+  default = ["dev", "prod"]
+}
+
+variable "plan_version" {
+  type    = string
+  default = "0.0.3"
 }
