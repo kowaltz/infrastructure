@@ -10,17 +10,18 @@ resource "spacelift_space" "env" {
 resource "spacelift_stack" "env" {
   for_each = var.set_of_environments
 
-  administrative       = true
-  autodeploy           = false
-  branch               = each.value
-  description          = "Space for managing ${each.value}-level Spacelift infrastructure."
-  enable_local_preview = true
-  name                 = "${var.organization}-stack-${each.value}-spacelift"
-  labels               = [spacelift_context.env[each.value].name]
-  project_root         = "spacelift/env"
-  repository           = var.repository
-  space_id             = spacelift_space.env[each.value].id
-  terraform_version    = var.terraform_version
+  administrative          = true
+  autodeploy              = false
+  branch                  = each.value
+  description             = "Space for managing ${each.value}-level Spacelift infrastructure."
+  enable_local_preview    = true
+  name                    = "${var.organization}-stack-${each.value}-spacelift"
+  labels                  = [spacelift_context.env[each.value].name]
+  project_root            = "spacelift/env"
+  repository              = var.repository
+  space_id                = spacelift_space.env[each.value].id
+  terraform_version       = var.terraform_version
+  terraform_workflow_tool = "OPEN_TOFU"
 }
 
 resource "spacelift_stack_dependency" "env-on-aws_root_organization" {
