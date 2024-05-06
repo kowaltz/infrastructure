@@ -18,6 +18,7 @@ resource "aws_iam_policy" "manage_roles" {
         "Effect" : "Allow",
         "Action" : [
           "iam:ListAttachedRolePolicies",
+          "iam:ListInstanceProfilesForRole",
           "iam:ListRolePolicies",
           "iam:ListRoles",
           "iam:ListRoleTags",
