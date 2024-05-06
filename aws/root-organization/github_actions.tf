@@ -22,7 +22,7 @@ resource "aws_iam_policy_attachment" "manage_ec2_images" {
 }
 
 resource "aws_iam_policy" "manage_ec2_images" {
-  for_each = var.set_of_environments
+  for_each = toset(["prod"]) # var.set_of_environments
 
   name        = "${var.organization}-iam-policy-root_infrastructure_${each.value}_vms-manage_ec2_images"
   path        = "/root/${var.organization}/infrastructure/${each.value}/vms/"
