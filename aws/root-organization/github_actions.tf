@@ -14,7 +14,7 @@ module "oidc_provider-github-infrastructure" {
 }
 
 resource "aws_iam_policy_attachment" "manage_ec2_images" {
-  for_each = var.set_of_environments
+  for_each = toset(["prod"]) # var.set_of_environments
 
   name       = "manage_ec2_images"
   roles      = [module.oidc_provider-github-infrastructure[each.value].role_name]
