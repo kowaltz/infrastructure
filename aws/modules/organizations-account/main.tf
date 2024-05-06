@@ -16,7 +16,7 @@ resource "aws_organizations_account" "module" {
   email             = local.account_email
   close_on_deletion = true
   parent_id         = var.parent_id
-  role_name         = var.name
+  role_name         = "${var.organization}-${var.name}"
 }
 
 output "id" {
