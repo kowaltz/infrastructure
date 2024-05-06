@@ -26,5 +26,5 @@ variable "set_of_environments" {
 
 variable "plan_version" {
   type    = string
-  default = "0.0.3"
+  default = "0.0.4"
 }
