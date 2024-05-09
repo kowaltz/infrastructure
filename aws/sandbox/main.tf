@@ -12,7 +12,8 @@ provider "aws" {
 provider "aws" {
   assume_role {
     role_arn    = "arn:aws:iam::${var.aws_account_id_sandbox}:role/OrganizationAccountAccessRole"
-    external_id = "${organization}-github@*@${organization}-stack-${env}-aws_${name}@*"
+    external_id = "kowaltz-github@*@kowaltz-stack-root-aws_sandbox"
+    #"${organization}-github@*@${organization}-stack-${env}-aws_${name}@*"
   }
 
   alias  = "sandbox"
