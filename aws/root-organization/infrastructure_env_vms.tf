@@ -26,7 +26,7 @@ resource "aws_iam_role" "infrastructure_dev_vms-spacelift_default" {
   assume_role_policy = templatefile("./policy_spacelift.json.tpl", {
     organization = var.organization
     env = "dev"
-    name = "vms"
+    name = "infrastructure_vms"
   })
 }
 
@@ -47,6 +47,6 @@ resource "aws_iam_role" "infrastructure_prod_vms-spacelift_default" {
   assume_role_policy = templatefile("./policy_spacelift.json.tpl", {
     organization = var.organization
     env = "prod"
-    name = "vms"
+    name = "infrastructure_vms"
   })
 }
