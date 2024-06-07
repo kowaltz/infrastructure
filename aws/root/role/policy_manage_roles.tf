@@ -33,12 +33,11 @@ resource "aws_iam_policy" "manage_roles" {
           "iam:DeleteRolePolicy",
           "iam:DetachRolePolicy",
           "iam:DeleteRolePermissionsBoundary",
-          "iam:PassRole",
           "iam:PutRolePermissionsBoundary",
           "iam:PutRolePolicy",
         ],
         "Resource" : [
-          "arn:aws:iam::${var.aws_account_id}:role/*"
+          "arn:aws:iam::${var.aws_account_id}:role/${var.organization}-*"
         ]
       }
     ]
