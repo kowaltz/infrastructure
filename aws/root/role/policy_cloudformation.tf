@@ -36,7 +36,7 @@ resource "aws_iam_policy" "cloudformation" {
           "cloudformation:ListStackSets"
         ],
         "Resource" : [
-          "arn:aws:cloudformation::${var.aws_account_id}:stackset/*"
+          "arn:aws:cloudformation:${var.aws_region}:${var.aws_account_id}:stackset/*"
         ]
       }
     ]
