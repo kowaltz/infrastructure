@@ -1,10 +1,10 @@
-resource "spacelift_stack" "sandbox_aws" {
+resource "spacelift_stack" "aws_sandbox" {
   administrative          = false
   autodeploy              = false
   branch                  = "dev"
   description             = "Space for AWS sandbox."
   enable_local_preview    = true
-  labels                  = [local.context_root_cloud_name["aws"]]
+  labels                  = [local.context_root_aws_name]
   name                    = "${var.organization}-stack-root-aws_sandbox"
   project_root            = "aws/sandbox"
   repository              = var.repository
