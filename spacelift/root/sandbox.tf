@@ -1,4 +1,4 @@
-resource "spacelift_stack" "sandbox_aws" {
+resource "spacelift_stack" "aws_sandbox" {
   administrative          = false
   autodeploy              = false
   branch                  = "dev"

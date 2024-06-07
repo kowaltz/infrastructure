@@ -24,3 +24,10 @@ resource "spacelift_aws_integration_attachment" "aws_root_organization" {
   read           = true
   write          = true
 }
+
+resource "spacelift_aws_integration_attachment" "aws_sandbox" {
+  integration_id = spacelift_aws_integration.aws_root.id
+  stack_id       = spacelift_stack.aws_sandbox.id
+  read           = true
+  write          = true
+}
