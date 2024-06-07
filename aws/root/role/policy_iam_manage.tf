@@ -1,13 +1,13 @@
-resource "aws_iam_policy_attachment" "manage_roles" {
-  name       = "manage_roles"
+resource "aws_iam_policy_attachment" "iam_manage" {
+  name       = "iam_manage"
   roles      = [local.root_role_name]
-  policy_arn = aws_iam_policy.manage_roles.arn
+  policy_arn = aws_iam_policy.iam_manage.arn
 }
 
-resource "aws_iam_policy" "manage_roles" {
-  name        = "${var.organization}-iam-policy-root-manage_roles"
+resource "aws_iam_policy" "iam_manage" {
+  name        = "${var.organization}-iam-policy-root-iam_manage"
   path        = "/root/${var.organization}/"
-  description = "Policy for managing IAM roles."
+  description = "Policy for managing IAM roles and policies."
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
