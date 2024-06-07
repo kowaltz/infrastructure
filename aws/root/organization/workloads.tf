@@ -1,6 +1,6 @@
 resource "aws_organizations_organizational_unit" "workloads" {
   name      = "${var.organization}-ou-root-workloads"
-  parent_id = aws_organizations_organizational_unit.org_root.id
+  parent_id = aws_organizations_organizational_unit.root.id
 }
 
 resource "aws_organizations_organizational_unit" "workloads-env" {

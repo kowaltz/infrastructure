@@ -1,5 +1,5 @@
 output "aws_account_id_root" {
-  value = var.aws_account_id
+  value     = var.aws_account_id
   sensitive = true
 }
 
