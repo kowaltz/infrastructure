@@ -9,11 +9,18 @@ provider "aws" {
   */
 }
 
-data "aws_organizations_organization" "root" {}
+
+resource "aws_organizations_organization" "root" {
+  aws_service_access_principals = [
+    "cloudformation.amazonaws.com"
+  ]
+
+  feature_set = "ALL"
+}
 
 locals {
-  org_id      = data.aws_organizations_organization.root.id
-  org_root_id = data.aws_organizations_organization.root.roots[0].id
+  org_id      = aws_organizations_organization.root.id
+  org_root_id = aws_organizations_organization.root.roots[0].id
 
   unique_identifier = sha1(var.plan_version)
 }

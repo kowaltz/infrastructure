@@ -13,14 +13,14 @@ resource "spacelift_aws_integration" "aws_root" {
 
 resource "spacelift_aws_integration_attachment" "aws_root_role" {
   integration_id = spacelift_aws_integration.aws_root.id
-  stack_id       = spacelift_stack.cloud_root_role["aws"].id
+  stack_id       = spacelift_stack.aws_root_role.id
   read           = true
   write          = true
 }
 
 resource "spacelift_aws_integration_attachment" "aws_root_organization" {
   integration_id = spacelift_aws_integration.aws_root.id
-  stack_id       = spacelift_stack.cloud_root_organization["aws"].id
+  stack_id       = spacelift_stack.aws_root_organization.id
   read           = true
   write          = true
 }
