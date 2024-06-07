@@ -28,7 +28,12 @@ resource "aws_iam_policy" "cloudformation" {
         "Sid" : "CreateStackSet"
         "Effect" : "Allow",
         "Action" : [
-          "cloudformation:CreateStackSet"
+          "cloudformation:CreateStackInstances",
+          "cloudformation:CreateStackSet",
+          "cloudformation:DeleteStackInstances",
+          "cloudformation:DeleteStackSet",
+          "cloudformation:ListStackInstances",
+          "cloudformation:ListStackSets"
         ],
         "Resource" : [
           "arn:aws:cloudformation::${var.aws_account_id}:stackset/*"
