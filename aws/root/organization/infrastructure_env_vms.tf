@@ -1,6 +1,6 @@
 module "aws_account_infrastructure_env_vms" {
   for_each = var.set_of_environments
-  source   = "../modules/organizations-account"
+  source   = "../../modules/organizations-account"
 
   name              = "vms"
   parent_id         = aws_organizations_organizational_unit.infrastructure-env[each.value].id
@@ -19,14 +19,14 @@ provider "aws" {
 }
 
 resource "aws_iam_role" "infrastructure_dev_vms-spacelift_default" {
-  provider    = aws.infrastructure_dev_vms
-  
+  provider = aws.infrastructure_dev_vms
+
   name        = "${var.organization}-role-${local.infrastructure_env_path["dev"]}_vms-spacelift_default"
   description = "Role for authenticating Spacelift with default methods, not OIDC, to ${local.infrastructure_env_path["dev"]}'s vms account."
   assume_role_policy = templatefile("./policy_spacelift.json.tpl", {
     organization = var.organization
-    env = "dev"
-    name = "infrastructure_vms"
+    env          = "dev"
+    name         = "infrastructure_vms"
   })
 }
 
@@ -40,13 +40,13 @@ provider "aws" {
 }
 
 resource "aws_iam_role" "infrastructure_prod_vms-spacelift_default" {
-  provider    = aws.infrastructure_prod_vms
-  
+  provider = aws.infrastructure_prod_vms
+
   name        = "${var.organization}-role-${local.infrastructure_env_path["prod"]}_vms-spacelift_default"
   description = "Role for authenticating Spacelift with default methods, not OIDC, to ${local.infrastructure_env_path["prod"]}'s vms account."
   assume_role_policy = templatefile("./policy_spacelift.json.tpl", {
     organization = var.organization
-    env = "prod"
-    name = "infrastructure_vms"
+    env          = "prod"
+    name         = "infrastructure_vms"
   })
 }

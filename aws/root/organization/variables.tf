@@ -15,6 +15,11 @@ variable "organization" {
   default = "kowaltz"
 }
 
+variable "plan_version" {
+  type    = string
+  default = "0.0.4"
+}
+
 variable "root_role_name" {
   type = string
 }
@@ -22,9 +27,4 @@ variable "root_role_name" {
 variable "set_of_environments" {
   type    = set(string)
   default = ["dev", "prod"]
-}
-
-variable "plan_version" {
-  type    = string
-  default = "0.0.4"
 }

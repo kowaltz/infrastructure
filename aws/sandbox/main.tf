@@ -4,14 +4,6 @@ provider "aws" {
 }
 
 
-resource "aws_organizations_organization" "root" {
-  aws_service_access_principals = [
-    "cloudformation.amazonaws.com"
-  ]
-
-  feature_set = "ALL"
-}
-
 resource "aws_cloudformation_stack_set" "iam_role_stack_set" {
   // This resource creates the Stack Set for the IAM role.
   name = "${var.organization}-stackset-sandbox-rolespaceliftdefault"
@@ -50,6 +42,6 @@ provider "aws" {
     #"${organization}-github@*@${organization}-stack-${env}-aws_${name}@*"
   }
 
-  alias  = "sandbox"
-  region = var.aws_region
+  alias      = "sandbox"
+  region     = var.aws_region
 }
