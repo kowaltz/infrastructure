@@ -32,7 +32,7 @@ resource "aws_iam_policy" "cloudformation" {
           "cloudformation:CreateStackSet",
           "cloudformation:DeleteStackInstances",
           "cloudformation:DeleteStackSet",
-          "cloudformation:DescribeStackInstances",
+          "cloudformation:DescribeStackInstance",
           "cloudformation:DescribeStackSet",
           "cloudformation:DescribeStackSetOperation",
           "cloudformation:ListStackInstances",
