@@ -36,6 +36,7 @@ resource "aws_iam_policy" "cloudformation" {
           "cloudformation:DescribeStackSet",
           "cloudformation:DescribeStackSetOperation",
           "cloudformation:ListStackInstances",
+          "cloudformation:ListStackSetOperationResults",
           "cloudformation:ListStackSets"
         ],
         "Resource" : [
