@@ -18,7 +18,8 @@ resource "aws_iam_policy" "sts_assume" {
           "sts:AssumeRole"
         ],
         "Resource" : [
-          "arn:aws:iam::*:role/${var.organization}-*"
+          "arn:aws:iam::*:role/${var.organization}-*",
+          "arn:aws:iam::*:role/AWS*"
         ]
       }
     ]
