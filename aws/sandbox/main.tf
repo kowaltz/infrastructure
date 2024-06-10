@@ -4,7 +4,7 @@ provider "aws" {
 }
 
 
-resource "aws_cloudformation_stack_set" "iam_role_stack_set" {
+resource "aws_cloudformation_stack_set" "role_spaceliftdefault" {
   // This resource creates the Stack Set for the IAM role.
   name = "${var.organization}-stackset-sandbox-rolespaceliftdefault"
 
@@ -22,9 +22,9 @@ resource "aws_cloudformation_stack_set" "iam_role_stack_set" {
   ]
 }
 
-resource "aws_cloudformation_stack_set_instance" "iam_role_stack_set_instance" {
+resource "aws_cloudformation_stack_set_instance" "role_spaceliftdefault" {
   // This resource specifies the target of the Stack Set.
-  stack_set_name = aws_cloudformation_stack_set.iam_role_stack_set.name
+  stack_set_name = aws_cloudformation_stack_set.role_spaceliftdefault.name
 
   account_id = var.aws_account_id_sandbox
   region     = var.aws_region
