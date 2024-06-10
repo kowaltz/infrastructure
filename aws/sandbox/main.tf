@@ -20,10 +20,6 @@ resource "aws_cloudformation_stack_set" "iam_role_stack_set" {
   capabilities = [
     "CAPABILITY_NAMED_IAM"
   ]
-
-  parameters = {
-    RoleName = "CrossAccountRole"
-  }
 }
 
 resource "aws_cloudformation_stack_set_instance" "iam_role_stack_set_instance" {
