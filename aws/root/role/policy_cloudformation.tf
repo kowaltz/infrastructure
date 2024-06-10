@@ -37,7 +37,8 @@ resource "aws_iam_policy" "cloudformation" {
           "cloudformation:DescribeStackSetOperation",
           "cloudformation:ListStackInstances",
           "cloudformation:ListStackSetOperationResults",
-          "cloudformation:ListStackSets"
+          "cloudformation:ListStackSets",
+          "cloudformation:UpdateStackSet"
         ],
         "Resource" : [
           "arn:aws:cloudformation:${var.aws_region}:${var.aws_account_id}:stackset/${var.organization}-*"
