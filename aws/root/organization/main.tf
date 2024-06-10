@@ -5,10 +5,6 @@ provider "aws" {
 
 
 resource "aws_organizations_organization" "root" {
-  depends_on = [
-    aws_iam_policy_attachment.create_organization
-  ]
-
   aws_service_access_principals = [
     "cloudformation.amazonaws.com"
   ]
@@ -24,10 +20,6 @@ locals {
 }
 
 resource "aws_organizations_organizational_unit" "root" {
-  depends_on = [
-    aws_iam_policy_attachment.manage_organization
-  ]
-
   name      = "${var.organization}-ou-root"
   parent_id = local.org_root_id
 }
