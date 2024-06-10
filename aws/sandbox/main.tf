@@ -8,8 +8,8 @@ resource "aws_cloudformation_stack_set" "iam_role_stack_set" {
   // This resource creates the Stack Set for the IAM role.
   name = "${var.organization}-stackset-sandbox-rolespaceliftdefault"
 
-  administration_role_arn = "arn:aws:iam::${var.aws_account_id}:role/AWSCloudFormationStackSetAdministrationRole"
-  execution_role_name     = "AWSCloudFormationStackSetExecutionRole"
+  administration_role_arn = "arn:aws:iam::${var.aws_account_id}:role/AWSServiceRoleForCloudFormationStackSetsOrgAdmin"
+  // execution_role_name     = "AWSCloudFormationStackSetExecutionRole"
 
   template_body = templatefile("iam_role_spacelift.yaml.tpl", {
     organization = var.organization
