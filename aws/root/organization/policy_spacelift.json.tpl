@@ -5,7 +5,7 @@
       "Effect" : "Allow",
       "Principal" : {
         "AWS" : [
-          "324880187172"  # Spacelift's own AWS ID
+          "324880187172"
         ]
       },
       "Action" : "sts:AssumeRole",
