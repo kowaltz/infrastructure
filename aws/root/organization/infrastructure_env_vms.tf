@@ -1,3 +1,4 @@
+/*
 module "aws_account_infrastructure_env_vms" {
   for_each = var.set_of_environments
   source   = "../../modules/organizations-account"
@@ -50,3 +51,4 @@ resource "aws_iam_role" "infrastructure_prod_vms-spacelift_default" {
     name         = "infrastructure_vms"
   })
 }
+*/
