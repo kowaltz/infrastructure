@@ -21,7 +21,7 @@ resource "aws_iam_policy" "cloudformation" {
           "iam:PassRole"
         ],
         "Resource" : [
-          "arn:aws:iam::${var.aws_account_id}:role/AWSCloudFormationStackSetAdministrationRole"
+          "arn:aws:iam::${var.aws_account_id}:role/AWSServiceRoleForCloudFormationStackSetsOrgAdmin"
         ]
       },
       {
@@ -38,7 +38,8 @@ resource "aws_iam_policy" "cloudformation" {
           "cloudformation:ListStackInstances",
           "cloudformation:ListStackSetOperationResults",
           "cloudformation:ListStackSets",
-          "cloudformation:UpdateStackSet"
+          "cloudformation:UpdateStackSet",
+          "cloudformation:UpdateStackSetInstances"
         ],
         "Resource" : [
           "arn:aws:cloudformation:${var.aws_region}:${var.aws_account_id}:stackset/${var.organization}-*"
