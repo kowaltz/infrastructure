@@ -3,6 +3,41 @@ provider "aws" {
   region = var.aws_region
 }
 
+provider "aws" {
+  assume_role {
+    role_arn    = "arn:aws:iam::${var.aws_account_id_sandbox}:role/OrganizationAccountAccessRole"
+    external_id = "kowaltz-github@*@kowaltz-stack-root-aws_sandbox"
+    #"${organization}-github@*@${organization}-stack-${env}-aws_${name}@*"
+  }
+
+  alias      = "sandbox"
+  region     = var.aws_region
+}
+
+resource "aws_iam_policy" "sts_assume" {
+  provider = aws.sandbox
+  
+  name        = "${var.organization}-iam-policy-root-sts_assume"
+  path        = "/root/${var.organization}/"
+  description = "Policy for being able to assume STS roles in any account in the organization."
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "sts:AssumeRole"
+        ],
+        "Resource" : [
+          "arn:aws:iam::*:role/${var.organization}-*",
+          "arn:aws:iam::*:role/OrganizationAccountAccessRole"
+        ]
+      }
+    ]
+  })
+}
+
 resource "null_resource" "create_iam_role" {
   triggers = {
     # Define triggers here if needed, e.g., changes in variables
