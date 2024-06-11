@@ -4,7 +4,9 @@ provider "aws" {
 }
 
 
-data "aws_organizations_organization" "root" {}
+data "aws_organizations_organization" "root" {
+  depends_on = [ aws_iam_policy_attachment.org_read ]
+}
 
 locals {
   org_id      = data.aws_organizations_organization.root.id
