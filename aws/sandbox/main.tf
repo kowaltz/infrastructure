@@ -17,6 +17,8 @@ aws sts assume-role \
     --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' \
     --output text > assume_role_credentials.txt
 
+cat assume_role_credentials.txt
+
 export AWS_ACCESS_KEY_ID=$(cut -f1 assume_role_credentials.txt)
 export AWS_SECRET_ACCESS_KEY=$(cut -f2 assume_role_credentials.txt)
 export AWS_SESSION_TOKEN=$(cut -f3 assume_role_credentials.txt)
