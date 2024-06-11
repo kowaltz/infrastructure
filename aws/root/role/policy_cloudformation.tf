@@ -43,7 +43,9 @@ resource "aws_iam_policy" "cloudformation" {
         ],
         "Resource" : [
           "arn:aws:cloudformation:${var.aws_region}:${var.aws_account_id}:stackset/${var.organization}-*",
-          "arn:aws:cloudformation:*::type/resource/AWS-IAM-Role"  // Service-managed permissions
+          // Service-managed permissions
+          "arn:aws:cloudformation:*::type/resource/AWS-IAM-Role",  
+          "arn:aws:cloudformation::*:stackset-target/${var.organization}-stackset-*"
         ]
       }
     ]
