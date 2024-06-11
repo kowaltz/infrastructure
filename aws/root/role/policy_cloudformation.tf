@@ -42,7 +42,8 @@ resource "aws_iam_policy" "cloudformation" {
           "cloudformation:UpdateStackSetInstances"
         ],
         "Resource" : [
-          "arn:aws:cloudformation:${var.aws_region}:${var.aws_account_id}:stackset/${var.organization}-*"
+          "arn:aws:cloudformation:${var.aws_region}:${var.aws_account_id}:stackset/${var.organization}-*",
+          "arn:aws:cloudformation:*::type/resource/AWS-IAM-Role"  // Service-managed permissions
         ]
       }
     ]
