@@ -54,6 +54,7 @@ aws cloudformation create-stack \
     --stack-name "iam-role-stack" \
     --template-body file://iam_role_spacelift.yaml \
     --capabilities CAPABILITY_NAMED_IAM \
+    --region ${var.aws_region} \
     --parameters \
         ParameterKey=RoleName,ParameterValue=rolespaceliftdefault \
         ParameterKey=AssumeRolePolicyDocument,ParameterValue=file://assume_role_policy.json \
