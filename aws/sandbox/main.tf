@@ -9,7 +9,7 @@ resource "aws_cloudformation_stack_set" "role_spaceliftdefault" {
   name = "${var.organization}-stackset-sandbox-rolespaceliftdefault"
 
   administration_role_arn = "arn:aws:iam::${var.aws_account_id}:role/AWSServiceRoleForCloudFormationStackSetsOrgAdmin"
-  execution_role_name     = "AWSCloudFormationStackSetExecutionRole"
+  permission_model = "SERVICE_MANAGED"
 
   template_body = templatefile("iam_role_spacelift.yaml.tpl", {
     organization = var.organization
