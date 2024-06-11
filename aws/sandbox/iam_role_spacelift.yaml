@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  IAMRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: !Ref RoleName
+      AssumeRolePolicyDocument: !Sub '${AssumeRolePolicyDocument}'
+      Policies:
+        - PolicyName: 'SpaceliftPermissions'
+          PolicyDocument: !Sub '${PolicyDocument}'
