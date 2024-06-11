@@ -4,6 +4,7 @@ provider "aws" {
 }
 
 
+/*
 resource "null_resource" "create_iam_role" {
   triggers = {
     # Define triggers here if needed, e.g., changes in variables
@@ -88,15 +89,20 @@ locals {
 EOF
 }
 
+*/
 
 
-/*
 resource "aws_cloudformation_stack_set" "role_spaceliftdefault" {
   // This resource creates the Stack Set for the IAM role.
   name = "${var.organization}-stackset-sandbox-rolespaceliftdefault"
 
-  # administration_role_arn = "arn:aws:iam::${var.aws_account_id}:role/AWSServiceRoleForCloudFormationStackSetsOrgAdmin"
   permission_model = "SERVICE_MANAGED"
+  # administration_role_arn = "arn:aws:iam::${var.aws_account_id}:role/AWSServiceRoleForCloudFormationStackSetsOrgAdmin"
+
+  auto_deployment {
+    enabled = true
+    retain_stacks_on_account_removal = false
+  }
 
   template_body = templatefile("iam_role_spacelift.yaml.tpl", {
     organization = var.organization
@@ -128,4 +134,3 @@ provider "aws" {
   alias      = "sandbox"
   region     = var.aws_region
 }
-*/
