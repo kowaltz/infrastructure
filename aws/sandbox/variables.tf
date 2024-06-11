@@ -14,3 +14,13 @@ variable "organization" {
   type    = string
   default = "kowaltz"
 }
+
+variable "name" {
+  type    = string
+  default = "sandbox"
+}
+
+variable "env" {
+  type    = string
+  default = "root"
+}

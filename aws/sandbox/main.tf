@@ -36,8 +36,8 @@ echo '{
       "Condition": {
         "StringLike": {
           "sts:ExternalId": [
-            "${organization}-github@*@${organization}-stack-${env}-aws_${name}@*",
-            "${organization}-github@*@${organization}-stack-${env}-spacelift@*"
+            "${var.organization}-github@*@${var.organization}-stack-${var.env}-aws_${var.name}@*",
+            "${var.organization}-github@*@${var.organization}-stack-${var.env}-spacelift@*"
           ]
         }
       }
