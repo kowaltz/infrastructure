@@ -8,7 +8,7 @@ resource "aws_cloudformation_stack_set" "role_spaceliftdefault" {
   // This resource creates the Stack Set for the IAM role.
   name = "${var.organization}-stackset-sandbox-rolespaceliftdefault"
 
-  administration_role_arn = "arn:aws:iam::${var.aws_account_id}:role/AWSServiceRoleForCloudFormationStackSetsOrgAdmin"
+  # administration_role_arn = "arn:aws:iam::${var.aws_account_id}:role/AWSServiceRoleForCloudFormationStackSetsOrgAdmin"
   permission_model = "SERVICE_MANAGED"
 
   template_body = templatefile("iam_role_spacelift.yaml.tpl", {
