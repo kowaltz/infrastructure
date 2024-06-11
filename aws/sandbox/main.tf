@@ -50,9 +50,14 @@ echo '{
 # Policy document
 echo '${local.policy_document}' > policy_document.json
 
-aws iam create-role \
-    --role-name "rolespaceliftdefault" \
-    --assume-role-policy-document file://assume_role_policy.json
+aws cloudformation create-stack \
+    --stack-name "iam-role-stack" \
+    --template-body file://iam_role_spacelift.yaml \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --parameters \
+        ParameterKey=RoleName,ParameterValue=rolespaceliftdefault \
+        ParameterKey=AssumeRolePolicyDocument,ParameterValue=file://assume_role_policy.json \
+        ParameterKey=PolicyDocument,ParameterValue=file://policy_document.json
 
 # Attach the policy to the IAM role
 aws iam put-role-policy \
