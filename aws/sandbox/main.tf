@@ -3,12 +3,46 @@ provider "aws" {
   region = var.aws_region
 }
 
+resource "null_resource" "create_iam_role" {
+  triggers = {
+    # Define triggers here if needed, e.g., changes in variables
+  }
 
+  provisioner "local-exec" {
+    command = <<EOT
+aws sts assume-role \
+    --role-arn "arn:aws:iam::${var.aws_account_id_sandbox}:role/OrganizationAccountAccessRole" \
+    --role-session-name "TerraformCreateIAMRoleSession" \
+    --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' \
+    --output text > assume_role_credentials.txt
+
+export AWS_ACCESS_KEY_ID=$(cut -f1 assume_role_credentials.txt)
+export AWS_SECRET_ACCESS_KEY=$(cut -f2 assume_role_credentials.txt)
+export AWS_SESSION_TOKEN=$(cut -f3 assume_role_credentials.txt)
+
+aws iam create-role \
+    --role-name "rolespaceliftdefault" \
+    --assume-role-policy-document file://assume_role_policy.json
+
+# Attach the policy to the IAM role
+aws iam put-role-policy \
+    --role-name "ROLE_NAME" \
+    --policy-name "SpaceliftPermissions" \
+    --policy-document file://policy_document.json
+
+# Clean up temporary credentials file
+rm assume_role_credentials.txt
+EOT
+  }
+}
+
+
+/*
 resource "aws_cloudformation_stack_set" "role_spaceliftdefault" {
   // This resource creates the Stack Set for the IAM role.
   name = "${var.organization}-stackset-sandbox-rolespaceliftdefault"
 
-  administration_role_arn = "arn:aws:iam::${var.aws_account_id}:role/AWSServiceRoleForCloudFormationStackSetsOrgAdmin"
+  # administration_role_arn = "arn:aws:iam::${var.aws_account_id}:role/AWSServiceRoleForCloudFormationStackSetsOrgAdmin"
   permission_model = "SERVICE_MANAGED"
 
   template_body = templatefile("iam_role_spacelift.yaml.tpl", {
@@ -41,3 +75,4 @@ provider "aws" {
   alias      = "sandbox"
   region     = var.aws_region
 }
+*/
