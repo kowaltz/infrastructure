@@ -4,7 +4,7 @@ module "aws_account_infrastructure_env_network" {
   source   = "../../modules/organizations-account"
 
   name              = "network"
-  parent_id         = aws_organizations_organizational_unit.infrastructure-env[each.value].id
+  parent_id         = aws_organizations_organizational_unit.infrastructure_env[each.value].id
   path              = local.infrastructure_env_path[each.value]
   organization      = var.organization
   unique_identifier = local.unique_identifier
