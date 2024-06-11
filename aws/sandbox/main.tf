@@ -3,40 +3,6 @@ provider "aws" {
   region = var.aws_region
 }
 
-provider "aws" {
-  assume_role {
-    role_arn    = "arn:aws:iam::${var.aws_account_id_sandbox}:role/OrganizationAccountAccessRole"
-    external_id = "kowaltz-github@*@kowaltz-stack-root-aws_sandbox"
-    #"${organization}-github@*@${organization}-stack-${env}-aws_${name}@*"
-  }
-
-  alias      = "sandbox"
-  region     = var.aws_region
-}
-
-resource "aws_iam_policy" "sts_assume" {
-  provider = aws.sandbox
-  
-  name        = "${var.organization}-iam-policy-root-sts_assume"
-  path        = "/root/${var.organization}/"
-  description = "Policy for being able to assume STS roles in any account in the organization."
-
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "sts:AssumeRole"
-        ],
-        "Resource" : [
-          "arn:aws:iam::*:role/${var.organization}-*",
-          "arn:aws:iam::*:role/OrganizationAccountAccessRole"
-        ]
-      }
-    ]
-  })
-}
 
 resource "null_resource" "create_iam_role" {
   triggers = {
@@ -55,13 +21,40 @@ export AWS_ACCESS_KEY_ID=$(cut -f1 assume_role_credentials.txt)
 export AWS_SECRET_ACCESS_KEY=$(cut -f2 assume_role_credentials.txt)
 export AWS_SESSION_TOKEN=$(cut -f3 assume_role_credentials.txt)
 
+# IAM Role policy document
+echo '{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "arn:aws:iam::324880187172:root"
+        ]
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringLike": {
+          "sts:ExternalId": [
+            "${organization}-github@*@${organization}-stack-${env}-aws_${name}@*",
+            "${organization}-github@*@${organization}-stack-${env}-spacelift@*"
+          ]
+        }
+      }
+    }
+  ]
+}' > assume_role_policy.json
+
+# Policy document
+echo '${local.policy_document}' > policy_document.json
+
 aws iam create-role \
     --role-name "rolespaceliftdefault" \
     --assume-role-policy-document file://assume_role_policy.json
 
 # Attach the policy to the IAM role
 aws iam put-role-policy \
-    --role-name "ROLE_NAME" \
+    --role-name "rolespaceliftdefault" \
     --policy-name "SpaceliftPermissions" \
     --policy-document file://policy_document.json
 
@@ -70,6 +63,23 @@ rm assume_role_credentials.txt
 EOT
   }
 }
+
+  # Define local variable for the policy document
+locals {
+    policy_document = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "ec2:DescribeInstances",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
 
 
 /*
