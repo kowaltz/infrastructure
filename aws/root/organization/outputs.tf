@@ -7,6 +7,11 @@ output "aws_region" {
   value = var.aws_region
 }
 
+output "ou_sandbox_id" {
+  value = aws_organizations_organizational_unit.sandbox.id
+  sensitive = true
+}
+
 /*
 output "aws_account_id_infrastructure_env_vms" {
   value = { for env in var.set_of_environments :

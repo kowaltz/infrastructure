@@ -117,10 +117,11 @@ resource "aws_cloudformation_stack_set" "role_spaceliftdefault" {
 
 resource "aws_cloudformation_stack_set_instance" "role_spaceliftdefault" {
   // This resource specifies the target of the Stack Set.
+  deployment_targets {
+    organizational_unit_ids = [var.ou_sandbox_id]
+  }
   stack_set_name = aws_cloudformation_stack_set.role_spaceliftdefault.name
-
-  account_id = var.aws_account_id_sandbox
-  region     = var.aws_region
+  region = var.aws_region
 }
 
 
