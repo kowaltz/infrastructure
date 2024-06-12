@@ -24,3 +24,7 @@ variable "env" {
   type    = string
   default = "root"
 }
+
+variable "ou_sandbox_id" {
+  type    = string
+}
