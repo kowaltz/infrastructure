@@ -3,8 +3,26 @@ provider "aws" {
   region = var.aws_region
 }
 
+resource "null_resource" "create_iam_role" {
+  provisioner "local-exec" {
+    command = <<EOT
+aws sts get-caller-identity
+EOT
+  }
+}
 
 /*
+provider "aws" {
+  assume_role {
+    role_arn    = "arn:aws:iam::${var.aws_account_id_sandbox}:role/OrganizationAccountAccessRole"
+    external_id = "kowaltz-github@*@kowaltz-stack-root-aws_sandbox"
+    #"${organization}-github@*@${organization}-stack-${env}-aws_${name}@*"
+  }
+
+  alias      = "sandbox"
+  region     = var.aws_region
+}
+
 resource "null_resource" "create_iam_role" {
   triggers = {
     # Define triggers here if needed, e.g., changes in variables
@@ -91,7 +109,7 @@ EOF
 
 */
 
-
+/*
 resource "aws_cloudformation_stack_set" "role_spaceliftdefault" {
   // This resource creates the Stack Set for the IAM role.
   name = "${var.organization}-stackset-sandbox-rolespaceliftdefault"
@@ -123,15 +141,4 @@ resource "aws_cloudformation_stack_set_instance" "role_spaceliftdefault" {
   stack_set_name = aws_cloudformation_stack_set.role_spaceliftdefault.name
   region = var.aws_region
 }
-
-
-provider "aws" {
-  assume_role {
-    role_arn    = "arn:aws:iam::${var.aws_account_id_sandbox}:role/OrganizationAccountAccessRole"
-    external_id = "kowaltz-github@*@kowaltz-stack-root-aws_sandbox"
-    #"${organization}-github@*@${organization}-stack-${env}-aws_${name}@*"
-  }
-
-  alias      = "sandbox"
-  region     = var.aws_region
-}
+*/
