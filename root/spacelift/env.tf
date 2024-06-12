@@ -17,18 +17,18 @@ resource "spacelift_stack" "env" {
   enable_local_preview    = true
   name                    = "${var.organization}-stack-${each.value}-spacelift"
   labels                  = [spacelift_context.env[each.value].name]
-  project_root            = "spacelift/env"
+  project_root            = "env/spacelift"
   repository              = var.repository
   space_id                = spacelift_space.env[each.value].id
   terraform_version       = var.terraform_version
   terraform_workflow_tool = "OPEN_TOFU"
 }
 
-resource "spacelift_stack_dependency" "env-on-aws_root_organization" {
+resource "spacelift_stack_dependency" "env-on-root-aws_organization" {
   for_each = var.set_of_environments
   
   stack_id            = spacelift_stack.env[each.value].id
-  depends_on_stack_id = spacelift_stack.aws_root_organization.id
+  depends_on_stack_id = spacelift_stack.root-aws_organization.id
 }
 
 locals {
@@ -53,12 +53,4 @@ resource "spacelift_environment_variable" "env" {
   name       = "TF_VAR_env"
   value      = each.value
   write_only = false
-}
-
-resource "spacelift_stack_dependency_reference" "infrastructure_env_vms_id" {
-  for_each = var.set_of_environments
-
-  stack_dependency_id = spacelift_stack_dependency.env-on-aws_root_organization[each.value].id
-  output_name         = "aws_account_id_infrastructure_env_vms"
-  input_name          = "TF_VAR_aws_account_id_infrastructure_env_vms"
 }

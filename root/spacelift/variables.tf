@@ -4,7 +4,6 @@ variable "aws_account_id" {
 
 variable "organization" {
   type    = string
-  default = "kowaltz"
 }
 
 variable "repository" {
@@ -13,11 +12,9 @@ variable "repository" {
 }
 
 variable "set_of_environments" {
-  type    = set(string)
-  default = ["dev", "prod"]
+  type = set(string)
 }
 
 variable "terraform_version" {
-  type    = string
-  default = "1.7.0"
+  type = string
 }

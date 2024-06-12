@@ -11,8 +11,7 @@ variable "aws_oidc_enabled" {
 }
 
 variable "organization" {
-  type    = string
-  default = "kowaltz"
+  type = string
 }
 
 variable "plan_version" {
@@ -25,6 +24,5 @@ variable "root_role_name" {
 }
 
 variable "set_of_environments" {
-  type    = set(string)
-  default = ["dev", "prod"]
+  type = set(string)
 }
