@@ -3,7 +3,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "null_resource" "create_iam_role" {
+resource "null_resource" "whoami" {
   provisioner "local-exec" {
     command = <<EOT
 aws sts get-caller-identity
