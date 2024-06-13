@@ -17,11 +17,3 @@ resource "aws_organizations_account" "module" {
   close_on_deletion = true
   parent_id         = var.parent_id
 }
-
-output "id" {
-  value = aws_organizations_account.module.id
-}
-
-output "name" {
-  value = aws_organizations_account.module.name
-}
