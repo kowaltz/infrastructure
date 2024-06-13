@@ -2,17 +2,18 @@ variable "aws_account_id" {
   type = string
 }
 
-variable "organization" {
+variable "path_org_structure_yaml" {
   type    = string
+  default = "./org_structure.yaml"
+}
+
+variable "organization" {
+  type = string
 }
 
 variable "repository" {
   type    = string
   default = "infrastructure"
-}
-
-variable "set_of_environments" {
-  type = set(string)
 }
 
 variable "terraform_version" {

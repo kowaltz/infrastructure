@@ -11,7 +11,7 @@ locals {
 
   unique_identifier = sha1(var.plan_version)
 
-  org_structure = yamldecode(file("${path.module}/org_structure.yaml"))
+  org_structure = yamldecode(file(var.path_org_structure_yaml))
 }
 
 resource "aws_organizations_organizational_unit" "root" {
@@ -20,13 +20,13 @@ resource "aws_organizations_organizational_unit" "root" {
 }
 
 module "aws_organization_structure" {
-  for_each = local.org_structure
+  for_each = local.org_structure.organizational-units
   source   = "../../modules/aws-organization-ou"
 
   name                = each.key
   parent_id           = aws_organizations_organizational_unit.root.id
   organization        = var.organization
   set_of_accounts     = each.value.accounts
-  set_of_environments = each.value.environments
+  set_of_environments = each.value.per-environment ? local.org_structure.environments : []
   unique_identifier   = local.unique_identifier
 }

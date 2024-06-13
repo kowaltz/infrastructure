@@ -1,15 +1,16 @@
 locals {
-  context_root_aws_name = "${var.organization}-context-root-aws"
+  context_root_aws_name     = "${var.organization}-context-root-aws"
   context_organization_name = "${var.organization}-context-organization"
 }
 
 resource "spacelift_stack" "root-aws_role" {
-  administrative          = false
-  autodeploy              = false
-  branch                  = "prod"
-  description             = "Space for managing the root role on AWS."
-  enable_local_preview    = true
-  labels                  = [
+  additional_project_globs = ["org_structure.yaml"]
+  administrative           = false
+  autodeploy               = false
+  branch                   = "prod"
+  description              = "Space for managing the root role on AWS."
+  enable_local_preview     = true
+  labels = [
     local.context_root_aws_name,
     local.context_organization_name
   ]
@@ -22,12 +23,12 @@ resource "spacelift_stack" "root-aws_role" {
 }
 
 resource "spacelift_stack" "root-aws_organization" {
-  administrative          = false
-  autodeploy              = false
-  branch                  = "prod"
-  description             = "Space for managing root-level AWS infrastructure."
-  enable_local_preview    = true
-  labels                  = [
+  administrative       = false
+  autodeploy           = false
+  branch               = "prod"
+  description          = "Space for managing root-level AWS infrastructure."
+  enable_local_preview = true
+  labels = [
     local.context_root_aws_name,
     local.context_organization_name
   ]
@@ -40,12 +41,12 @@ resource "spacelift_stack" "root-aws_organization" {
 }
 
 resource "spacelift_stack" "root-aws_integrations" {
-  administrative          = false
-  autodeploy              = false
-  branch                  = "prod"
-  description             = "Space for managing root-level integrations to AWS."
-  enable_local_preview    = true
-  labels                  = [
+  administrative       = false
+  autodeploy           = false
+  branch               = "prod"
+  description          = "Space for managing root-level integrations to AWS."
+  enable_local_preview = true
+  labels = [
     local.context_root_aws_name,
     local.context_organization_name
   ]

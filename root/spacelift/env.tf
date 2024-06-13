@@ -1,5 +1,9 @@
+locals {
+  org_structure = yamldecode(file(var.path_org_structure_yaml))
+}
+
 resource "spacelift_space" "env" {
-  for_each = var.set_of_environments
+  for_each = local.org_structure.environments
 
   name             = "${var.organization}-space-${each.value}"
   parent_space_id  = "root"
@@ -7,47 +11,23 @@ resource "spacelift_space" "env" {
   inherit_entities = true
 }
 
-resource "spacelift_stack" "env" {
-  for_each = var.set_of_environments
-
-  administrative          = true
-  autodeploy              = false
-  branch                  = each.value
-  description             = "Space for managing ${each.value}-level Spacelift infrastructure."
-  enable_local_preview    = true
-  name                    = "${var.organization}-stack-${each.value}-spacelift"
-  labels                  = [spacelift_context.env[each.value].name]
-  project_root            = "env/spacelift"
-  repository              = var.repository
-  space_id                = spacelift_space.env[each.value].id
-  terraform_version       = var.terraform_version
-  terraform_workflow_tool = "OPEN_TOFU"
-}
-
-resource "spacelift_stack_dependency" "env-on-root-aws_organization" {
-  for_each = var.set_of_environments
-  
-  stack_id            = spacelift_stack.env[each.value].id
-  depends_on_stack_id = spacelift_stack.root-aws_organization.id
-}
-
 locals {
-  context_env_name = { for env in var.set_of_environments :
+  context_env_name = { for env in local.org_structure.environments :
     env => "${var.organization}-context-${env}"
   }
 }
 
 resource "spacelift_context" "env" {
-  for_each = var.set_of_environments
+  for_each = local.org_structure.environments
 
-  description = "Context with the ENV variable."
+  description = "Context with ENV-specific variables."
   name        = local.context_env_name[each.value]
   labels      = ["autoattach:${local.context_env_name[each.value]}"]
   space_id    = spacelift_space.env[each.value].id
 }
 
 resource "spacelift_environment_variable" "env" {
-  for_each = var.set_of_environments
+  for_each = local.org_structure.environments
 
   context_id = spacelift_context.env[each.value].id
   name       = "TF_VAR_env"

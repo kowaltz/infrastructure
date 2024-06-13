@@ -14,6 +14,11 @@ variable "organization" {
   type = string
 }
 
+variable "path_org_structure_yaml" {
+  type    = string
+  default = "./org_structure.yaml"
+}
+
 variable "plan_version" {
   type    = string
   default = "0.0.4"
@@ -21,8 +26,4 @@ variable "plan_version" {
 
 variable "root_role_name" {
   type = string
-}
-
-variable "set_of_environments" {
-  type = set(string)
 }
