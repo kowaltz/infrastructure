@@ -1,11 +1,11 @@
-resource "aws_iam_policy_attachment" "manage_organization" {
-  name       = "manage_organization"
+resource "aws_iam_policy_attachment" "org_manage" {
+  name       = "org_manage"
   roles      = [var.root_role_name]
-  policy_arn = aws_iam_policy.manage_organization.arn
+  policy_arn = aws_iam_policy.org_manage.arn
 }
 
-resource "aws_iam_policy" "manage_organization" {
-  name        = "${var.organization}-iam-policy-root-manage_organization"
+resource "aws_iam_policy" "org_manage" {
+  name        = "${var.organization}-iam-policy-root-org_manage"
   path        = "/root/${var.organization}/"
   description = "Policy for managing an organization, OUs and their accounts at the organization's root level. It also allows the role to manage policies at the organizational level."
 
