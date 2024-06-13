@@ -1,0 +1,16 @@
+infrastructure:
+  environments:
+    - dev
+    - prod
+  accounts:
+    - network
+    - vms
+workload:
+  environments:
+    - dev
+    - prod
+  accounts: []
+sandbox:
+  environments: []
+  accounts:
+    - sandbox

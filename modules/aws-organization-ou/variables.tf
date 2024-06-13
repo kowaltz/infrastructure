@@ -1,7 +1,3 @@
-variable "set_of_accounts" {
-  type = set(string)
-}
-
 variable "name" {
   type = string
 }
@@ -12,6 +8,10 @@ variable "organization" {
 
 variable "parent_id" {
   type = string
+}
+
+variable "set_of_accounts" {
+  type = set(string)
 }
 
 variable "set_of_environments" {

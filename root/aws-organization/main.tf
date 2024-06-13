@@ -11,25 +11,7 @@ locals {
 
   unique_identifier = sha1(var.plan_version)
 
-  org_structure = {
-    infrastructure = {
-      set_of_environments = var.set_of_environments
-      accounts = toset([
-        "network",
-        "vms"
-      ])
-    },
-    workload = {
-      set_of_environments = var.set_of_environments
-      accounts = toset([])
-    },
-    sandbox = {
-      set_of_environments = toset([])
-      accounts = toset([
-        "sandbox"
-      ])
-    }
-  }
+  org_structure = yamldecode(file("${path.module}/org_structure.yaml"))
 }
 
 resource "aws_organizations_organizational_unit" "root" {
@@ -42,9 +24,9 @@ module "aws_organization_structure" {
   source   = "../../modules/aws-organization-ou"
 
   name                = each.key
-  set_of_accounts     = each.value.accounts
   parent_id           = aws_organizations_organizational_unit.root.id
   organization        = var.organization
-  set_of_environments = each.value.set_of_environments
+  set_of_accounts     = each.value.accounts
+  set_of_environments = each.value.environments
   unique_identifier   = local.unique_identifier
 }

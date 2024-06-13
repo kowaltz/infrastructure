@@ -11,25 +11,36 @@ resource "aws_organizations_organizational_unit" "name-env" {
 }
 
 locals {
-  set_of_accounts = {
-    for env in var.set_of_environments: env => {
-      name = "${var.organization}-account-${var.name}_${account}"
-      email = "account-${var.name}_${account}@${var.organization}.com"
+  set_of_parents = length(var.set_of_environments) > 0 ? toset([
+    for env in var.set_of_environments : {
+      path = "${var.name}_${env}"
+      id   = aws_organizations_organizational_unit.name-env[env].id
     }
-  }
+  ]) : toset([
+    {
+      path = "${var.name}"
+      id   = var.parent_id
+    }
+  ])
+
+  set_of_tuples = [
+    for parent in local.set_of_parents : [
+      for account in var.set_of_accounts : {
+        parent_id = parent.id
+        path      = parent.path
+        account   = account
+      }
+    ]
+  ]
 }
 
 module "aws_organization_env_account" {
-  for_each = var.set_of_environments
+  for_each = local.set_of_tuples
   source   = "../aws-organization-account"
 
-  name              = var.name
-  parent_id         = var.env ? (
-    aws_organizations_organizational_unit.name-env[each.value].id
-  ) : (
-    aws_organizations_organizational_unit.name.id
-  )
-  path              = "${var.name}_${each.value}"
+  account_name      = each.value.account
+  parent_id         = each.value.parent_id
+  path              = "${var.name}-${each.value.account}"
   organization      = var.organization
   unique_identifier = var.unique_identifier
 }

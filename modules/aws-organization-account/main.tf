@@ -4,7 +4,7 @@
 # The module outputs the ID and name of the created AWS Organizations account.
 
 locals {
-  account_name = substr("${var.organization}-account-${var.path}-${var.name}.${var.unique_identifier}",
+  account_name = substr("${var.organization}-account-${var.path}-${var.account_name}:${var.unique_identifier}",
     0,
     50  # AWS account names are limited to 50 characters.
   )
