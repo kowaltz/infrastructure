@@ -108,37 +108,3 @@ EOF
 }
 
 */
-
-/*
-resource "aws_cloudformation_stack_set" "role_spaceliftdefault" {
-  // This resource creates the Stack Set for the IAM role.
-  name = "${var.organization}-stackset-sandbox-rolespaceliftdefault"
-
-  permission_model = "SERVICE_MANAGED"
-  # administration_role_arn = "arn:aws:iam::${var.aws_account_id}:role/AWSServiceRoleForCloudFormationStackSetsOrgAdmin"
-
-  auto_deployment {
-    enabled = true
-    retain_stacks_on_account_removal = false
-  }
-
-  template_body = templatefile("iam_role_spacelift.yaml.tpl", {
-    organization = var.organization
-    env = "root"
-    name = "sandbox"
-  })
-
-  capabilities = [
-    "CAPABILITY_NAMED_IAM"
-  ]
-}
-
-resource "aws_cloudformation_stack_set_instance" "role_spaceliftdefault" {
-  // This resource specifies the target of the Stack Set.
-  deployment_targets {
-    organizational_unit_ids = [var.ou_sandbox_id]
-  }
-  stack_set_name = aws_cloudformation_stack_set.role_spaceliftdefault.name
-  region = var.aws_region
-}
-*/

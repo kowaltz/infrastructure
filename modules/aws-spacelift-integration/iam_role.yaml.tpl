@@ -17,11 +17,9 @@ Resources:
               StringLike:
                 sts:ExternalId:
                   - '${organization}-github@*@${organization}-stack-${space_id}-aws_${name}@*'
-      Policies:
-        - PolicyName: 'SpaceliftAccessPolicy'
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: 'Allow'
-                Action: 'ec2:DescribeInstances'
-                Resource: '*'
+%{ if length(set_of_policy_arns) > 0 }
+      ManagedPolicyArns:
+%{ for arn in set_of_policy_arns }
+        - ${arn}
+%{ endfor }
+%{ endif }

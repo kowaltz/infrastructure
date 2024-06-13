@@ -6,8 +6,8 @@ resource "spacelift_stack" "root-aws_organization" {
   description          = "Space for managing root-level AWS infrastructure."
   enable_local_preview = true
   labels = [
-    local.context_root_aws_name,
-    local.context_organization_name
+    local.context_root_aws,
+    local.context_organization
   ]
   name                    = "${var.organization}-stack-root-aws_organization"
   project_root            = "root/aws-organization"

@@ -15,50 +15,53 @@ locals {
 }
 
 resource "aws_organizations_organizational_unit" "root" {
-  depends_on = [ aws_iam_policy_attachment.org_manage ]
-  name      = "${var.organization}-ou-root"
-  parent_id = local.org_root_id
+  depends_on = [aws_iam_policy_attachment.org_manage]
+  name       = "${var.organization}-ou-root"
+  parent_id  = local.org_root_id
 }
 
 module "aws-organization-ou" {
-  for_each = local.org_structure.organizational-units
+  for_each = local.org_structure.aws-organizational-units
   source   = "../../modules/aws-organization-ou"
 
-  name                = each.key
-  parent_id           = aws_organizations_organizational_unit.root.id
-  organization        = var.organization
-  set_of_accounts     = each.value.accounts
-  set_of_environments = each.value.per-environment ? local.org_structure.environments : []
-  unique_identifier   = local.unique_identifier
+  map_of_accounts_and_policies = each.value.aws-accounts
+  name                         = each.key
+  parent_id                    = aws_organizations_organizational_unit.root.id
+  organization                 = var.organization
+  set_of_environments          = each.value.environments == "all" ? local.org_structure.environments : toset([each.value.environments])
+  unique_identifier            = local.unique_identifier
 }
 
 module "aws-spacelift-integration" {
   for_each = module.aws-organization-ou.set_of_accounts_created
-  source = "../../modules/aws-spacelift-integration"
+  source   = "../../modules/aws-spacelift-integration"
 
-  account_id = each.value.account_id
-  account_name = each.value.account_name
-  aws_region = var.aws_region
-  path = each.value.path
-  organization = var.organization
-  ou_id = each.value.parent_id
-  space_id =
+  account_id              = each.value.account_id
+  account_name            = each.value.account_name
+  aws_region              = var.aws_region
+  env                     = each.value.env
+  path                    = each.value.path
+  organization            = var.organization
+  ou_id                   = each.value.parent_id
+  set_of_managed_policies = each.value.set_of_policies
 }
 
-resource "spacelift_stack" "root-aws_integrations" {
+resource "spacelift_stack" "account_created" {
+  for_each = module.aws-organization-ou.set_of_accounts_created
+
   administrative       = false
   autodeploy           = false
-  branch               = "prod"
-  description          = "Space for managing root-level integrations to AWS."
+  branch               = each.value.env
+  description          = "Space for managing AWS infrastructure for the account."???
   enable_local_preview = true
   labels = [
     local.context_root_aws_name,
     local.context_organization_name
   ]
-  name                    = "${var.organization}-stack-root-aws_integrations"
-  project_root            = "root/aws-integrations"
+  name                    = "${var.organization}-stack-${each.value.env}-???"???
+  project_root            = "env/"???
   repository              = var.repository
-  space_id                = "root"
+  space_id                = each.value.env
   terraform_version       = var.terraform_version
   terraform_workflow_tool = "OPEN_TOFU"
 }

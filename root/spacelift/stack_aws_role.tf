@@ -1,8 +1,3 @@
-locals {
-  context_root_aws_name     = "${var.organization}-context-root-aws"
-  context_organization_name = "${var.organization}-context-organization"
-}
-
 resource "spacelift_stack" "root-aws_role" {
   administrative           = false
   autodeploy               = false

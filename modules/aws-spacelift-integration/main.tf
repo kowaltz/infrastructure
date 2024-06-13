@@ -3,16 +3,20 @@ resource "aws_cloudformation_stack_set" "role_spacelift_default" {
   name = "${var.organization}-stackset-${var.path}-role_spacelift_default"
 
   permission_model = "SERVICE_MANAGED"
-  
+
   auto_deployment {
-    enabled = true
+    enabled                          = true
     retain_stacks_on_account_removal = false
   }
 
   template_body = templatefile("${path.module}/iam_role.yaml.tpl", {
+    name         = var.account_name
     organization = var.organization
-    space_id = var.space_id
-    name = var.account_name
+    set_of_policy_arns = toset([
+      for policy in var.set_of_managed_policies :
+      "arn:aws:iam::aws:policy/${policy}"
+    ])
+    space_id = var.env
   })
 
   capabilities = [
@@ -26,7 +30,7 @@ resource "aws_cloudformation_stack_set_instance" "role_spacelift_default" {
     organizational_unit_ids = [var.ou_id]
   }
   stack_set_name = aws_cloudformation_stack_set.role_spacelift_default.name
-  region = var.aws_region
+  region         = var.aws_region
 }
 
 resource "spacelift_aws_integration" "path-account" {

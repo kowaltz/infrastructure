@@ -1,0 +1,19 @@
+environments:
+  - dev
+  - prod
+aws-organizational-units:
+  infrastructure:
+    environments: all
+    aws-accounts:
+      - name: network
+        managed_policies: []
+      - name: vms
+        managed_policies: []
+  workload:
+    environments: all
+    aws-accounts: []
+  sandbox:
+    environments: dev
+    aws-accounts:
+      - name: sandbox
+        managed_policies: []

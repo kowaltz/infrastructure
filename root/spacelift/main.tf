@@ -6,6 +6,9 @@ data "spacelift_stack" "root-spacelift" {
 
 locals {
   aws_role_name = "arn:aws:iam::${var.aws_account_id}:role/${var.organization}-iam-role-root-spacelift_default"
+  
+  context_root_aws_name     = "${var.organization}-context-root-aws"
+  context_organization_name = "${var.organization}-context-organization"
 }
 
 resource "spacelift_aws_integration" "root" {

@@ -10,6 +10,10 @@ variable "aws_region" {
   type = string
 }
 
+variable "env" {
+  type = string
+}
+
 variable "path" {
   type = string
 }
@@ -22,6 +26,6 @@ variable "ou_id" {
   type = string
 }
 
-variable "space_id" {
-  type = string
+variable "set_of_managed_policies" {
+  type = set(string)
 }

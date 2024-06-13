@@ -13,7 +13,6 @@ variable "organization" {
 
 variable "repository" {
   type    = string
-  default = "infrastructure"
 }
 
 variable "terraform_version" {

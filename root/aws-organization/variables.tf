@@ -24,6 +24,14 @@ variable "plan_version" {
   default = "0.0.4"
 }
 
+variable "repository" {
+  type = string
+}
+
 variable "root_role_name" {
+  type = string
+}
+
+variable "terraform_version" {
   type = string
 }
