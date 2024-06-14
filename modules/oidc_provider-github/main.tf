@@ -1,3 +1,15 @@
+/*
+module "oidc_provider-github-workloads" {
+  depends_on = [ aws_iam_openid_connect_provider.github_actions ]
+  for_each = var.set_of_environments
+  source = "../modules/oidc_provider-github"
+
+  aws_account_id = aws_organizations_account.env-vms[each.value].id
+  env = each.value
+  github_repo = "monorepo"
+}
+*/
+
 data "aws_iam_openid_connect_provider" "github_actions" {
   url = "https://token.actions.githubusercontent.com"
 }

@@ -16,7 +16,7 @@ Resources:
             Condition:
               StringLike:
                 sts:ExternalId:
-                  - '${organization}-github@*@${organization}-stack-${space_id}-aws_${name}@*'
+                  - '${organization}-github@*@${trusted_stack_name}@*'
 %{ if length(set_of_policy_arns) > 0 }
       ManagedPolicyArns:
 %{ for arn in set_of_policy_arns }

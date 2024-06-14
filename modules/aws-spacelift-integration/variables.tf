@@ -26,6 +26,10 @@ variable "ou_id" {
   type = string
 }
 
+variable "ou_name" {
+  type = string
+}
+
 variable "set_of_managed_policies" {
   type = set(string)
 }

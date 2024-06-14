@@ -1,3 +1,7 @@
+locals {
+  trusted_stack_name = "${organization}-stack-${var.env}-aws_${name}"
+}
+
 resource "aws_cloudformation_stack_set" "role_spacelift_default" {
   // This resource creates the Stack Set for the IAM role, auto-deployable at the OU level.
   name = "${var.organization}-stackset-${var.path}-role_spacelift_default"
@@ -16,7 +20,7 @@ resource "aws_cloudformation_stack_set" "role_spacelift_default" {
       for policy in var.set_of_managed_policies :
       "arn:aws:iam::aws:policy/${policy}"
     ])
-    space_id = var.env
+    trusted_stack_name = local.trusted_stack_name
   })
 
   capabilities = [

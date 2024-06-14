@@ -43,23 +43,24 @@ module "aws-spacelift-integration" {
   path                    = each.value.path
   organization            = var.organization
   ou_id                   = each.value.parent_id
+  ou_name                 = each.value.parent_name
   set_of_managed_policies = each.value.set_of_policies
 }
 
 resource "spacelift_stack" "account_created" {
-  for_each = module.aws-organization-ou.set_of_accounts_created
+  for_each = module.aws-spacelift-integration
 
   administrative       = false
   autodeploy           = false
   branch               = each.value.env
-  description          = "Space for managing AWS infrastructure for the account."???
+  description          = "Space for managing AWS infrastructure for the account ${each.value.path}/${each.value.account_name}."
   enable_local_preview = true
   labels = [
-    local.context_root_aws_name,
-    local.context_organization_name
+    "${var.organization}-context-root-aws",
+    "${var.organization}-context-organization"
   ]
-  name                    = "${var.organization}-stack-${each.value.env}-???"???
-  project_root            = "env/"???
+  name                    = each.value.trusted_stack_name
+  project_root            = "env/${each.value.ou_name}/${each.value.account_name}"
   repository              = var.repository
   space_id                = each.value.env
   terraform_version       = var.terraform_version

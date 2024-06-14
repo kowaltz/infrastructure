@@ -5,6 +5,7 @@ output "set_of_accounts_created" {
       account_name    = v.name
       env             = v.env
       parent_id       = v.parent_id
+      parent_name     = var.name
       set_of_policies = v.set_of_policies
     }
   ])

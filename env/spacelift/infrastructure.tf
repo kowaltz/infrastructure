@@ -31,16 +31,3 @@ resource "spacelift_stack_dependency_reference" "infrastructure_env_vms_id" {
 output "run_id" {
   value = local.run_id
 }
-
-module "aws-integration-default-infrastructure_env_vms" {
-  source = "../modules/aws-integration-default"
-
-  account_id       = var.aws_account_id_infrastructure_env_vms
-  organization     = var.organization
-  role_path        = "root_infrastructure_${var.env}_vms"
-  stack_id         = spacelift_stack.env-aws_infrastructure_vms.id
-  stack_short_name = local.stack_short_name
-  space_id         = data.spacelift_stack.env-spacelift.space_id
-  space_short_id   = var.env
-  write            = true
-}
