@@ -25,7 +25,7 @@ resource "aws_iam_policy" "cloudformation" {
         ]
       },
       {
-        "Sid" : "CreateStackSet"
+        "Sid" : "ManageStackSet"
         "Effect" : "Allow",
         "Action" : [
           "cloudformation:CreateStackInstances",

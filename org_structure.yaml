@@ -6,14 +6,24 @@ aws-organizational-units:
     environments: all
     aws-accounts:
       - name: network
-        managed_policies: []
+        managed-policies: []
       - name: vms
-        managed_policies: []
-  workload:
+        managed-policies: []
+  workloads:
     environments: all
-    aws-accounts: []
+    aws-accounts:
+      - name: marketplace
+        managed-policies: []
+        subnet:
+          enabled: true
+          cidr: "10.0.2.0/24"
+          security-groups:
+            - name: public
+              allow-ingress: true
+            - name: egress
+              allow-ingress: false
   sandbox:
     environments: dev
     aws-accounts:
       - name: sandbox
-        managed_policies: []
+        managed-policies: []

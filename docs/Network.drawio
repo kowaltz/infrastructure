@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram name="Page-1" id="ikRIqKkQcMg0QHP1qBo3">
-        <mxGraphModel dx="454" dy="187" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="825" dy="362" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -19,9 +19,6 @@
                 <mxCell id="II8t_q3Wxh-tq56KlRda-6" value="Security group - Internet access" style="fillColor=none;strokeColor=#DD3522;verticalAlign=top;fontStyle=0;fontColor=#DD3522;whiteSpace=wrap;html=1;" parent="II8t_q3Wxh-tq56KlRda-2" vertex="1">
                     <mxGeometry x="20" y="40" width="240" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="II8t_q3Wxh-tq56KlRda-15" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.worldvectorlogo.com/logos/vault-enterprise.svg;" parent="II8t_q3Wxh-tq56KlRda-2" vertex="1">
-                    <mxGeometry x="100" y="170" width="38.84" height="38" as="geometry"/>
-                </mxCell>
                 <mxCell id="II8t_q3Wxh-tq56KlRda-16" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/993px-Postgresql_elephant.svg.png;" parent="II8t_q3Wxh-tq56KlRda-2" vertex="1">
                     <mxGeometry x="40" y="170" width="38.79" height="40" as="geometry"/>
                 </mxCell>
@@ -33,9 +30,6 @@
                 </mxCell>
                 <mxCell id="II8t_q3Wxh-tq56KlRda-13" value="Security group - Internet access" style="fillColor=none;strokeColor=#DD3522;verticalAlign=top;fontStyle=0;fontColor=#DD3522;whiteSpace=wrap;html=1;" parent="II8t_q3Wxh-tq56KlRda-11" vertex="1">
                     <mxGeometry x="20" y="40" width="240" height="80" as="geometry"/>
-                </mxCell>
-                <mxCell id="II8t_q3Wxh-tq56KlRda-17" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.worldvectorlogo.com/logos/vault-enterprise.svg;" parent="II8t_q3Wxh-tq56KlRda-11" vertex="1">
-                    <mxGeometry x="100" y="170" width="38.84" height="38" as="geometry"/>
                 </mxCell>
                 <mxCell id="II8t_q3Wxh-tq56KlRda-18" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/993px-Postgresql_elephant.svg.png;" parent="II8t_q3Wxh-tq56KlRda-11" vertex="1">
                     <mxGeometry x="40" y="170" width="38.79" height="40" as="geometry"/>
