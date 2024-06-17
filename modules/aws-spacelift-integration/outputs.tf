@@ -1,5 +1,5 @@
-output "account_name" {
-  value = var.account_name
+output "account_details" {
+  value = var.account_details
 }
 
 output "env" {

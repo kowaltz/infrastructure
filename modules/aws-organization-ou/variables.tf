@@ -1,4 +1,4 @@
-variable "map_of_accounts_and_policies" {
+variable "map_of_account_details" {
   type = set(string)
 }
 

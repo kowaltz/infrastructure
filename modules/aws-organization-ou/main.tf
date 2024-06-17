@@ -20,11 +20,11 @@ locals {
 
   set_of_account_details = [
     for parent in local.set_of_parents : [
-      for account in var.map_of_accounts_and_policies : {
+      for account in var.map_of_account_details : {
         account         = account.name
+        details         = account
         env             = parent.env
         parent_id       = parent.id
-        set_of_policies = account.managed-policies
       }
     ]
   ]
@@ -35,10 +35,10 @@ module "aws_organization_env_account" {
   source   = "../aws-organization-account"
 
   account_name      = each.value.account
+  account_details   = each.value.details
   env               = each.value.env
   parent_id         = each.value.parent_id
   parent_name       = var.name
-  set_of_policies   = each.value.set_of_policies
   organization      = var.organization
   unique_identifier = var.unique_identifier
 }

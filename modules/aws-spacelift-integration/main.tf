@@ -1,5 +1,5 @@
 locals {
-  trusted_stack_name = "${organization}-stack-${var.env}-aws_${name}"
+  trusted_stack_name = "${organization}-stack-${var.env}-aws_${var.ou_name}_${name}"
 }
 
 resource "aws_cloudformation_stack_set" "role_spacelift_default" {
@@ -14,7 +14,7 @@ resource "aws_cloudformation_stack_set" "role_spacelift_default" {
   }
 
   template_body = templatefile("${path.module}/iam_role.yaml.tpl", {
-    name         = var.account_name
+    name         = var.account_details.name
     organization = var.organization
     set_of_policy_arns = toset([
       for policy in var.set_of_managed_policies :

@@ -2,7 +2,7 @@ variable "account_id" {
   type = string
 }
 
-variable "account_name" {
+variable "account_details" {
   type = string
 }
 

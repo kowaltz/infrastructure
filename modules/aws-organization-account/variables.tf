@@ -2,6 +2,10 @@ variable "account_name" {
   type = string
 }
 
+variable "account_details" {
+  type = string
+}
+
 variable "env" {
   type = string
 }

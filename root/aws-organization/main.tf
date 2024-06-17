@@ -24,12 +24,12 @@ module "aws-organization-ou" {
   for_each = local.org_structure.aws-organizational-units
   source   = "../../modules/aws-organization-ou"
 
-  map_of_accounts_and_policies = each.value.aws-accounts
-  name                         = each.key
-  parent_id                    = aws_organizations_organizational_unit.root.id
-  organization                 = var.organization
-  set_of_environments          = each.value.environments == "all" ? local.org_structure.environments : toset([each.value.environments])
-  unique_identifier            = local.unique_identifier
+  map_of_account_details = each.value.aws-accounts
+  name                   = each.key
+  parent_id              = aws_organizations_organizational_unit.root.id
+  organization           = var.organization
+  set_of_environments    = each.value.environments == "all" ? local.org_structure.environments : toset([each.value.environments])
+  unique_identifier      = local.unique_identifier
 }
 
 module "aws-spacelift-integration" {
@@ -37,7 +37,7 @@ module "aws-spacelift-integration" {
   source   = "../../modules/aws-spacelift-integration"
 
   account_id              = each.value.account_id
-  account_name            = each.value.account_name
+  account_details         = each.value.account_details
   aws_region              = var.aws_region
   env                     = each.value.env
   path                    = each.value.path
@@ -53,16 +53,42 @@ resource "spacelift_stack" "account_created" {
   administrative       = false
   autodeploy           = false
   branch               = each.value.env
-  description          = "Space for managing AWS infrastructure for the account ${each.value.path}/${each.value.account_name}."
+  description          = "Space for managing AWS infrastructure for the account ${each.value.path}/${each.value.account_details.name}."
   enable_local_preview = true
   labels = [
     "${var.organization}-context-root-aws",
     "${var.organization}-context-organization"
   ]
   name                    = each.value.trusted_stack_name
-  project_root            = "env/${each.value.ou_name}/${each.value.account_name}"
+  project_root            = "env/${each.value.ou_name}/${each.value.account_details.name}"
   repository              = var.repository
   space_id                = each.value.env
   terraform_version       = var.terraform_version
   terraform_workflow_tool = "OPEN_TOFU"
+}
+
+locals {
+  set_of_dependencies = toset(flatten([
+    for account in module.aws-organization-ou.set_of_accounts_created : [
+      for dependency in account.account_details.dependencies : {
+        account.account_details.name = dependency
+    }]
+  ]))
+}
+
+data "spacelift_stack" "dependents" {
+  for_each = local.set_of_dependencies
+  stack_id = each.key
+}
+
+data "spacelift_stack" "dependencies" {
+  for_each = local.set_of_dependencies
+  stack_id = each.value
+}
+
+resource "spacelift_stack_dependency" "env_account-on-root_aws_organization" {
+  for_each = local.set_of_dependencies
+  
+  stack_id            = data.spacelift_stack.dependents[each.key]
+  depends_on_stack_id = data.spacelift_stack.dependencies[each.value]
 }
