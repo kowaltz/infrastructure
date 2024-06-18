@@ -11,10 +11,10 @@ locals {
 
   unique_identifier = sha1(var.plan_version)
 
-  architecture = yamldecode(file(var.path_architecture_yaml))
-  organization = local.architecture.organization
-  repository   = local.architecture.repository
-  tf_version   = local.architecture.tf_version
+  config = yamldecode(file(var.path_config_yaml))
+  organization = local.config.organization
+  repository   = local.config.repository
+  tf_version   = local.config.tf_version
 }
 
 resource "aws_organizations_organizational_unit" "root" {
@@ -24,14 +24,14 @@ resource "aws_organizations_organizational_unit" "root" {
 }
 
 module "aws-organization-ou" {
-  for_each = local.architecture.aws-organizational-units
+  for_each = local.config.aws-organizational-units
   source   = "../../modules/aws-organization-ou"
 
   map_of_account_details = each.value.aws-accounts
   name                   = each.key
   parent_id              = aws_organizations_organizational_unit.root.id
   organization           = local.organization
-  set_of_environments    = each.value.environments == "all" ? local.architecture.environments : toset([each.value.environments])
+  set_of_environments    = each.value.environments == "all" ? local.config.environments : toset([each.value.environments])
   unique_identifier      = local.unique_identifier
 }
 

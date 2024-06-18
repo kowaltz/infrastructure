@@ -10,9 +10,9 @@ variable "aws_oidc_enabled" {
   type = bool
 }
 
-variable "path_architecture_yaml" {
+variable "path_config_yaml" {
   type    = string
-  default = "./architecture.yaml"
+  default = "./config.yaml"
 }
 
 variable "plan_version" {

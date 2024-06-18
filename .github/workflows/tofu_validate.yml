@@ -9,10 +9,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Read tf_version from config
+        id: read_tf_version
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq '.tf_version' config.yaml
+
       - name: Set up Tofu
         uses: opentofu/setup-opentofu@v1
         with:
-          tofu_version: 1.7.1
+          tofu_version: ${{ steps.read_tf_version.outputs.result }}
 
       - name: Find changed directories and validate
         id: validate

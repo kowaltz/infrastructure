@@ -5,7 +5,7 @@ locals {
   architecture = "amd64"
   os_family = "ubuntu"
   os_name = "${local.os_family}-jammy-22.04"
-  image_name = "${local.os_name}-hvm-${local.timestamp}-${local.architecture}"
+  image_name = "${local.os_name}-hvm-${local.timestamp}-${local.config}"
 
   instance_type = "t3.micro"
 }

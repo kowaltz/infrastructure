@@ -2,7 +2,7 @@ variable "aws_account_id" {
   type = string
 }
 
-variable "path_architecture_yaml" {
+variable "path_config_yaml" {
   type    = string
-  default = "./architecture.yaml"
+  default = "./config.yaml"
 }

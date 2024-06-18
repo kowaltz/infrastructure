@@ -5,11 +5,11 @@ data "spacelift_stack" "root-spacelift" {
 }
 
 locals {
-  architecture = yamldecode(file(var.path_architecture_yaml))
-  environments = local.architecture.environments
-  organization = local.architecture.organization
-  repository = local.architecture.repository
-  tf_version = local.architecture.tf_version
+  config = yamldecode(file(var.path_config_yaml))
+  environments = local.config.environments
+  organization = local.config.organization
+  repository = local.config.repository
+  tf_version = local.config.tf_version
 
   aws_role_name = "arn:aws:iam::${var.aws_account_id}:role/${local.organization}-iam-role-root-spacelift_default"
 

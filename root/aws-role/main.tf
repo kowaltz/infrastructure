@@ -4,7 +4,7 @@ provider "aws" {
 }
 
 locals {
-  organization = yamldecode(file(var.path_architecture_yaml)).organization
+  organization = yamldecode(file(var.path_config_yaml)).organization
 
   root_role_name = "${local.organization}-iam-role-root-spacelift_${var.aws_oidc_enabled ? "oidc" : "default"}"
 }

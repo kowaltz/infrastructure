@@ -1,5 +1,5 @@
 resource "spacelift_stack" "root-aws_architecture" {
-  additional_project_globs = ["architecture.yaml"]
+  additional_project_globs = ["config.yaml"]
   administrative           = false
   autodeploy               = false
   branch                   = "prod"
