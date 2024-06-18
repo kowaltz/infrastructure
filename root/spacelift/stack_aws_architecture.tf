@@ -1,19 +1,16 @@
 resource "spacelift_stack" "root-aws_architecture" {
   additional_project_globs = ["architecture.yaml"]
-  administrative       = false
-  autodeploy           = false
-  branch               = "prod"
-  description          = "Space for managing root-level AWS infrastructure."
-  enable_local_preview = true
-  labels = [
-    local.context_root_aws,
-    local.context_organization
-  ]
-  name                    = "${var.organization}-stack-root-aws_architecture"
+  administrative           = false
+  autodeploy               = false
+  branch                   = "prod"
+  description              = "Space for managing root-level AWS infrastructure."
+  enable_local_preview     = true
+  labels = [local.context_root_aws_name]
+  name                    = "${local.organization}-stack-root-aws_architecture"
   project_root            = "root/aws-architecture"
-  repository              = var.repository
+  repository              = local.repository
   space_id                = "root"
-  terraform_version       = var.terraform_version
+  terraform_version       = local.tf_version
   terraform_workflow_tool = "OPEN_TOFU"
 }
 

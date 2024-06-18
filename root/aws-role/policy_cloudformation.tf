@@ -5,8 +5,8 @@ resource "aws_iam_policy_attachment" "cloudformation" {
 }
 
 resource "aws_iam_policy" "cloudformation" {
-  name        = "${var.organization}-iam-policy-root-cloudformation"
-  path        = "/root/${var.organization}/"
+  name        = "${local.organization}-iam-policy-root-cloudformation"
+  path        = "/root/${local.organization}/"
   description = "Policies for using AWS CloudFormation."
 
   # Terraform's "jsonencode" function converts a
@@ -42,10 +42,10 @@ resource "aws_iam_policy" "cloudformation" {
           "cloudformation:UpdateStackSetInstances"
         ],
         "Resource" : [
-          "arn:aws:cloudformation:${var.aws_region}:${var.aws_account_id}:stackset/${var.organization}-*",
+          "arn:aws:cloudformation:${var.aws_region}:${var.aws_account_id}:stackset/${local.organization}-*",
           // Service-managed permissions
-          "arn:aws:cloudformation:*::type/resource/AWS-IAM-Role",  
-          "arn:aws:cloudformation::*:stackset-target/${var.organization}-stackset-*"
+          "arn:aws:cloudformation:*::type/resource/AWS-IAM-Role",
+          "arn:aws:cloudformation::*:stackset-target/${local.organization}-stackset-*"
         ]
       }
     ]

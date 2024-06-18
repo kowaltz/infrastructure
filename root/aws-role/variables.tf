@@ -10,7 +10,7 @@ variable "aws_oidc_enabled" {
   type = bool
 }
 
-variable "organization" {
+variable "path_architecture_yaml" {
   type    = string
-  default = "kowaltz"
+  default = "./architecture.yaml"
 }

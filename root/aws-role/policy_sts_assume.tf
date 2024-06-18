@@ -5,8 +5,8 @@ resource "aws_iam_policy_attachment" "sts_assume" {
 }
 
 resource "aws_iam_policy" "sts_assume" {
-  name        = "${var.organization}-iam-policy-root-sts_assume"
-  path        = "/root/${var.organization}/"
+  name        = "${local.organization}-iam-policy-root-sts_assume"
+  path        = "/root/${local.organization}/"
   description = "Policy for being able to assume STS roles in any account in the organization."
 
   policy = jsonencode({
@@ -18,7 +18,7 @@ resource "aws_iam_policy" "sts_assume" {
           "sts:AssumeRole"
         ],
         "Resource" : [
-          "arn:aws:iam::*:role/${var.organization}-*",
+          "arn:aws:iam::*:role/${local.organization}-*",
           "arn:aws:iam::*:role/OrganizationAccountAccessRole"
         ]
       }

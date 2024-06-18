@@ -12,11 +12,14 @@ locals {
   unique_identifier = sha1(var.plan_version)
 
   architecture = yamldecode(file(var.path_architecture_yaml))
+  organization = local.architecture.organization
+  repository   = local.architecture.repository
+  tf_version   = local.architecture.tf_version
 }
 
 resource "aws_organizations_organizational_unit" "root" {
   depends_on = [aws_iam_policy_attachment.org_manage]
-  name       = "${var.organization}-ou-root"
+  name       = "${local.organization}-ou-root"
   parent_id  = local.org_root_id
 }
 
@@ -27,7 +30,7 @@ module "aws-organization-ou" {
   map_of_account_details = each.value.aws-accounts
   name                   = each.key
   parent_id              = aws_organizations_organizational_unit.root.id
-  organization           = var.organization
+  organization           = local.organization
   set_of_environments    = each.value.environments == "all" ? local.architecture.environments : toset([each.value.environments])
   unique_identifier      = local.unique_identifier
 }
@@ -41,7 +44,7 @@ module "aws-spacelift-integration" {
   aws_region              = var.aws_region
   env                     = each.value.env
   path                    = each.value.path
-  organization            = var.organization
+  organization            = local.organization
   ou_id                   = each.value.parent_id
   ou_name                 = each.value.parent_name
   set_of_managed_policies = each.value.set_of_policies
@@ -50,20 +53,17 @@ module "aws-spacelift-integration" {
 resource "spacelift_stack" "account_created" {
   for_each = module.aws-spacelift-integration
 
-  administrative       = false
-  autodeploy           = false
-  branch               = each.value.env
-  description          = "Space for managing AWS infrastructure for the account ${each.value.path}/${each.value.account_details.name}."
-  enable_local_preview = true
-  labels = [
-    "${var.organization}-context-root-aws",
-    "${var.organization}-context-organization"
-  ]
+  administrative          = false
+  autodeploy              = false
+  branch                  = each.value.env
+  description             = "Space for managing AWS infrastructure for the account ${each.value.path}/${each.value.account_details.name}."
+  enable_local_preview    = true
+  labels                  = ["${local.organization}-context-root-aws"]
   name                    = each.value.trusted_stack_name
   project_root            = "env/${each.value.ou_name}/${each.value.account_details.name}"
-  repository              = var.repository
+  repository              = local.repository
   space_id                = each.value.env
-  terraform_version       = var.terraform_version
+  terraform_version       = local.tf_version
   terraform_workflow_tool = "OPEN_TOFU"
 }
 
@@ -81,7 +81,7 @@ locals {
 
 data "spacelift_stack" "dependents" {
   for_each = local.set_of_dependencies
-  
+
   stack_id = each.value.dependent
 }
 
@@ -93,7 +93,7 @@ data "spacelift_stack" "dependencies" {
 
 resource "spacelift_stack_dependency" "dependent-on-dependency" {
   for_each = local.set_of_dependencies
-  
+
   stack_id            = data.spacelift_stack.dependents[each.value.dependent]
   depends_on_stack_id = data.spacelift_stack.dependencies[each.value.dependency]
 }
@@ -104,7 +104,7 @@ resource "spacelift_stack_dependency_reference" "dependent-on-dependency" {
       for variable in dependency.variables : {
         dependency = dependency
         variable   = variable
-      } 
+      }
     ]
   ]))
 

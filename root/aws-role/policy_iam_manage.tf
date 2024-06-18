@@ -5,8 +5,8 @@ resource "aws_iam_policy_attachment" "iam_manage" {
 }
 
 resource "aws_iam_policy" "iam_manage" {
-  name        = "${var.organization}-iam-policy-root-iam_manage"
-  path        = "/root/${var.organization}/"
+  name        = "${local.organization}-iam-policy-root-iam_manage"
+  path        = "/root/${local.organization}/"
   description = "Policy for managing IAM roles and policies."
 
   # Terraform's "jsonencode" function converts a
@@ -37,7 +37,7 @@ resource "aws_iam_policy" "iam_manage" {
           "iam:PutRolePolicy",
         ],
         "Resource" : [
-          "arn:aws:iam::${var.aws_account_id}:role/${var.organization}-*"
+          "arn:aws:iam::${var.aws_account_id}:role/${local.organization}-*"
         ]
       }
     ]

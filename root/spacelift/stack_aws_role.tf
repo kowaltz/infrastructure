@@ -1,18 +1,15 @@
 resource "spacelift_stack" "root-aws_role" {
-  administrative           = false
-  autodeploy               = false
-  branch                   = "prod"
-  description              = "Space for managing the root role on AWS."
-  enable_local_preview     = true
-  labels = [
-    local.context_root_aws_name,
-    local.context_organization_name
-  ]
-  name                    = "${var.organization}-stack-root-aws_role"
+  administrative          = false
+  autodeploy              = false
+  branch                  = "prod"
+  description             = "Space for managing the root role on AWS."
+  enable_local_preview    = true
+  labels                  = [local.context_root_aws_name]
+  name                    = "${local.organization}-stack-root-aws_role"
   project_root            = "root/aws-role"
-  repository              = var.repository
+  repository              = local.repository
   space_id                = "root"
-  terraform_version       = var.terraform_version
+  terraform_version       = local.tf_version
   terraform_workflow_tool = "OPEN_TOFU"
 }
 

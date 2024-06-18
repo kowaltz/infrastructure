@@ -10,10 +10,6 @@ variable "aws_oidc_enabled" {
   type = bool
 }
 
-variable "organization" {
-  type = string
-}
-
 variable "path_architecture_yaml" {
   type    = string
   default = "./architecture.yaml"
@@ -24,14 +20,6 @@ variable "plan_version" {
   default = "0.0.4"
 }
 
-variable "repository" {
-  type = string
-}
-
 variable "root_role_name" {
-  type = string
-}
-
-variable "terraform_version" {
   type = string
 }

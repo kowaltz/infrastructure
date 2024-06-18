@@ -1,6 +1,11 @@
+organization: kowaltz
+repository: infrastructure
+tf-version: 1.7.1
+
 environments:
   - dev
   - prod
+
 aws-organizational-units:
   sharedinfra:
     environments: all
