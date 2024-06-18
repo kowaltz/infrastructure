@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.aws_region
+  region = local.config.aws_region
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
@@ -54,12 +54,12 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy" {
 }
 
 resource "aws_ecs_task_definition" "workload" {
-  family                   = "zitadel"
-  network_mode             = "bridge" 
+  family       = "zitadel"
+  network_mode = "bridge"
   # network_mode "awsvpc" attaches an ENI to the task
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "256"  # Adjust as needed
-  memory                   = "512"  # Adjust as needed
+  cpu                      = "256" # Adjust as needed
+  memory                   = "512" # Adjust as needed
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_role.arn
 
@@ -78,8 +78,8 @@ resource "aws_ecs_service" "workload" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets         = ["subnet-12345678"]  # Replace with your subnet IDs
-    security_groups = ["sg-12345678"]      # Replace with your security group IDs
+    subnets          = ["subnet-12345678"] # Replace with your subnet IDs
+    security_groups  = ["sg-12345678"]     # Replace with your security group IDs
     assign_public_ip = true
   }
 }

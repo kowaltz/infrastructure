@@ -1,6 +1,6 @@
 # Configure the AWS Provider
 provider "aws" {
-  region = var.aws_region
+  region = local.config.aws_region
 }
 
 resource "aws_vpc" "env-default" {
@@ -8,30 +8,34 @@ resource "aws_vpc" "env-default" {
   instance_tenancy = "default"
 
   tags = {
-    Name = "${var.organization}-vpc-${var.env}-default"
+    Name = "${local.organization}-vpc-${var.env}-default"
   }
 }
 
 locals {
   config = yamldecode(file(var.path_config_yaml))
+  
+  organization = local.config.organization
 
-  account_network_details = {
-    for account in local.config.aws-organizational-units.workloads.aws-accounts :
-    account.name => {
-      subnet = account.subnet
-      cidr   = account.subnet.cidr
-      sg     = account.subnet.security-groups
-    }
-    if account.subnet.enabled
-  }
+  account_network_details = flatten([
+    for ou_name, ou_value in local.config["aws-organizational-units"] : [
+      for account in ou_value["aws-accounts"] : {
+        account_name = account.name
+        cidr         = account.subnet.cidr
+        ou_name      = ou_name
+        sg           = account.subnet["security-groups"]
+        subnet       = account.subnet
+      } if lookup(account, "subnet", null) != null
+    ]
+  ])
 
   security_groups = flatten([
-    for account, details in local.account_network_details :
+    for details in local.account_network_details :
     [
       for sg in details.sg :
       {
+        account_name  = details.account_name
         allow_ingress = sg.allow-ingress
-        account_name  = account
         cidr          = details.cidr
         name          = sg.name
         subnet        = details.subnet
@@ -40,18 +44,18 @@ locals {
   ])
 }
 
-resource "aws_subnet" "workload-env-public" {
+resource "aws_subnet" "env-public" {
   for_each = local.account_network_details
 
   vpc_id     = aws_vpc.env-default.id
   cidr_block = each.value.cidr
 
   tags = {
-    Name = "${var.organization}-subnet_public-workloads_${var.env}-${each.key}"
+    Name = "${local.organization}-subnet_public-${each.value.ou_name}_${var.env}-${each.value.account_name}"
   }
 }
 
-resource "aws_security_group" "workload-env-security_group" {
+resource "aws_security_group" "env" {
   for_each = local.security_groups
 
   vpc_id = aws_vpc.env-default.id
@@ -74,6 +78,6 @@ resource "aws_security_group" "workload-env-security_group" {
   }
 
   tags = {
-    Name = "${each.value.account_name}_${var.env}_${each.value.name}"
+    Name = "${each.value.account_name}_${var.env}_${each.value.sg_name}"
   }
 }
