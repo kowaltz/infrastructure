@@ -1,0 +1,41 @@
+name: Tofu Validate
+
+on: pull_request
+
+jobs:
+  tofu-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Tofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.7.1
+
+      - name: Find changed directories and validate
+        id: validate
+        run: |
+          # Get the list of changed files in the current commit range
+          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+
+          # Extract directories from the list of changed files
+          dirs=$(echo "$changed_files" | xargs -I {} dirname {} | sort | uniq)
+
+          # Validate each directory if it contains a main.tf file
+          for dir in $dirs; do
+            if [ -f "$dir/main.tf" ]; then
+              echo "Validating $dir"
+              cd $dir
+              tofu init -backend=false
+              tofu validate
+              cd - # Return to the previous directory
+            else
+              echo "Skipping $dir as it does not contain main.tf"
+            fi
+          done
+
+      - name: Check for validation results
+        if: failure()
+        run: exit 1
