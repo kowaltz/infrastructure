@@ -6,6 +6,8 @@ environments:
   - dev
   - prod
 
+aws-region: eu-west-3  # Paris
+
 aws-organizational-units:
   sharedinfra:
     environments: all
@@ -15,6 +17,17 @@ aws-organizational-units:
         dependencies:
           - name: root-aws_organization
             variables: []
+      - name: database
+        managed-policies: []
+        dependencies:
+          - name: env-aws_sharedinfra_network
+            variables:
+              - subnet_ids
+        subnet:
+          cidr: "10.0.2.0/24"
+          security-groups:
+            - name: egress
+              allow-ingress: false
   workloads:
     environments: all
     aws-accounts:
@@ -23,10 +36,11 @@ aws-organizational-units:
         dependencies:
           - name: env-aws_sharedinfra_network
             variables:
-              - subnet_id
+              - subnet_ids
+          - name: env-aws_sharedinfra_database
+            variables: []
         subnet:
-          enabled: true
-          cidr: "10.0.2.0/24"
+          cidr: "10.0.3.0/24"
           security-groups:
             - name: public
               allow-ingress: true

@@ -1,6 +1,6 @@
 # Configure the AWS Provider
 provider "aws" {
-  region = var.aws_region
+  region = local.config.aws_region
 }
 
 data "aws_organizations_organization" "root" {}
@@ -41,7 +41,7 @@ module "aws-spacelift-integration" {
 
   account_id              = each.value.account_id
   account_details         = each.value.account_details
-  aws_region              = var.aws_region
+  aws_region              = local.config.aws_region
   env                     = each.value.env
   path                    = each.value.path
   organization            = local.organization
@@ -58,7 +58,7 @@ resource "spacelift_stack" "account_created" {
   branch                  = each.value.env
   description             = "Space for managing AWS infrastructure for the account ${each.value.path}/${each.value.account_details.name}."
   enable_local_preview    = true
-  labels                  = ["${local.organization}-context-root-aws"]
+  labels                  = ["${local.organization}-context-${each.value.env}"]
   name                    = each.value.trusted_stack_name
   project_root            = "env/${each.value.ou_name}/${each.value.account_details.name}"
   repository              = local.repository

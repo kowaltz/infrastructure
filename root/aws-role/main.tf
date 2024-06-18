@@ -1,12 +1,15 @@
 # Configure the AWS Provider
 provider "aws" {
-  region = var.aws_region
+  region = local.aws_region
 }
 
 locals {
-  organization = yamldecode(file(var.path_config_yaml)).organization
+  config = yamldecode(file(var.path_config_yaml))
 
-  root_role_name = "${local.organization}-iam-role-root-spacelift_${var.aws_oidc_enabled ? "oidc" : "default"}"
+  aws_region   = local.config.aws_region
+  organization = local.config.organization
+
+  root_role_name = "${local.organization}-role-root-spacelift_default"
 }
 
 output "root_role_name" {

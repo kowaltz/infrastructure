@@ -5,7 +5,7 @@ resource "aws_iam_policy_attachment" "iam_manage" {
 }
 
 resource "aws_iam_policy" "iam_manage" {
-  name        = "${local.organization}-iam-policy-root-iam_manage"
+  name        = "${local.organization}-policy-root-iam_manage"
   path        = "/root/${local.organization}/"
   description = "Policy for managing IAM roles and policies."
 

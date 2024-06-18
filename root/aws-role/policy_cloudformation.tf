@@ -5,7 +5,7 @@ resource "aws_iam_policy_attachment" "cloudformation" {
 }
 
 resource "aws_iam_policy" "cloudformation" {
-  name        = "${local.organization}-iam-policy-root-cloudformation"
+  name        = "${local.organization}-policy-root-cloudformation"
   path        = "/root/${local.organization}/"
   description = "Policies for using AWS CloudFormation."
 
@@ -42,7 +42,7 @@ resource "aws_iam_policy" "cloudformation" {
           "cloudformation:UpdateStackSetInstances"
         ],
         "Resource" : [
-          "arn:aws:cloudformation:${var.aws_region}:${var.aws_account_id}:stackset/${local.organization}-*",
+          "arn:aws:cloudformation:${local.aws_region}:${var.aws_account_id}:stackset/${local.organization}-*",
           // Service-managed permissions
           "arn:aws:cloudformation:*::type/resource/AWS-IAM-Role",
           "arn:aws:cloudformation::*:stackset-target/${local.organization}-stackset-*"

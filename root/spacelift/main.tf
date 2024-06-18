@@ -11,7 +11,7 @@ locals {
   repository = local.config.repository
   tf_version = local.config.tf_version
 
-  aws_role_name = "arn:aws:iam::${var.aws_account_id}:role/${local.organization}-iam-role-root-spacelift_default"
+  aws_role_name = "arn:aws:iam::${var.aws_account_id}:role/${local.organization}-role-root-spacelift_default"
 
   context_root_aws_name = "${local.organization}-context-root-aws"
 }
