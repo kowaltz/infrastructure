@@ -8,7 +8,8 @@ aws-organizational-units:
       - name: network
         managed-policies: []
         dependencies:
-          - root-aws_organization
+          - name: root-aws_organization
+            variables: []
       - name: vms
         managed-policies: []
   workloads:
@@ -17,7 +18,9 @@ aws-organizational-units:
       - name: marketplace
         managed-policies: []
         dependencies:
-          - env-aws_infrastructure_network
+          - name: env-aws_infrastructure_network
+            variables:
+              - subnet_id
         subnet:
           enabled: true
           cidr: "10.0.2.0/24"
@@ -31,3 +34,4 @@ aws-organizational-units:
     aws-accounts:
       - name: sandbox
         managed-policies: []
+        dependencies: []

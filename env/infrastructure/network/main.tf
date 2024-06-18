@@ -13,10 +13,10 @@ resource "aws_vpc" "env-default" {
 }
 
 locals {
-  org_structure = yamldecode(file(var.path_org_structure_yaml))
+  architecture = yamldecode(file(var.path_architecture_yaml))
 
   account_network_details = {
-    for account in local.org_structure.aws-organizational-units.workloads.aws-accounts :
+    for account in local.architecture.aws-organizational-units.workloads.aws-accounts :
     account.name => {
       subnet = account.subnet
       cidr   = account.subnet.cidr

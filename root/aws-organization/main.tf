@@ -11,7 +11,7 @@ locals {
 
   unique_identifier = sha1(var.plan_version)
 
-  org_structure = yamldecode(file(var.path_org_structure_yaml))
+  architecture = yamldecode(file(var.path_architecture_yaml))
 }
 
 resource "aws_organizations_organizational_unit" "root" {
@@ -21,14 +21,14 @@ resource "aws_organizations_organizational_unit" "root" {
 }
 
 module "aws-organization-ou" {
-  for_each = local.org_structure.aws-organizational-units
+  for_each = local.architecture.aws-organizational-units
   source   = "../../modules/aws-organization-ou"
 
   map_of_account_details = each.value.aws-accounts
   name                   = each.key
   parent_id              = aws_organizations_organizational_unit.root.id
   organization           = var.organization
-  set_of_environments    = each.value.environments == "all" ? local.org_structure.environments : toset([each.value.environments])
+  set_of_environments    = each.value.environments == "all" ? local.architecture.environments : toset([each.value.environments])
   unique_identifier      = local.unique_identifier
 }
 
@@ -71,24 +71,44 @@ locals {
   set_of_dependencies = toset(flatten([
     for account in module.aws-organization-ou.set_of_accounts_created : [
       for dependency in account.account_details.dependencies : {
-        account.account_details.name = dependency
-    }]
+        dependent  = "${account.env}-${account.parent_name}_${account.account_details.name}"
+        dependency = dependency.name
+        variable   = dependency.variables
+      }
+    ]
   ]))
 }
 
 data "spacelift_stack" "dependents" {
   for_each = local.set_of_dependencies
-  stack_id = each.key
+  
+  stack_id = each.value.dependent
 }
 
 data "spacelift_stack" "dependencies" {
   for_each = local.set_of_dependencies
+
   stack_id = each.value
 }
 
-resource "spacelift_stack_dependency" "env_account-on-root_aws_organization" {
+resource "spacelift_stack_dependency" "dependent-on-dependency" {
   for_each = local.set_of_dependencies
   
-  stack_id            = data.spacelift_stack.dependents[each.key]
-  depends_on_stack_id = data.spacelift_stack.dependencies[each.value]
+  stack_id            = data.spacelift_stack.dependents[each.value.dependent]
+  depends_on_stack_id = data.spacelift_stack.dependencies[each.value.dependency]
+}
+
+resource "spacelift_stack_dependency_reference" "dependent-on-dependency" {
+  for_each = toset(flatten([
+    for dependency in local.set_of_dependencies : [
+      for variable in dependency.variables : {
+        dependency = dependency
+        variable   = variable
+      } 
+    ]
+  ]))
+
+  stack_dependency_id = spacelift_stack_dependency.dependent-on-dependency[each.value.dependency].id
+  output_name         = each.value.variable
+  input_name          = "TF_VAR_${each.value.variable}"
 }

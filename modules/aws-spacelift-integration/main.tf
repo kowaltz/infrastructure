@@ -1,5 +1,5 @@
 locals {
-  trusted_stack_name = "${organization}-stack-${var.env}-aws_${var.ou_name}_${name}"
+  trusted_stack_name = "${var.organization}-stack-${var.env}-aws_${var.ou_name}_${var.account_details.name}"
 }
 
 resource "aws_cloudformation_stack_set" "role_spacelift_default" {
@@ -38,10 +38,10 @@ resource "aws_cloudformation_stack_set_instance" "role_spacelift_default" {
 }
 
 resource "spacelift_aws_integration" "path-account" {
-  name = "${var.organization}-aws_integration-${var.path}-${var.account_name}"
+  name = "${var.organization}-aws_integration-${var.path}-${var.account_details.name}"
 
   # We need to set the ARN manually rather than referencing the role to avoid a circular dependency
-  role_arn                       = "arn:aws:iam::${var.account_id}:role/${var.organization}-iam-role-${var.path}_${var.account_name}-spacelift_default"
+  role_arn                       = "arn:aws:iam::${var.account_id}:role/${var.organization}-iam-role-${var.path}_${var.account_details.name}-spacelift_default"
   generate_credentials_in_worker = false
-  space_id                       = var.space_id
+  space_id                       = var.env
 }

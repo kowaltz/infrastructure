@@ -3,7 +3,7 @@ variable "account_id" {
 }
 
 variable "account_details" {
-  type = string
+  type = map(string)
 }
 
 variable "aws_region" {

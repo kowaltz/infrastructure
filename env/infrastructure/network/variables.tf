@@ -10,7 +10,7 @@ variable "organization" {
   type = string
 }
 
-variable "path_org_structure_yaml" {
+variable "path_architecture_yaml" {
   type    = string
-  default = "./org_structure.yaml"
+  default = "./architecture.yaml"
 }

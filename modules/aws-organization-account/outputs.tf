@@ -21,7 +21,3 @@ output "parent_id" {
 output "path" {
   value = local.path
 }
-
-output "set_of_policies" {
-  value = var.set_of_policies
-}

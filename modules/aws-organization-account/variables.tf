@@ -22,10 +22,6 @@ variable "parent_name" {
   type = string
 }
 
-variable "set_of_policies" {
-  type = string
-}
-
 variable "unique_identifier" {
   type = string
 }

@@ -1,9 +1,9 @@
 locals {
-  org_structure = yamldecode(file(var.path_org_structure_yaml))
+  architecture = yamldecode(file(var.path_architecture_yaml))
 }
 
 resource "spacelift_space" "env" {
-  for_each = local.org_structure.environments
+  for_each = local.architecture.environments
 
   name             = "${var.organization}-space-${each.value}"
   parent_space_id  = "root"
@@ -12,13 +12,13 @@ resource "spacelift_space" "env" {
 }
 
 locals {
-  context_env_name = { for env in local.org_structure.environments :
+  context_env_name = { for env in local.architecture.environments :
     env => "${var.organization}-context-${env}"
   }
 }
 
 resource "spacelift_context" "env" {
-  for_each = local.org_structure.environments
+  for_each = local.architecture.environments
 
   description = "Context with ENV-specific variables."
   name        = local.context_env_name[each.value]
@@ -27,7 +27,7 @@ resource "spacelift_context" "env" {
 }
 
 resource "spacelift_environment_variable" "env" {
-  for_each = local.org_structure.environments
+  for_each = local.architecture.environments
 
   context_id = spacelift_context.env[each.value].id
   name       = "TF_VAR_env"
