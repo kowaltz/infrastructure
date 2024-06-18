@@ -2,7 +2,7 @@ environments:
   - dev
   - prod
 aws-organizational-units:
-  infrastructure:
+  sharedinfra:
     environments: all
     aws-accounts:
       - name: network
@@ -10,15 +10,13 @@ aws-organizational-units:
         dependencies:
           - name: root-aws_organization
             variables: []
-      - name: vms
-        managed-policies: []
   workloads:
     environments: all
     aws-accounts:
       - name: marketplace
         managed-policies: []
         dependencies:
-          - name: env-aws_infrastructure_network
+          - name: env-aws_sharedinfra_network
             variables:
               - subnet_id
         subnet:
