@@ -23,7 +23,7 @@ locals {
         account_name = account.name
         cidr         = account.subnet.cidr
         ou_name      = ou_name
-        sg           = account.subnet["security-groups"]
+        security_groups = account.security-groups
         subnet       = account.subnet
       } if lookup(account, "subnet", null) != null
     ]
@@ -32,12 +32,13 @@ locals {
   security_groups = flatten([
     for details in local.account_network_details :
     [
-      for sg in details.sg :
+      for sg in details.security_groups :
       {
         account_name  = details.account_name
         allow_ingress = sg.allow-ingress
         cidr          = details.cidr
         name          = sg.name
+        ou_name       = details.ou_name
         subnet        = details.subnet
       }
     ]

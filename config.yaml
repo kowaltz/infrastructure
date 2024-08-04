@@ -22,12 +22,13 @@ aws-organizational-units:
         dependencies:
           - name: env-aws_sharedinfra_network
             variables:
-              - subnet_ids
+              - map_of_subnet_ids
+              - map_of_security_group_ids
         subnet:
-          cidr: "10.0.2.0/24"
-          security-groups:
-            - name: egress
-              allow-ingress: false
+          cidr: 10.0.2.0/24
+        security-groups:
+          - name: egress
+            allow-ingress: false
   workloads:
     environments: all
     aws-accounts:
@@ -40,12 +41,10 @@ aws-organizational-units:
           - name: env-aws_sharedinfra_database
             variables: []
         subnet:
-          cidr: "10.0.3.0/24"
-          security-groups:
-            - name: public
-              allow-ingress: true
-            - name: egress
-              allow-ingress: false
+          cidr: 10.0.3.0/24
+        security-groups:
+          - name: public
+            allow-ingress: true
   sandbox:
     environments: dev
     aws-accounts:

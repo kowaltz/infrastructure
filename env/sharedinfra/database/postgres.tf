@@ -7,19 +7,15 @@ locals {
 }
 
 resource "aws_db_subnet_group" "postgres" {
-  name       = "education"
-  subnet_ids = module.vpc.public_subnets
-
-  tags = {
-    Name = "Education"
-  }
+  name       = var.env
+  subnet_ids = [var.map_of_subnet_ids["sharedinfra_database"]]
 }
 
 resource "aws_db_parameter_group" "postgres" {
   // Changing a parameter group always requires a reboot,
   // hence a custom one is specified.
-  name   = "education"
-  family = "postgres14"
+  name   = var.env
+  family = "postgres16"
 
   parameter {
     name  = "log_connections"
@@ -34,12 +30,14 @@ resource "aws_db_instance" "postgres" {
   engine                = "postgres"
   engine_version        = "16.3"
   instance_class        = "db.t3.micro"
-  parameter_group_name  = "default.mysql8.0"
+  parameter_group_name  = aws_db_parameter_group.postgres.name
   port                  = 5432
 
   // Networking
-  db_subnet_group_name =
-  vpc_security_group_ids =
+  db_subnet_group_name   = aws_db_subnet_group.postgres.name
+  vpc_security_group_ids = [
+    for sg in var.map_of_security_group_ids["sharedinfra_database"] : sg.id
+  ]
 
   // Root user
   username                    = "sharedinfra_${var.env}_pg"
